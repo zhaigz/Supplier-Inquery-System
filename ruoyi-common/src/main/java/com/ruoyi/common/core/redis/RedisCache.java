@@ -1,6 +1,5 @@
 package com.ruoyi.common.core.redis;
 
-import java.time.Duration;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +46,7 @@ public class RedisCache
      */
     public <T> void setCacheObject(final String key, final T value, final Integer timeout, final TimeUnit timeUnit)
     {
-        redisTemplate.opsForValue().set(key, value, Duration.of(timeout, timeUnit.toChronoUnit()));
+        redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
     }
 
     /**
@@ -72,7 +71,7 @@ public class RedisCache
      */
     public boolean expire(final String key, final long timeout, final TimeUnit unit)
     {
-        return redisTemplate.expire(key, Duration.of(timeout, unit.toChronoUnit()));
+        return redisTemplate.expire(key, timeout, unit);
     }
 
     /**

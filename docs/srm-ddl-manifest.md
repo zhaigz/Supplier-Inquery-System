@@ -1,0 +1,724 @@
+# SRM DDL manifest
+
+Tables: 40
+
+- `srm_supplier`: 32 columns
+  - `id` | `bigint unsigned` | 主键
+  - `supplier_code` | `varchar(32)` | 供应商编码（系统内部生成，页面1 列表列）
+  - `supplier_name` | `varchar(200)` | 企业名称（本地主档权威值，页面3 主档 13 项）
+  - `credit_code` | `varchar(18)` | 统一社会信用代码（缓存与比对的业务主键，可空由补全回填）
+  - `reg_no` | `varchar(32)` | 注册号（818 注册号，检索标识类型之一）
+  - `tyc_company_id` | `varchar(32)` | 天眼查公司id（818 企业id，作为外部主体稳定标识）
+  - `legal_person` | `varchar(60)` | 法定代表人
+  - `reg_capital` | `varchar(60)` | 注册资本（保留原文含币种的文本形态，页面3）
+  - `reg_capital_num` | `decimal(20,4)` | 注册资本数值（万元，仅用于排序/统计，不参与关系匹配）
+  - `establish_date` | `date` | 成立日期（818 成立日期 / 819 注册日期）
+  - `biz_status` | `varchar(40)` | 经营状态（818 企业状态；注销/吊销用于图谱角标）
+  - `industry` | `varchar(200)` | 所属行业（818 行业 / 国民经济行业分类大类名称）
+  - `reg_address` | `varchar(500)` | 注册地址（规范化后值，页面11 要求电话/地址/人员需规范化）
+  - `phone` | `varchar(60)` | 联系电话（规范化后主值）
+  - `email` | `varchar(120)` | 电子邮箱
+  - `province` | `varchar(30)` | 省（818 省）
+  - `city` | `varchar(30)` | 市（818 市）
+  - `district` | `varchar(30)` | 区（818 区）
+  - `area_code` | `varchar(12)` | 行政区划代码（818）
+  - `monitor_flag` | `char(1)` | 重点监控：1 重点监控 / 0 普通供应商（页面1 监控状态、页面15 监控范围）
+  - `data_source` | `varchar(60)` | 建档来源：初始内置/批量导入/人工录入/查询补全；补全只递增版本，不改写本列（页面3 主档 13 项之数据来源）
+  - `data_version` | `int` | 主档数据版本号，每次回填递增（页面2 查询时间、数据来源与版本）
+  - `last_enrich_at` | `datetime` | 最近一次工商补全成功时间
+  - `last_update_at` | `datetime` | 最近更新（页面3 主档 13 项之最近更新）
+  - `first_import_batch` | `varchar(32)` | 首次入库批次号（页面14 批量导入来源追溯）
+  - `status` | `char(1)` | 若依状态：0 正常 / 1 停用（停用不参与分析）
+  - `del_flag` | `char(1)` | 删除标志：0 存在 / 2 已删除
+  - `create_by` | `varchar(64)` | 
+  - `create_time` | `datetime` | 
+  - `update_by` | `varchar(64)` | 
+  - `update_time` | `datetime` | 
+  - `remark` | `varchar(500)` | 备注（本期不展示采购额、合作范围、综合评分，写在此处即可）
+- `srm_supplier_industry_info`: 50 columns
+  - `id` | `bigint unsigned` | 
+  - `supplier_id` | `bigint unsigned` | 主档 id
+  - `tyc_company_id` | `varchar(32)` | 企业id
+  - `ent_name` | `varchar(200)` | 企业名（接口原文名，可能与主档名不同，用于曾用名/别名核对）
+  - `ent_type` | `varchar(80)` | 企业类型（818；1047 企业类型可覆盖）
+  - `org_type` | `varchar(120)` | 组织机构：机构类型/一级机构类型/二级机构类型/经济类型（1168）
+  - `scope` | `text` | 经营范围（818）
+  - `reg_org` | `varchar(200)` | 登记机关（818）
+  - `approve_date` | `date` | 核准时间（818）
+  - `social_credit_code` | `varchar(18)` | 统一社会信用代码（接口返回值，与主档不一致时以主档为准并记差异）
+  - `taxpayer_no` | `varchar(30)` | 纳税人识别号（818）
+  - `org_code` | `varchar(30)` | 组织机构代码（818）
+  - `eng_name` | `varchar(300)` | 英文名（818）
+  - `short_name` | `varchar(100)` | 简称（818）
+  - `from_time` | `date` | 经营开始时间（818）
+  - `to_time` | `date` | 经营结束时间（818）
+  - `cancel_date` | `date` | 注销日期（818）
+  - `cancel_reason` | `varchar(500)` | 注销原因（818）
+  - `revoke_date` | `date` | 吊销日期（818）
+  - `revoke_reason` | `varchar(500)` | 吊销原因（818）
+  - `reg_capital` | `varchar(60)` | 注册资本
+  - `reg_capita_currency` | `varchar(20)` | 注册资本币种（人民币/美元/欧元等）
+  - `actual_capital` | `varchar(60)` | 实收注册资金
+  - `staff_num` | `varchar(40)` | 人员规模（818）
+  - `social_person_num` | `varchar(40)` | 参保人数（818）
+  - `is_micro` | `char(1)` | 是否小微企业：0 不是 / 1 是（818）
+  - `ent_label` | `varchar(200)` | 企业标签（818）
+  - `regression_up` | `varchar(30)` | 规上企业（818）
+  - `econ_zone_1` | `varchar(60)` | 经济功能区1（818）
+  - `econ_zone_2` | `varchar(60)` | 经济功能区2（818）
+  - `industry_gate` | `varchar(60)` | 国民经济行业分类门类
+  - `industry_big` | `varchar(60)` | 国民经济行业分类大类
+  - `industry_mid` | `varchar(60)` | 国民经济行业分类中类
+  - `industry_small` | `varchar(60)` | 国民经济行业分类小类
+  - `industry_gate_code` | `varchar(10)` | 门类行业代码
+  - `industry_big_code` | `varchar(10)` | 大类行业代码
+  - `industry_mid_code` | `varchar(10)` | 中类行业代码
+  - `industry_small_code` | `varchar(10)` | 小类行业代码
+  - `stock_name` | `varchar(100)` | 股票名（818）
+  - `stock_code` | `varchar(20)` | 股票号（818）
+  - `stock_type` | `varchar(40)` | 股票类型（818）
+  - `stock_used_name` | `varchar(100)` | 股票曾用名（818）
+  - `commercial_no` | `varchar(40)` | 商业登记号（818）
+  - `ent_score` | `varchar(20)` | 企业评分：外部字段原样留存，本期不作内部评分展示（页面3 表 3-6 口径）
+  - `update_from` | `varchar(30)` | 接口更新时间（818 更新时间）
+  - `source_api_id` | `int` | 来源接口：818 / 819 / 1047 / 1168
+  - `raw_id` | `bigint unsigned` | 原始响应留痕 srm_api_raw.id
+  - `fetched_at` | `datetime` | 取数时间
+  - `create_time` | `datetime` | 
+  - `update_time` | `datetime` | 
+- `srm_supplier_contact`: 12 columns
+  - `id` | `bigint unsigned` | 
+  - `supplier_id` | `bigint unsigned` | 
+  - `contact_type` | `varchar(20)` | 类型：phone 电话 / email 邮箱 / url 网址 / address 注册地址
+  - `contact_value` | `varchar(200)` | 规范化后的联系值（页面11：电话、地址、人员需规范化）
+  - `raw_value` | `varchar(300)` | 接口原值（未规范化，供追溯）
+  - `phone_source` | `varchar(100)` | 电话来源（818 电话来源 / 1046 号码来源），非电话类为空
+  - `phone_label` | `varchar(60)` | 电话标签：正常电话/客服电话/大陆座机/空号（818）；1046 为标签
+  - `is_primary` | `char(1)` | 是否主用值：主档 phone/email 取本字段=1 的第一条
+  - `source_api_id` | `int` | 818 / 1046
+  - `raw_id` | `bigint unsigned` | 
+  - `fetched_at` | `datetime` | 
+  - `create_time` | `datetime` | 
+- `srm_supplier_person`: 13 columns
+  - `id` | `bigint unsigned` | 
+  - `supplier_id` | `bigint unsigned` | 
+  - `person_name` | `varchar(60)` | 主要人员名称（819 主要人员名称 / 820 人员）
+  - `person_type` | `char(1)` | 1 公司 / 2 人（819 主要人员列表 1-公司 2-人）
+  - `tyc_person_id` | `varchar(32)` | 人或公司id（819）
+  - `hcgid` | `varchar(32)` | 人员hcgid（820）：自然人跨企业聚合标识，幕后关系比对的常用主键
+  - `position` | `varchar(120)` | 职位
+  - `logo` | `varchar(300)` | logo
+  - `sort_no` | `int` | 接口返回顺序（总数由 srm_api_raw 计数，不单独存）
+  - `source_api_id` | `int` | 819 / 820
+  - `raw_id` | `bigint unsigned` | 
+  - `fetched_at` | `datetime` | 
+  - `create_time` | `datetime` | 
+- `srm_supplier_shareholder`: 24 columns
+  - `id` | `bigint unsigned` | 
+  - `supplier_id` | `bigint unsigned` | 
+  - `shareholder_name` | `varchar(200)` | 股东名（821）
+  - `shareholder_type` | `char(1)` | 股东类型：1 公司 / 2 人 / 3 其它（821）
+  - `short_name` | `varchar(100)` | 简称（821）
+  - `tyc_ref_id` | `varchar(32)` | 对应表id（821）
+  - `hcgid` | `varchar(32)` | 人员hcgid（821）
+  - `ratio` | `decimal(9,4)` | 占比（821，小数表示百分比）
+  - `hold_ratio` | `decimal(9,4)` | 持股占比（821，与占比分列，页面10 比例区间用）
+  - `hold_num` | `varchar(40)` | 持股数量（821）
+  - `sub_amount` | `varchar(60)` | 认缴出资金额（821）
+  - `sub_date` | `varchar(40)` | 认缴出资金额对应出资时间 / 认缴方式
+  - `sub_way` | `varchar(60)` | 认缴方式（821）
+  - `paid_amount` | `varchar(60)` | 实缴出资金额（821）
+  - `paid_date` | `varchar(40)` | 实缴出资时间（821）
+  - `paid_way` | `varchar(60)` | 实缴方式（821）
+  - `first_hold_date` | `varchar(40)` | 首次持股日期（821）
+  - `is_hk_enterprise` | `char(1)` | 香港企业（821）
+  - `data_from` | `char(1)` | 数据来源枚举：1 工商登记 / 2 最新公示（821 入参，不填默认工商登记）
+  - `source_api_id` | `int` | 
+  - `raw_id` | `bigint unsigned` | 
+  - `fetched_at` | `datetime` | 
+  - `create_time` | `datetime` | 
+  - `update_time` | `datetime` | 
+- `srm_supplier_former_name`: 8 columns
+  - `id` | `bigint unsigned` | 
+  - `supplier_id` | `bigint unsigned` | 
+  - `former_name` | `varchar(200)` | 曾用名（458）
+  - `start_time` | `varchar(10)` | 开始时间 yyyy-MM（458）
+  - `end_time` | `varchar(10)` | 结束时间 yyyy-MM（458）
+  - `raw_id` | `bigint unsigned` | 
+  - `fetched_at` | `datetime` | 
+  - `create_time` | `datetime` | 
+- `srm_supplier_change_record`: 11 columns
+  - `id` | `bigint unsigned` | 
+  - `supplier_id` | `bigint unsigned` | 
+  - `change_item` | `varchar(120)` | 变更事项（822）
+  - `before_value` | `varchar(1000)` | 变更前
+  - `after_value` | `varchar(1000)` | 变更后
+  - `after_hash` | `char(32)` | 变更后值 md5，把长文本纳入唯一键以避开索引 3072 字节上限
+  - `change_date` | `date` | 变更时间
+  - `create_date` | `datetime` | 创建时间（接口值）
+  - `raw_id` | `bigint unsigned` | 
+  - `fetched_at` | `datetime` | 
+  - `create_time` | `datetime` | 
+- `srm_supplier_ext_field`: 7 columns
+  - `id` | `bigint unsigned` | 
+  - `supplier_id` | `bigint unsigned` | 
+  - `field_code` | `varchar(64)` | 内部字段标识（页面11 内部稳定标识，按内部字段标识规范维护）
+  - `field_value` | `varchar(1000)` | 自定义字段值（页面11 样例：银行账户标识（自定义））
+  - `create_by` | `varchar(64)` | 
+  - `create_time` | `datetime` | 
+  - `update_time` | `datetime` | 
+- `srm_risk_enforce`: 13 columns
+  - `id` | `bigint unsigned` | 
+  - `supplier_id` | `bigint unsigned` | 
+  - `hist_flag` | `char(1)` | 0 当前被执行人(839) / 1 历史被执行人(871)，同构字段合并一表
+  - `case_no` | `varchar(120)` | 案号
+  - `court` | `varchar(200)` | 执行法院
+  - `person_name` | `varchar(200)` | 被执行人名称
+  - `id_no` | `varchar(60)` | 身份证号／组织机构代码（敏感：入库加密，日志与导出不落全值）
+  - `create_date` | `datetime` | 创建时间
+  - `target_amount` | `varchar(60)` | 执行标的（元）
+  - `total_count` | `int` | 接口返回总数（分页统计，仅当页快照）
+  - `raw_id` | `bigint unsigned` | 
+  - `fetched_at` | `datetime` | 
+  - `create_time` | `datetime` | 
+- `srm_risk_dishonest`: 22 columns
+  - `id` | `bigint unsigned` | 
+  - `supplier_id` | `bigint unsigned` | 
+  - `person_name` | `varchar(200)` | 失信人名称
+  - `legal_person` | `varchar(100)` | 法人
+  - `manager_name` | `varchar(100)` | 负责人姓名
+  - `basis_no` | `varchar(120)` | 执行依据文号
+  - `province_area` | `varchar(60)` | 省份地区（本接口唯一行政区划字段）
+  - `id_no` | `varchar(60)` | 身份证号码/组织机构代码（敏感加密）
+  - `court` | `varchar(200)` | 法院
+  - `publish_time` | `datetime` | 发布时间
+  - `dishonest_type` | `varchar(120)` | 失信人类型
+  - `basis_org` | `varchar(200)` | 做出执行的依据单位
+  - `obligation` | `text` | 生效法律文书确定的义务
+  - `perform_status` | `text` | 履行情况
+  - `filing_date` | `date` | 立案时间
+  - `case_no` | `varchar(120)` | 案号
+  - `conduct_type` | `varchar(300)` | 失信被执行人行为具体情形
+  - `amount` | `varchar(60)` | 涉案金额（单位：元）
+  - `total_count` | `int` | 接口返回总数
+  - `raw_id` | `bigint unsigned` | 
+  - `fetched_at` | `datetime` | 
+  - `create_time` | `datetime` | 
+- `srm_risk_admin_punish`: 13 columns
+  - `id` | `bigint unsigned` | 
+  - `supplier_id` | `bigint unsigned` | 
+  - `risk_type` | `varchar(20)` | illegal 严重违法(846) / abnormal 经营异常(848)
+  - `list_reason` | `varchar(500)` | 列入原因 / 列入异常名录原因
+  - `list_dept` | `varchar(200)` | 决定列入部门（作出决定机关）/ 决定列入异常名录部门
+  - `list_date` | `date` | 列入日期
+  - `remove_reason` | `varchar(500)` | 移除原因 / 移除异常名录原因
+  - `remove_dept` | `varchar(200)` | 决定移除部门 / 移出部门
+  - `remove_date` | `date` | 移除日期 / 移出日期
+  - `total_count` | `int` | 接口返回总数
+  - `raw_id` | `bigint unsigned` | 
+  - `fetched_at` | `datetime` | 
+  - `create_time` | `datetime` | 
+- `srm_risk_tax_owed`: 21 columns
+  - `id` | `bigint unsigned` | 
+  - `supplier_id` | `bigint unsigned` | 
+  - `taxpayer_no` | `varchar(30)` | 纳税人识别号
+  - `taxpayer_name` | `varchar(200)` | 纳税人名称
+  - `id_no` | `varchar(60)` | 证件号码（敏感加密）
+  - `taxpayer_type` | `varchar(60)` | 纳税人类型
+  - `reg_type` | `varchar(60)` | 注册类型
+  - `tax_type` | `varchar(120)` | 欠税税种
+  - `tax_category` | `varchar(60)` | 税务类型
+  - `owed_amount` | `varchar(60)` | 欠税金额
+  - `owed_balance` | `varchar(60)` | 欠税余额
+  - `new_owed_balance` | `varchar(60)` | 当前新发生欠税余额
+  - `publish_time` | `datetime` | 发布时间
+  - `biz_address` | `varchar(500)` | 经营地点
+  - `tax_authority` | `varchar(200)` | 税务机关
+  - `legal_name` | `varchar(100)` | 法人或负责人名称
+  - `legal_id_type` | `varchar(60)` | 法人证件名称
+  - `total_count` | `int` | 接口返回总数
+  - `raw_id` | `bigint unsigned` | 
+  - `fetched_at` | `datetime` | 
+  - `create_time` | `datetime` | 
+- `srm_risk_judicial_summary`: 8 columns
+  - `id` | `bigint unsigned` | 
+  - `supplier_id` | `bigint unsigned` | 
+  - `dimension` | `varchar(40)` | 维度名：开庭公告/被执行人/法院公告/立案信息/失信人/法律诉讼/送达公告（1002 七维度）
+  - `item_count` | `int` | 该维度记录数（接口返回，明细字段以 open.tianyancha.com/open/1002 为准）
+  - `detail_json` | `json` | 该维度明细原样留存，字段名不在库表固化，由页面11 映射解释
+  - `raw_id` | `bigint unsigned` | 
+  - `fetched_at` | `datetime` | 
+  - `create_time` | `datetime` | 
+- `srm_api_dict`: 16 columns
+  - `id` | `bigint unsigned` | 
+  - `api_id` | `int` | 接口编号：818/819/821/846/848/851/871/872/839/1002/1046/1047/1123/1141/1156/1160/1161/1168/458
+  - `api_name` | `varchar(120)` | 接口名称
+  - `api_category` | `varchar(20)` | 数据分类：工商信息/司法风险/经营风险/关系发现/组合接口/特色接口/增值服务
+  - `doc_url` | `varchar(200)` | 详细 URL
+  - `unit_price` | `decimal(8,2)` | 单价（元/次），逐字取自接口清单
+  - `price_unit` | `varchar(20)` | 计价单位（次/家）
+  - `is_page_query` | `char(1)` | 是否分页接口：1 分页每页 20 条 / 0 非分页
+  - `page_size_max` | `int` | 每页条数上限，非分页为 0
+  - `billing_mode` | `varchar(20)` | 计费口径：per_call 每次计 / per_page 每页计 / async_poll 二次拉取才计 / unknown 待实测
+  - `async_flag` | `char(1)` | 是否异步任务型接口（1161/1141 需 Init-Poll）
+  - `show_flag` | `char(1)` | 是否在呈现清单（接口表 是否呈现=是 的 19 项）
+  - `status` | `char(1)` | 0 可用 / 1 未购买或停用（停用接口前端不出现调用入口）
+  - `cache_ttl_sec` | `int` | 本接口默认缓存有效期（秒），页面16 缓存有效期可全局覆盖
+  - `depth_max` | `int` | 接口深度上限：1160=10、1161=10（区间外返回无数据）、4=默认层数
+  - `remark` | `varchar(500)` | 
+- `srm_api_cache_key`: 11 columns
+  - `id` | `bigint unsigned` | 
+  - `cache_key` | `char(32)` | 缓存键 md5(api_id + 标准化主体标识 + 参数指纹)，页面5/6/7 有方向/层数/比例/口径入参，只按信用代码缓存会错命中
+  - `api_id` | `int` | 接口编号
+  - `credit_code` | `varchar(18)` | 统一社会信用代码（页面5/6 逐字要求按信用代码缓存，本字段保留该口径）
+  - `subject_key` | `varchar(200)` | 标准化主体标识：信用代码优先，缺失时用规范化企业名或 tyc 公司id
+  - `param_json` | `json` | 参数指纹原文（穿透方向/层数/比例上下限/关系口径/深度/源与目标主体）
+  - `raw_id` | `bigint unsigned` | 结果指向 srm_api_raw.id
+  - `hit_count` | `int` | 命中次数（缓存节省量统计，页面16 缓存命中不重复计量）
+  - `expire_at` | `datetime` | 过期时间 = fetched_at + 有效时长
+  - `fetched_at` | `datetime` | 
+  - `env` | `varchar(10)` | prod/test：测试额度与正式额度的结果分桶，避免测试数据污染正式结论
+- `srm_api_raw`: 14 columns
+  - `id` | `bigint unsigned` | 
+  - `call_log_id` | `bigint unsigned` | 对应一次调用 srm_api_call_log.id
+  - `api_id` | `int` | 
+  - `subject_key` | `varchar(200)` | 查询主体
+  - `request_json` | `json` | 请求参数（不含密钥/令牌，任何情况下不入库）
+  - `response_json` | `json` | 原始响应（HTTP 层原样），结构化表可由本字段重建
+  - `resp_status` | `varchar(20)` | 接口业务返回码/错误描述
+  - `http_status` | `int` | 
+  - `cost_ms` | `int` | 响应耗时
+  - `storage_type` | `varchar(10)` | db / file（超大响应落对象存储或本地磁盘，path 记于 storage_path）
+  - `storage_path` | `varchar(500)` | 
+  - `byte_size` | `int` | 响应字节数，供清理策略使用
+  - `fetched_at` | `datetime` | 
+  - `create_time` | `datetime` | 
+- `srm_api_call_log`: 23 columns
+  - `id` | `bigint unsigned` | 
+  - `trace_id` | `varchar(64)` | 全链路号：一次项目分析会产生多条调用，用同一个 trace 串起来
+  - `task_id` | `bigint unsigned` | 关联 srm_analysis_task.id（异步任务发起的调用）
+  - `call_time` | `datetime` | 调用时间
+  - `user_id` | `bigint` | 调用人（系统账号）
+  - `user_name` | `varchar(64)` | 调用人名称冗余，避免账号变更导致日志不可读
+  - `dept_id` | `bigint` | 所属部门（来自系统侧账号信息）
+  - `dept_name` | `varchar(100)` | 
+  - `source_ip` | `varchar(64)` | 来源 IP（需求新增维度）
+  - `terminal_id` | `varchar(64)` | 终端标识：区分同一账号多终端
+  - `api_id` | `int` | 接口编号
+  - `api_name` | `varchar(120)` | 接口名称
+  - `subject_key` | `varchar(200)` | 调用范围/入参摘要（企业主体）
+  - `param_digest` | `varchar(500)` | 入参摘要，不含敏感值
+  - `page_no` | `int` | 分页接口当前页
+  - `call_result` | `varchar(10)` | 调用结果：成功 / 失败 / 被拦截
+  - `block_reason` | `varchar(120)` | 被拦截原因：日预算超限/月预算超限/并发超限/套餐未含该接口/主体不存在
+  - `resp_msg` | `varchar(500)` | 
+  - `cost_ms` | `int` | 响应耗时
+  - `unit_consumed` | `decimal(10,2)` | 消耗调用单元（本条请求实际计费次数，缓存命中与拦截记 0）
+  - `cache_hit` | `char(1)` | 是否缓存命中：命中则不计量、不新发请求
+  - `env` | `varchar(10)` | prod/test：测试额度调用单独统计，不占正式额度
+  - `create_time` | `datetime` | 
+- `srm_budget_policy`: 16 columns
+  - `id` | `bigint unsigned` | 
+  - `policy_name` | `varchar(64)` | 策略名称（预留多策略，按环境/部门）
+  - `daily_limit` | `int` | 每日调用预算上限（次），0 表示不限制；数值由采购方给定
+  - `monthly_limit` | `int` | 月度调用预算上限（次）
+  - `warn_ratios` | `varchar(60)` | 预算预警阈值档位，多选逗号分隔，取值 60/70/80/90
+  - `max_concurrency` | `int` | 并发数（同一时刻允许的外部请求条数），以采购合同为准，先给保守值
+  - `auto_full_scan` | `char(1)` | 自动全量查询：0 关闭（需求默认，且不允许改 1）/ 1 开启
+  - `cache_ttl_sec` | `int` | 缓存有效期（秒），页面3 缓存有效期对应项
+  - `monitor_frequency` | `varchar(20)` | 重点供应商监控频率：daily/weekly/manual/push（默认人工触发）
+  - `monitor_max_ent` | `int` | 监控企业上限（家），0 表示不额外限制，以合同为准
+  - `status` | `char(1)` | 0 启用 / 1 停用
+  - `create_by` | `varchar(64)` | 
+  - `create_time` | `datetime` | 
+  - `update_by` | `varchar(64)` | 
+  - `update_time` | `datetime` | 
+  - `remark` | `varchar(500)` | 
+- `srm_trigger_rule`: 12 columns
+  - `id` | `bigint unsigned` | 
+  - `rule_code` | `varchar(40)` | 规则码：supplier_save / single_enrich / monitor_scan / project_analysis / repeat_query
+  - `rule_name` | `varchar(100)` | 规则名（页面16 五条触发规则原文）
+  - `trigger_mode` | `varchar(20)` | never 不自动调用 / manual 经办人点击 / scoped 仅已勾选 / member 仅项目成员 / cache 缓存控制
+  - `api_ids` | `varchar(200)` | 允许调用的接口编号，逗号分隔；空表示由业务页面自带清单
+  - `allow_auto` | `char(1)` | 是否允许自动发起：0 否（需求默认）/ 1 是
+  - `enabled` | `char(1)` | 启用状态
+  - `sort_no` | `int` | 
+  - `create_by` | `varchar(64)` | 
+  - `create_time` | `datetime` | 
+  - `update_time` | `datetime` | 
+  - `remark` | `varchar(500)` | 
+- `srm_usage_stat`: 13 columns
+  - `id` | `bigint unsigned` | 
+  - `stat_date` | `date` | 统计日期（按月统计时 stat_date 取当月 1 日，period_type=month）
+  - `period_type` | `varchar(10)` | day / month
+  - `api_id` | `int` | 接口编号，0 表示全部接口合计
+  - `call_count` | `int` | 发起调用次数
+  - `cache_hit_count` | `int` | 缓存命中次数（节省量）
+  - `block_count` | `int` | 被拦截次数
+  - `fail_count` | `int` | 失败次数
+  - `unit_consumed` | `decimal(12,2)` | 消耗调用单元合计
+  - `cost_amount` | `decimal(12,2)` | 按字典单价折算的金额，供对账，不落前端
+  - `avg_cost_ms` | `int` | 平均响应耗时
+  - `create_time` | `datetime` | 
+  - `update_time` | `datetime` | 
+- `srm_field_mapping`: 19 columns
+  - `id` | `bigint unsigned` | 
+  - `biz_field` | `varchar(100)` | 业务字段（页面11 8 列之一）
+  - `data_source` | `varchar(60)` | 数据来源：授权外部数据源 / 本地主档（自定义）
+  - `api_id` | `int` | 对应接口编号（本地自定义字段为空）
+  - `outer_key` | `varchar(120)` | 外部字段标识：以接口响应文档中的真实键名为准，禁止填样例占位键名
+  - `inner_key` | `varchar(120)` | 内部字段标识：内部稳定标识，按内部字段标识规范维护
+  - `data_type` | `varchar(10)` | 数据类型：列表 / 文本
+  - `analysis_flag` | `char(1)` | 关联分析：1 参与关联分析 / 0 未参与
+  - `monitor_flag` | `char(1)` | 持续监控：1 参与监控 / 0 未监控
+  - `target_table` | `varchar(64)` | 结构化落库目标表（raw→结构化投影的可重建依据）
+  - `norm_rule` | `varchar(500)` | 规范化规则：电话/地址/人员的去空、全半角、分隔符处理
+  - `not_null_check` | `char(1)` | 空值不参与关系匹配（需求逐字要求），固定为 1
+  - `status` | `char(1)` | 0 有效 / 1 停用；同一业务字段只允许一条有效映射
+  - `active_biz` | `varchar(100)` | 有效映射唯一性承载列：停用的历史映射取 NULL，不参与唯一约束，从而只约束"有效"这一态
+  - `create_by` | `varchar(64)` | 
+  - `create_time` | `datetime` | 
+  - `update_by` | `varchar(64)` | 
+  - `update_time` | `datetime` | 
+  - `remark` | `varchar(500)` | 
+- `srm_rel_rule`: 24 columns
+  - `id` | `bigint unsigned` | 
+  - `rule_name` | `varchar(100)` | 关系规则名（页面7 命中明细的"命中规则"取此值）
+  - `rel_dimension` | `varchar(40)` | 关系维度编码：SERVE_ALL/INVEST/BRANCH/HISTORICAL_SHAREHOLDER/HISTORICAL_SERVE_ALL/ALL/legal_person/invest/common_hcg/phone/email/address
+  - `rel_dimension_name` | `varchar(40)` | 关系维度中文名：董监高/股东/分支机构/历史股东/历史董监高/所有类型（默认）/法定代表人/对外投资/共同董监高/同电话/同邮箱/同注册地址
+  - `detect_type` | `varchar(40)` | 识别类型（页面10 列），本地规则维度与接口维度分列
+  - `direction` | `varchar(10)` | 分析方向：双向 / 向上 / 向下；1160 只有单一方向入参（up/down 各 10 层，不可双向），双向规则在网关侧拆成两次调用、分别计数计费
+  - `weight` | `tinyint` | 线索权重 1—5（页面10；页面7 连线标注）
+  - `field_mapping_code` | `varchar(120)` | 字段映射标识（由页面11 维护，指向 srm_field_mapping.inner_key）
+  - `api_id` | `int` | 承载接口：1161/1156/1141/1123/1160；本地计算维度为 NULL
+  - `tyc_rel_type` | `varchar(30)` | 接口侧关系类型枚举原值：1-同电话 / 2-同邮箱 / 3-同注册地址 / SERVE_ALL 等
+  - `up_depth` | `tinyint` | 向上穿透层数，1—10（1160 层次，为空默认 4）
+  - `down_depth` | `tinyint` | 向下穿透层数，1—10
+  - `ratio_min` | `decimal(9,4)` | 穿透比例下限（≥，默认 0）
+  - `ratio_max` | `decimal(9,4)` | 穿透比例上限（≤，默认 1）
+  - `remark_text` | `varchar(500)` | 识别说明（页面10 第 6 列）
+  - `recommend_flag` | `char(1)` | 是否推荐规则：1 系统预置，"恢复推荐规则"只重置本类
+  - `default_on` | `char(1)` | 默认启用：本期只开 股东 + 法定代表人（纪要结论），其余为 0
+  - `enabled` | `char(1)` | 启用（页面10 第 1 列）
+  - `sort_no` | `int` | 
+  - `create_by` | `varchar(64)` | 
+  - `create_time` | `datetime` | 
+  - `update_by` | `varchar(64)` | 
+  - `update_time` | `datetime` | 
+  - `del_flag` | `char(1)` | 
+- `srm_rel_rule_version`: 8 columns
+  - `id` | `bigint unsigned` | 
+  - `version_no` | `int` | 规则版本号，连续不重复（页面7 审计留痕之"规则版本"）
+  - `change_type` | `varchar(20)` | 新增/编辑/启停/删除/恢复推荐
+  - `snapshot_json` | `json` | 变更后全量启用规则快照（页面13 规则快照从此引用）
+  - `diff_json` | `json` | 变更前后差异，供配置调整留痕
+  - `create_by` | `varchar(64)` | 变更人（写入页面17 审计）
+  - `create_time` | `datetime` | 
+  - `remark` | `varchar(500)` | 
+- `srm_project`: 19 columns
+  - `id` | `bigint unsigned` | 
+  - `project_no` | `varchar(40)` | 项目单据号（页面7 列表列、审计留痕必填）
+  - `project_name` | `varchar(200)` | 项目名称
+  - `project_date` | `date` | 项目日期
+  - `dept_id` | `bigint` | 发起部门（数据权限按部门隔离的落点）
+  - `dept_name` | `varchar(100)` | 
+  - `project_desc` | `varchar(1000)` | 项目说明
+  - `analysis_param_json` | `json` | 穿透参数快照：upDepth/downDepth/ratioMin/ratioMax/minWeight/relScope/includeBookkeeping（页面7 编辑与回显唯一来源）
+  - `supplier_count` | `int` | 供应商数量（冗余统计，成员表为准）
+  - `analysis_status` | `varchar(20)` | 分析状态：未分析/分析中/已完成/部分失败/已失败/已取消（页面7 列表列）
+  - `last_task_id` | `bigint unsigned` | 最近一次分析任务
+  - `last_report_version_id` | `bigint unsigned` | 最新可展示版本（历史版本不被覆盖）
+  - `status` | `char(1)` | 
+  - `del_flag` | `char(1)` | 
+  - `create_by` | `varchar(64)` | 
+  - `create_time` | `datetime` | 
+  - `update_by` | `varchar(64)` | 
+  - `update_time` | `datetime` | 
+  - `remark` | `varchar(500)` | 
+- `srm_project_member`: 8 columns
+  - `id` | `bigint unsigned` | 
+  - `project_id` | `bigint unsigned` | 
+  - `supplier_id` | `bigint unsigned` | 
+  - `supplier_code` | `varchar(32)` | 供应商编码（页面7 成员行列）
+  - `supplier_name` | `varchar(200)` | 企业名称
+  - `monitor_flag` | `char(1)` | 重点监控状态快照（成员加入时的主档值，图谱图例区分普通/重点）
+  - `join_time` | `datetime` | 加入项目时间
+  - `create_by` | `varchar(64)` | 
+- `srm_analysis_task`: 36 columns
+  - `id` | `bigint unsigned` | 
+  - `task_no` | `varchar(40)` | 任务号（页面6 留痕字段，前端轮询凭据）
+  - `trace_id` | `varchar(64)` | 同一次业务动作下的多任务归组
+  - `task_type` | `varchar(20)` | equity 股权穿透图 / backstage 幕后关系 / shortest 最短路径 / project 项目关联分析 / monitor 监控比对
+  - `biz_scene` | `varchar(20)` | 页面标识：page5/page6/page7/page8/page13
+  - `project_id` | `bigint unsigned` | 项目单（项目分析必填，单主体查询为空）
+  - `report_version_id` | `bigint unsigned` | 产出的报告版本
+  - `subject_key` | `varchar(200)` | 目标主体（页面6 留痕）
+  - `source_subject` | `varchar(200)` | 源主体（1161 源公司id/名，页面6 留痕）
+  - `target_subject` | `varchar(200)` | 目标主体（1161 目标公司id/名）
+  - `rel_scope` | `varchar(200)` | 关系口径：选中维度集合（页面6 留痕）
+  - `direction` | `varchar(10)` | 穿透方向 up/down（1160 单向，一个需求方向拆两条任务）
+  - `depth` | `tinyint` | 深度/层数 1—10，区间外返回无数据 → 发起前校验并阻止，不静默截断
+  - `ratio_min` | `decimal(9,4)` | 比例下限
+  - `ratio_max` | `decimal(9,4)` | 比例上限
+  - `rule_version_no` | `int` | 本次使用的规则版本（留痕 + 复现）
+  - `min_weight` | `tinyint` | 规则最低权重（页面7：1 及以上…5）
+  - `include_bookkeeping` | `char(1)` | 是否包含代记账公司电话关系：1 包含 / 2 不包含（1156 入参）
+  - `task_status` | `varchar(10)` | 状态机：QUEUED→RUNNING→SUCCESS / FAIL / CANCELED；超时写 FAIL + err_code=TASK_TIMEOUT
+  - `poll_count` | `int` | 前端轮询次数
+  - `first_trigger_at` | `datetime` | 首次触发时间（纪要：首次触发不计费）
+  - `billed_at` | `datetime` | 计费时间（纪要：第二次拉取到终态才计费）
+  - `bill_flag` | `char(1)` | 本任务是否已产生计费
+  - `unit_consumed` | `decimal(10,2)` | 本任务累计消耗调用单元
+  - `est_unit` | `decimal(10,2)` | 预估调用单元（本地估算，页面13 显示，非计费字段）
+  - `progress_step` | `varchar(40)` | 当前步骤：STEP-{done}/{total}（如 STEP-3/10，总步数按任务类型固定）
+  - `err_code` | `varchar(40)` | 失败码
+  - `err_msg` | `varchar(500)` | 失败原因（不透出敏感响应内容）
+  - `result_count` | `int` | 结果规模：节点数/线索数
+  - `start_time` | `datetime` | 
+  - `finish_time` | `datetime` | 
+  - `cost_ms` | `int` | 
+  - `env` | `varchar(10)` | 
+  - `create_by` | `varchar(64)` | 
+  - `create_time` | `datetime` | 
+  - `update_time` | `datetime` | 
+- `srm_graph_node`: 19 columns
+  - `id` | `bigint unsigned` | 
+  - `task_id` | `bigint unsigned` | 归属任务（图谱结果按任务/版本留档，不同任务节点互不复用 id）
+  - `node_key` | `varchar(64)` | 节点唯一标识：接口 节点id/节点图id 或 公司或人id/自然人pid
+  - `node_type` | `varchar(10)` | Company 公司 / Human 人（1160「对象类型 Company-公司, Human-人」、1161 同名字段）/ Other 其他
+  - `node_name` | `varchar(200)` | 节点名 / 节点名称（两字段来源不同时以返回顺序记录，不擅自合并）
+  - `credit_code` | `varchar(18)` | 统一社会信用代码（1160）
+  - `reg_status` | `varchar(40)` | 注册状态 / 企业状态（1160/1161），注销吊销打角标
+  - `level_no` | `tinyint` | 层级，逐层展开定位用
+  - `parent_node_key` | `varchar(64)` | 上一层节点（1160 子对象递归还原父子链）
+  - `can_extend` | `char(1)` | true-可延伸 false-不可延伸（1160 原文字段名逐字保留），仅 true 显示展开入口
+  - `red_flag` | `char(1)` | 是否标红（1123），控制人/重点监控节点高亮
+  - `is_monitor` | `char(1)` | 是否重点监控供应商（本地主档 join，图例区分）
+  - `supplier_id` | `bigint unsigned` | 命中本地主档时的 id
+  - `group_key` | `varchar(64)` | 节点聚合（1161 原文重复出现 2 次，按返回顺序记 ext_json.group_seq）
+  - `attrs_json` | `json` | 属性信息 / 属性（接口原样，详情面板读）
+  - `ext_json` | `json` | 其它未固化字段
+  - `source_api_id` | `int` | 
+  - `raw_id` | `bigint unsigned` | 
+  - `create_time` | `datetime` | 
+- `srm_graph_edge`: 17 columns
+  - `id` | `bigint unsigned` | 
+  - `task_id` | `bigint unsigned` | 
+  - `edge_key` | `varchar(64)` | 连线唯一标识：1161 关系id，用于去重
+  - `from_node_key` | `varchar(64)` | 开始节点 / 起始节点
+  - `to_node_key` | `varchar(64)` | 结束节点
+  - `from_id_new` | `varchar(64)` | 开始节点（对应节点idNew字段）原文映射
+  - `to_id_new` | `varchar(64)` | 结束节点（对应节点idNew字段）原文映射
+  - `rel_type` | `varchar(40)` | 类型：SERVE_ALL-董监高 / INVEST-股东 / BRANCH-分支机构 / HISTORICAL_SHAREHOLDER-历史股东 / HISTORICAL_SERVE_ALL-历史董监高 / ALL-所有类型（默认）
+  - `ratio` | `decimal(9,4)` | 占比（股东关系）/ 股份比例 / 占比：按来源接口分列存 source_api_id
+  - `ratio_label` | `varchar(40)` | 连线标注原文（不同接口同叫占比，界面须逐字区分）
+  - `found_flag` | `varchar(10)` | 关系发现标识（1161/1141）
+  - `weight` | `tinyint` | 本地规则权重 1—5（非接口字段，页面7 连线标注组成部分）
+  - `rule_id` | `bigint unsigned` | 命中的本地规则 srm_rel_rule.id
+  - `clue_id` | `bigint unsigned` | 命中的线索 srm_rel_clue.id（连线=启用规则命中的关联线索）
+  - `source_api_id` | `int` | 
+  - `raw_id` | `bigint unsigned` | 
+  - `create_time` | `datetime` | 
+- `srm_rel_clue`: 35 columns
+  - `id` | `bigint unsigned` | 
+  - `task_id` | `bigint unsigned` | 产出任务
+  - `project_id` | `bigint unsigned` | 
+  - `report_version_id` | `bigint unsigned` | 所属报告版本（版本内线索只读）
+  - `supplier_a` | `bigint unsigned` | 企业 A（主档 id）
+  - `supplier_b` | `bigint unsigned` | 企业 B
+  - `ent_a_name` | `varchar(200)` | 企业名称（1156 企业名称）
+  - `ent_b_name` | `varchar(200)` | 企业名称
+  - `ent_a_tyc_id` | `varchar(32)` | 企业ID（1156）
+  - `ent_b_tyc_id` | `varchar(32)` | 
+  - `legal_type_a` | `char(1)` | 法人类型：1 人 / 2 公司（1156 原文枚举）
+  - `legal_type_b` | `char(1)` | 
+  - `legal_person_a` | `varchar(100)` | 法定代表人
+  - `legal_person_b` | `varchar(100)` | 
+  - `reg_capital_a` | `varchar(60)` | 注册资本
+  - `reg_capital_b` | `varchar(60)` | 
+  - `establish_a` | `varchar(40)` | 成立时间
+  - `establish_b` | `varchar(40)` | 
+  - `clue_type` | `varchar(120)` | 疑似关系类型（1156）→ 界面「命中规则」线索内容
+  - `clue_detail` | `varchar(1000)` | 疑似关系详情（1156）→ 界面「关联线索」
+  - `bookkeeping_phone` | `varchar(60)` | 代记账公司电话（1156，受"是否包含代记账公司电话关系"入参控制）
+  - `local_rel_type` | `varchar(40)` | 本地命中维度：同法定代表人/共同股东/共同董监高/同电话/同邮箱/同注册地址
+  - `rule_id` | `bigint unsigned` | 命中本地规则
+  - `rule_name` | `varchar(100)` | 命中规则名（本地关系规则，非接口字段）
+  - `weight` | `tinyint` | 权重（本地规则权重 1—5，非接口字段）
+  - `rel_path` | `varchar(1000)` | 关联路径（节点名链，页面12/13 展示）
+  - `up_depth` | `tinyint` | 本次命中使用的向上穿透层级
+  - `down_depth` | `tinyint` | 向下穿透层级
+  - `data_source` | `varchar(60)` | 数据来源：接口编号 / 本地计算
+  - `source_api_id` | `int` | 
+  - `raw_id` | `bigint unsigned` | 
+  - `review_status` | `varchar(20)` | 复核状态：待复核 / 已确认有关联 / 排除线索 / 需补充材料（页面12）。状态回写本行仅为展示，处置过程走 srm_clue_review 追加
+  - `page_no` | `int` | 命中时的分页页码（1156 每页最大 20 条）
+  - `analyzed_at` | `datetime` | 分析时间
+  - `create_time` | `datetime` | 
+- `srm_clue_review`: 12 columns
+  - `id` | `bigint unsigned` | 
+  - `clue_id` | `bigint unsigned` | 
+  - `project_id` | `bigint unsigned` | 
+  - `report_version_id` | `bigint unsigned` | 项目/版本（页面12 清单列）
+  - `review_status` | `varchar(20)` | 复核状态：待复核 / 已确认有关联 / 排除线索 / 需补充材料
+  - `conclusion` | `varchar(1000)` | 复核结论（必填）
+  - `review_note` | `varchar(2000)` | 复核说明：排除线索与需补充材料时不得为空
+  - `evidence_ref` | `varchar(1000)` | 证据依据（多行文本 / 附件索引，附件本体走文件存储）
+  - `reviewer_id` | `bigint` | 复核人
+  - `reviewer_name` | `varchar(64)` | 
+  - `reviewed_at` | `datetime` | 
+  - `create_time` | `datetime` | 
+- `srm_report_version`: 22 columns
+  - `id` | `bigint unsigned` | 
+  - `project_id` | `bigint unsigned` | 
+  - `version_no` | `int` | 版本号，连续不重复（页面13 表 13-1 第 1 列）
+  - `task_id` | `bigint unsigned` | 来源分析任务
+  - `analysis_at` | `datetime` | 分析时间
+  - `supplier_scope` | `json` | 分析范围/分析供应商清单（固化，含供应商编码与名称快照）
+  - `member_count` | `int` | 分析供应商数
+  - `clue_count` | `int` | 关系线索数
+  - `up_depth` | `tinyint` | 向上穿透层级（固化）
+  - `down_depth` | `tinyint` | 向下穿透层级（固化）
+  - `min_weight` | `tinyint` | 最低权重（固化）
+  - `rel_scope` | `varchar(200)` | 关系口径（固化）
+  - `rule_version_no` | `int` | 规则快照版本（引用 srm_rel_rule_version）
+  - `rule_snapshot` | `json` | 启用规则快照原文（页面13 规则快照）
+  - `hit_rules` | `varchar(1000)` | 命中规则清单（固化）
+  - `data_source` | `varchar(200)` | 数据来源（接口编号集合）
+  - `est_unit` | `decimal(10,2)` | 预估/估算调用单元（本地估算，非计费字段）
+  - `data_nature` | `varchar(20)` | 数据性质：正式数据 / 演示数据（原型标注「前端模拟数据」，正式库必须区分）
+  - `is_locked` | `char(1)` | 定稿锁定：1 后本行禁止任何 UPDATE（页面13 只读快照）
+  - `export_count` | `int` | 导出次数（导出动作明细在审计日志）
+  - `create_by` | `varchar(64)` | 
+  - `create_time` | `datetime` | 
+- `srm_monitor_policy`: 13 columns
+  - `id` | `bigint unsigned` | 
+  - `policy_code` | `varchar(40)` | 策略码：biz_info / shareholder / legal_person / person / abnormal_punish / judicial / invest（7 项逐字取自原型 monitorTopics）
+  - `policy_name` | `varchar(60)` | 监控维度名：工商基本信息变更/股东及股权变更/法定代表人变更/主要人员变更/经营异常及行政处罚/司法风险/对外投资变更
+  - `support_api` | `varchar(100)` | 支撑接口：822/458/821/819/848/1002 等；本期不接入的维度写 待确认 且默认关闭
+  - `frequency` | `varchar(20)` | 刷新频率：daily 每日一次 / weekly 每周一次 / manual 人工触发 / push 实时推送（需服务支持），默认人工触发
+  - `cron_expr` | `varchar(40)` | 定时表达式（同步到 sys_job，由若依 Quartz 调度，不引新框架）
+  - `enabled` | `char(1)` | 启用：本期整体后置，默认 0；纪要口径：不采购付费监控接口，改按 3天/5天/1个月周期调基础接口
+  - `scan_scope` | `varchar(20)` | 范围：monitor_flag 仅已勾选重点监控 / all 全库（禁止，字段保留仅为可观测）
+  - `create_by` | `varchar(64)` | 
+  - `create_time` | `datetime` | 
+  - `update_by` | `varchar(64)` | 
+  - `update_time` | `datetime` | 
+  - `remark` | `varchar(500)` | 
+- `srm_data_snapshot`: 11 columns
+  - `id` | `bigint unsigned` | 
+  - `supplier_id` | `bigint unsigned` | 
+  - `credit_code` | `varchar(18)` | 
+  - `snapshot_type` | `varchar(40)` | 快照对象类型：industry_info/shareholder/person/former_name/risk_illegal/risk_abnormal/judicial/equity/backstage
+  - `snapshot_key` | `varchar(120)` | 快照键：企业 + 关系口径/深度 或 穿透方向/层数/比例（页面5/6 快照键口径）
+  - `snapshot_hash` | `char(32)` | 参与比对字段的规范化摘要，相等即无变更（空值不参与比对）
+  - `payload_json` | `json` | 参与比对的字段子集（只存字段映射表 monitor_flag=1 的字段）
+  - `api_ids` | `varchar(100)` | 本快照由哪些接口取回
+  - `raw_id` | `bigint unsigned` | 
+  - `captured_at` | `datetime` | 采集时间
+  - `create_time` | `datetime` | 
+- `srm_change_event`: 21 columns
+  - `id` | `bigint unsigned` | 
+  - `supplier_id` | `bigint unsigned` | 
+  - `supplier_name` | `varchar(200)` | 供应商（页面8 表 8-2 列）
+  - `credit_code` | `varchar(18)` | 统一社会信用代码
+  - `legal_person` | `varchar(100)` | 法定代表人
+  - `last_industry_update` | `datetime` | 最近工商更新
+  - `monitor_status` | `varchar(20)` | 监控状态：重点监控 / 普通供应商
+  - `change_at` | `datetime` | 变更时间
+  - `change_item` | `varchar(120)` | 变更事项
+  - `dimension` | `varchar(40)` | 所属监控维度（srm_monitor_policy.policy_code）
+  - `level_tag` | `varchar(20)` | 等级（本地配置规则标记，非接口字段）
+  - `before_value` | `varchar(1000)` | 变更前
+  - `after_value` | `varchar(1000)` | 变更后
+  - `handle_status` | `varchar(10)` | 处理状态：待处理 / 已确认（页面8 标记已处理）
+  - `high_risk_flag` | `char(1)` | 高风险事件：按配置规则标记，页面8 指标卡计数
+  - `prev_snapshot_id` | `bigint unsigned` | 比对基准快照
+  - `curr_snapshot_id` | `bigint unsigned` | 本次快照
+  - `create_time` | `datetime` | 
+  - `update_time` | `datetime` | 
+  - `handle_by` | `varchar(64)` | 
+  - `handle_at` | `datetime` | 
+- `srm_search_history`: 7 columns
+  - `id` | `bigint unsigned` | 
+  - `user_id` | `bigint` | 查询人（按人展示，非全库共享）
+  - `subject_type` | `varchar(30)` | 检索标识类型：公司名称/公司id/注册号/社会统一信用代码
+  - `subject_key` | `varchar(200)` | 检索值
+  - `supplier_id` | `bigint unsigned` | 命中主档（未命中为空）
+  - `match_mode` | `varchar(10)` | 匹配方式：模糊（包含匹配）/ 精确
+  - `searched_at` | `datetime` | 检索时间（页面2 最近查询 = 企业标识 + 检索时间）
+- `srm_import_batch`: 16 columns
+  - `id` | `bigint unsigned` | 
+  - `batch_no` | `varchar(32)` | 导入批次号（系统生成，页面14 原文未列，按留痕需要补）
+  - `source_type` | `varchar(10)` | seed 初始内置库 / paste 文本粘贴 / file 文件上传
+  - `separator` | `varchar(10)` | csv 逗号分隔 / tsv 制表符分隔
+  - `has_header` | `char(1)` | 首行处理：1 含字段名 / 0 不含字段名
+  - `total_rows` | `int` | 预览记录（页面14 指标卡）
+  - `ok_rows` | `int` | 可导入
+  - `dup_rows` | `int` | 重复记录
+  - `invalid_rows` | `int` | 无效记录
+  - `import_status` | `varchar(20)` | 待确认 / 已导入 / 部分导入 / 已取消
+  - `dup_rule` | `varchar(40)` | 重复识别口径：信用代码 / 企业名称（含同批次内重复）
+  - `file_path` | `varchar(500)` | 原始文件存档路径（导入留痕，可重放）
+  - `create_by` | `varchar(64)` | 
+  - `create_time` | `datetime` | 
+  - `confirm_time` | `datetime` | 
+  - `remark` | `varchar(500)` | 
+- `srm_import_row`: 12 columns
+  - `id` | `bigint unsigned` | 
+  - `batch_id` | `bigint unsigned` | 
+  - `row_no` | `int` | 行号（页面14 表 14-1 列）
+  - `supplier_name` | `varchar(200)` | 企业名称
+  - `credit_code` | `varchar(18)` | 统一社会信用代码
+  - `legal_person` | `varchar(100)` | 法人
+  - `monitor_flag` | `char(1)` | 重点监控：是 / 否
+  - `check_result` | `varchar(20)` | 校验结果：可导入 / 重复，跳过 / 缺少名称
+  - `dup_of_supplier_id` | `bigint unsigned` | 重复到的既有主档
+  - `supplier_id` | `bigint unsigned` | 导入后指向主档
+  - `err_msg` | `varchar(500)` | 
+  - `create_time` | `datetime` | 
+- `srm_audit_log`: 14 columns
+  - `id` | `bigint unsigned` | 
+  - `audit_time` | `datetime` | 时间（必填）
+  - `module_name` | `varchar(40)` | 模块（必填）：供应商主档/项目管理/项目分析/接口预算/关联规则/字段映射/复核处置/备份恢复…
+  - `action_name` | `varchar(20)` | 动作（必填）：新增 / 修改 / 导入 / 导出 / 启停 / 移出
+  - `object_name` | `varchar(300)` | 对象（必填）：供应商编码、项目单据号、规则名、报告版本…
+  - `detail` | `varchar(2000)` | 详情（必填）：变更前后值或动作说明
+  - `scope_type` | `varchar(20)` | 记录范围：主档增改/监控变更/项目名单与参数/规则变更/报告导出/字段映射变更/备份与恢复/预算拦截
+  - `operator_id` | `bigint` | 操作人
+  - `operator_name` | `varchar(64)` | 
+  - `dept_name` | `varchar(100)` | 
+  - `source_ip` | `varchar(64)` | 
+  - `terminal_id` | `varchar(64)` | 
+  - `trace_id` | `varchar(64)` | 与接口调用日志串联（预算拦截场景）
+  - `create_time` | `datetime` | 
+- `srm_backup_record`: 17 columns
+  - `id` | `bigint unsigned` | 
+  - `backup_no` | `varchar(32)` | 备份号
+  - `backup_type` | `varchar(20)` | full_json 完整备份 / csv_suppliers 供应商清单 / csv_projects 项目清单 / csv_reviews 复核清单 / csv_audit 审计日志
+  - `trigger_type` | `varchar(20)` | manual 手动 / import 批量导入后 / analysis 项目批量分析后 / rule 重大规则调整后 / schedule 计划任务
+  - `cover_scope` | `varchar(200)` | 覆盖内容：主档、项目、规则、监控、复核、审计（页面19 六项）
+  - `stat_supplier` | `int` | 统计：供应商数
+  - `stat_monitor` | `int` | 统计：重点监控企业
+  - `stat_version` | `int` | 统计：累计分析版本
+  - `stat_review` | `int` | 统计：待复核线索
+  - `storage_path` | `varchar(500)` | 备份文件路径（服务端存储，非浏览器）
+  - `byte_size` | `bigint` | 
+  - `sha256` | `char(64)` | 摘要，恢复前校验
+  - `restore_flag` | `char(1)` | 本文件是否已被用于恢复
+  - `restore_at` | `datetime` | 恢复时间
+  - `danger_confirm` | `char(1)` | 危险操作二次确认：清除本机存档并恢复初始示例须先下载 JSON 备份
+  - `create_by` | `varchar(64)` | 
+  - `create_time` | `datetime` | 
+- `srm_erp_export`: 11 columns
+  - `id` | `bigint unsigned` | 
+  - `export_no` | `varchar(32)` | 导出批次号
+  - `export_mode` | `varchar(20)` | file 文件交换 / api 接口推送（以 ERP 侧能力为准）
+  - `target_system` | `varchar(40)` | 目标系统
+  - `scope_desc` | `varchar(300)` | 本次输出范围说明（最终合格供应商结果）
+  - `supplier_count` | `int` | 输出供应商数
+  - `export_status` | `varchar(20)` | 待执行 / 成功 / 部分失败 / 失败
+  - `file_path` | `varchar(500)` | 
+  - `err_msg` | `varchar(500)` | 
+  - `create_by` | `varchar(64)` | 
+  - `create_time` | `datetime` | 

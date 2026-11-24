@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.SupplierIndustryInfoMapper">
+  <resultMap id="SupplierIndustryInfoResult" type="com.ruoyi.srm.domain.SupplierIndustryInfo">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="supplierId" column="supplier_id" jdbcType="BIGINT" />
+    <result property="tycCompanyId" column="tyc_company_id" jdbcType="VARCHAR" />
+    <result property="entName" column="ent_name" jdbcType="VARCHAR" />
+    <result property="entType" column="ent_type" jdbcType="VARCHAR" />
+    <result property="orgType" column="org_type" jdbcType="VARCHAR" />
+    <result property="scope" column="scope" jdbcType="VARCHAR" />
+    <result property="regOrg" column="reg_org" jdbcType="VARCHAR" />
+    <result property="approveDate" column="approve_date" jdbcType="DATE" />
+    <result property="socialCreditCode" column="social_credit_code" jdbcType="VARCHAR" />
+    <result property="taxpayerNo" column="taxpayer_no" jdbcType="VARCHAR" />
+    <result property="orgCode" column="org_code" jdbcType="VARCHAR" />
+    <result property="engName" column="eng_name" jdbcType="VARCHAR" />
+    <result property="shortName" column="short_name" jdbcType="VARCHAR" />
+    <result property="fromTime" column="from_time" jdbcType="DATE" />
+    <result property="toTime" column="to_time" jdbcType="DATE" />
+    <result property="cancelDate" column="cancel_date" jdbcType="DATE" />
+    <result property="cancelReason" column="cancel_reason" jdbcType="VARCHAR" />
+    <result property="revokeDate" column="revoke_date" jdbcType="DATE" />
+    <result property="revokeReason" column="revoke_reason" jdbcType="VARCHAR" />
+    <result property="regCapital" column="reg_capital" jdbcType="VARCHAR" />
+    <result property="regCapitaCurrency" column="reg_capita_currency" jdbcType="VARCHAR" />
+    <result property="actualCapital" column="actual_capital" jdbcType="VARCHAR" />
+    <result property="staffNum" column="staff_num" jdbcType="VARCHAR" />
+    <result property="socialPersonNum" column="social_person_num" jdbcType="VARCHAR" />
+    <result property="isMicro" column="is_micro" jdbcType="VARCHAR" />
+    <result property="entLabel" column="ent_label" jdbcType="VARCHAR" />
+    <result property="regressionUp" column="regression_up" jdbcType="VARCHAR" />
+    <result property="econZone1" column="econ_zone_1" jdbcType="VARCHAR" />
+    <result property="econZone2" column="econ_zone_2" jdbcType="VARCHAR" />
+    <result property="industryGate" column="industry_gate" jdbcType="VARCHAR" />
+    <result property="industryBig" column="industry_big" jdbcType="VARCHAR" />
+    <result property="industryMid" column="industry_mid" jdbcType="VARCHAR" />
+    <result property="industrySmall" column="industry_small" jdbcType="VARCHAR" />
+    <result property="industryGateCode" column="industry_gate_code" jdbcType="VARCHAR" />
+    <result property="industryBigCode" column="industry_big_code" jdbcType="VARCHAR" />
+    <result property="industryMidCode" column="industry_mid_code" jdbcType="VARCHAR" />
+    <result property="industrySmallCode" column="industry_small_code" jdbcType="VARCHAR" />
+    <result property="stockName" column="stock_name" jdbcType="VARCHAR" />
+    <result property="stockCode" column="stock_code" jdbcType="VARCHAR" />
+    <result property="stockType" column="stock_type" jdbcType="VARCHAR" />
+    <result property="stockUsedName" column="stock_used_name" jdbcType="VARCHAR" />
+    <result property="commercialNo" column="commercial_no" jdbcType="VARCHAR" />
+    <result property="entScore" column="ent_score" jdbcType="VARCHAR" />
+    <result property="updateFrom" column="update_from" jdbcType="VARCHAR" />
+    <result property="sourceApiId" column="source_api_id" jdbcType="INTEGER" />
+    <result property="rawId" column="raw_id" jdbcType="BIGINT" />
+    <result property="fetchedAt" column="fetched_at" jdbcType="TIMESTAMP" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+    <result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectSupplierIndustryInfoVo">SELECT id, supplier_id, tyc_company_id, ent_name, ent_type, org_type, scope, reg_org, approve_date, social_credit_code, taxpayer_no, org_code, eng_name, short_name, from_time, to_time, cancel_date, cancel_reason, revoke_date, revoke_reason, reg_capital, reg_capita_currency, actual_capital, staff_num, social_person_num, is_micro, ent_label, regression_up, econ_zone_1, econ_zone_2, industry_gate, industry_big, industry_mid, industry_small, industry_gate_code, industry_big_code, industry_mid_code, industry_small_code, stock_name, stock_code, stock_type, stock_used_name, commercial_no, ent_score, update_from, source_api_id, raw_id, fetched_at, create_time, update_time FROM srm_supplier_industry_info</sql>
+  <select id="selectSupplierIndustryInfoById" parameterType="Long" resultMap="SupplierIndustryInfoResult"><include refid="selectSupplierIndustryInfoVo"/> WHERE id = #{id}</select>
+  <select id="selectSupplierIndustryInfoList" parameterType="com.ruoyi.srm.domain.SupplierIndustryInfo" resultMap="SupplierIndustryInfoResult"><include refid="selectSupplierIndustryInfoVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="supplierId != null">AND supplier_id = #{supplierId}</if>
+    <if test="tycCompanyId != null and tycCompanyId != ''">AND tyc_company_id = #{tycCompanyId}</if>
+    <if test="entName != null and entName != ''">AND ent_name = #{entName}</if>
+    <if test="entType != null and entType != ''">AND ent_type = #{entType}</if>
+    <if test="orgType != null and orgType != ''">AND org_type = #{orgType}</if>
+    <if test="scope != null and scope != ''">AND scope = #{scope}</if>
+    <if test="regOrg != null and regOrg != ''">AND reg_org = #{regOrg}</if>
+    <if test="approveDate != null">AND approve_date = #{approveDate}</if>
+    <if test="socialCreditCode != null and socialCreditCode != ''">AND social_credit_code = #{socialCreditCode}</if>
+    <if test="taxpayerNo != null and taxpayerNo != ''">AND taxpayer_no = #{taxpayerNo}</if>
+    <if test="orgCode != null and orgCode != ''">AND org_code = #{orgCode}</if>
+    <if test="engName != null and engName != ''">AND eng_name = #{engName}</if>
+    <if test="shortName != null and shortName != ''">AND short_name = #{shortName}</if>
+    <if test="fromTime != null">AND from_time = #{fromTime}</if>
+    <if test="toTime != null">AND to_time = #{toTime}</if>
+    <if test="cancelDate != null">AND cancel_date = #{cancelDate}</if>
+    <if test="cancelReason != null and cancelReason != ''">AND cancel_reason = #{cancelReason}</if>
+    <if test="revokeDate != null">AND revoke_date = #{revokeDate}</if>
+    <if test="revokeReason != null and revokeReason != ''">AND revoke_reason = #{revokeReason}</if>
+    <if test="regCapital != null and regCapital != ''">AND reg_capital = #{regCapital}</if>
+    <if test="regCapitaCurrency != null and regCapitaCurrency != ''">AND reg_capita_currency = #{regCapitaCurrency}</if>
+    <if test="actualCapital != null and actualCapital != ''">AND actual_capital = #{actualCapital}</if>
+    <if test="staffNum != null and staffNum != ''">AND staff_num = #{staffNum}</if>
+    <if test="socialPersonNum != null and socialPersonNum != ''">AND social_person_num = #{socialPersonNum}</if>
+    <if test="isMicro != null and isMicro != ''">AND is_micro = #{isMicro}</if>
+    <if test="entLabel != null and entLabel != ''">AND ent_label = #{entLabel}</if>
+    <if test="regressionUp != null and regressionUp != ''">AND regression_up = #{regressionUp}</if>
+    <if test="econZone1 != null and econZone1 != ''">AND econ_zone_1 = #{econZone1}</if>
+    <if test="econZone2 != null and econZone2 != ''">AND econ_zone_2 = #{econZone2}</if>
+    <if test="industryGate != null and industryGate != ''">AND industry_gate = #{industryGate}</if>
+    <if test="industryBig != null and industryBig != ''">AND industry_big = #{industryBig}</if>
+    <if test="industryMid != null and industryMid != ''">AND industry_mid = #{industryMid}</if>
+    <if test="industrySmall != null and industrySmall != ''">AND industry_small = #{industrySmall}</if>
+    <if test="industryGateCode != null and industryGateCode != ''">AND industry_gate_code = #{industryGateCode}</if>
+    <if test="industryBigCode != null and industryBigCode != ''">AND industry_big_code = #{industryBigCode}</if>
+    <if test="industryMidCode != null and industryMidCode != ''">AND industry_mid_code = #{industryMidCode}</if>
+    <if test="industrySmallCode != null and industrySmallCode != ''">AND industry_small_code = #{industrySmallCode}</if>
+    <if test="stockName != null and stockName != ''">AND stock_name = #{stockName}</if>
+    <if test="stockCode != null and stockCode != ''">AND stock_code = #{stockCode}</if>
+    <if test="stockType != null and stockType != ''">AND stock_type = #{stockType}</if>
+    <if test="stockUsedName != null and stockUsedName != ''">AND stock_used_name = #{stockUsedName}</if>
+    <if test="commercialNo != null and commercialNo != ''">AND commercial_no = #{commercialNo}</if>
+    <if test="entScore != null and entScore != ''">AND ent_score = #{entScore}</if>
+    <if test="updateFrom != null and updateFrom != ''">AND update_from = #{updateFrom}</if>
+    <if test="sourceApiId != null">AND source_api_id = #{sourceApiId}</if>
+    <if test="rawId != null">AND raw_id = #{rawId}</if>
+    <if test="fetchedAt != null">AND fetched_at = #{fetchedAt}</if>
+  </where></select>
+  <insert id="insertSupplierIndustryInfo" parameterType="com.ruoyi.srm.domain.SupplierIndustryInfo" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_supplier_industry_info (supplier_id, tyc_company_id, ent_name, ent_type, org_type, scope, reg_org, approve_date, social_credit_code, taxpayer_no, org_code, eng_name, short_name, from_time, to_time, cancel_date, cancel_reason, revoke_date, revoke_reason, reg_capital, reg_capita_currency, actual_capital, staff_num, social_person_num, is_micro, ent_label, regression_up, econ_zone_1, econ_zone_2, industry_gate, industry_big, industry_mid, industry_small, industry_gate_code, industry_big_code, industry_mid_code, industry_small_code, stock_name, stock_code, stock_type, stock_used_name, commercial_no, ent_score, update_from, source_api_id, raw_id, fetched_at, create_time, update_time) VALUES (#{supplierId}, #{tycCompanyId}, #{entName}, #{entType}, #{orgType}, #{scope}, #{regOrg}, #{approveDate}, #{socialCreditCode}, #{taxpayerNo}, #{orgCode}, #{engName}, #{shortName}, #{fromTime}, #{toTime}, #{cancelDate}, #{cancelReason}, #{revokeDate}, #{revokeReason}, #{regCapital}, #{regCapitaCurrency}, #{actualCapital}, #{staffNum}, #{socialPersonNum}, #{isMicro}, #{entLabel}, #{regressionUp}, #{econZone1}, #{econZone2}, #{industryGate}, #{industryBig}, #{industryMid}, #{industrySmall}, #{industryGateCode}, #{industryBigCode}, #{industryMidCode}, #{industrySmallCode}, #{stockName}, #{stockCode}, #{stockType}, #{stockUsedName}, #{commercialNo}, #{entScore}, #{updateFrom}, #{sourceApiId}, #{rawId}, #{fetchedAt}, #{createTime}, #{updateTime})</insert>
+  <update id="updateSupplierIndustryInfo" parameterType="com.ruoyi.srm.domain.SupplierIndustryInfo">UPDATE srm_supplier_industry_info<set>
+    <if test="supplierId != null">supplier_id = #{supplierId},</if>
+    <if test="tycCompanyId != null">tyc_company_id = #{tycCompanyId},</if>
+    <if test="entName != null">ent_name = #{entName},</if>
+    <if test="entType != null">ent_type = #{entType},</if>
+    <if test="orgType != null">org_type = #{orgType},</if>
+    <if test="scope != null">scope = #{scope},</if>
+    <if test="regOrg != null">reg_org = #{regOrg},</if>
+    <if test="approveDate != null">approve_date = #{approveDate},</if>
+    <if test="socialCreditCode != null">social_credit_code = #{socialCreditCode},</if>
+    <if test="taxpayerNo != null">taxpayer_no = #{taxpayerNo},</if>
+    <if test="orgCode != null">org_code = #{orgCode},</if>
+    <if test="engName != null">eng_name = #{engName},</if>
+    <if test="shortName != null">short_name = #{shortName},</if>
+    <if test="fromTime != null">from_time = #{fromTime},</if>
+    <if test="toTime != null">to_time = #{toTime},</if>
+    <if test="cancelDate != null">cancel_date = #{cancelDate},</if>
+    <if test="cancelReason != null">cancel_reason = #{cancelReason},</if>
+    <if test="revokeDate != null">revoke_date = #{revokeDate},</if>
+    <if test="revokeReason != null">revoke_reason = #{revokeReason},</if>
+    <if test="regCapital != null">reg_capital = #{regCapital},</if>
+    <if test="regCapitaCurrency != null">reg_capita_currency = #{regCapitaCurrency},</if>
+    <if test="actualCapital != null">actual_capital = #{actualCapital},</if>
+    <if test="staffNum != null">staff_num = #{staffNum},</if>
+    <if test="socialPersonNum != null">social_person_num = #{socialPersonNum},</if>
+    <if test="isMicro != null">is_micro = #{isMicro},</if>
+    <if test="entLabel != null">ent_label = #{entLabel},</if>
+    <if test="regressionUp != null">regression_up = #{regressionUp},</if>
+    <if test="econZone1 != null">econ_zone_1 = #{econZone1},</if>
+    <if test="econZone2 != null">econ_zone_2 = #{econZone2},</if>
+    <if test="industryGate != null">industry_gate = #{industryGate},</if>
+    <if test="industryBig != null">industry_big = #{industryBig},</if>
+    <if test="industryMid != null">industry_mid = #{industryMid},</if>
+    <if test="industrySmall != null">industry_small = #{industrySmall},</if>
+    <if test="industryGateCode != null">industry_gate_code = #{industryGateCode},</if>
+    <if test="industryBigCode != null">industry_big_code = #{industryBigCode},</if>
+    <if test="industryMidCode != null">industry_mid_code = #{industryMidCode},</if>
+    <if test="industrySmallCode != null">industry_small_code = #{industrySmallCode},</if>
+    <if test="stockName != null">stock_name = #{stockName},</if>
+    <if test="stockCode != null">stock_code = #{stockCode},</if>
+    <if test="stockType != null">stock_type = #{stockType},</if>
+    <if test="stockUsedName != null">stock_used_name = #{stockUsedName},</if>
+    <if test="commercialNo != null">commercial_no = #{commercialNo},</if>
+    <if test="entScore != null">ent_score = #{entScore},</if>
+    <if test="updateFrom != null">update_from = #{updateFrom},</if>
+    <if test="sourceApiId != null">source_api_id = #{sourceApiId},</if>
+    <if test="rawId != null">raw_id = #{rawId},</if>
+    <if test="fetchedAt != null">fetched_at = #{fetchedAt},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+    <if test="updateTime != null">update_time = #{updateTime},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteSupplierIndustryInfoById" parameterType="Long">DELETE FROM srm_supplier_industry_info WHERE id = #{id}</delete>
+  <delete id="deleteSupplierIndustryInfoByIds" parameterType="array">DELETE FROM srm_supplier_industry_info WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

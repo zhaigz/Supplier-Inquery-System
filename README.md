@@ -13,6 +13,7 @@
 
 若依是一套全部开源的快速开发平台，毫无保留给个人及企业免费使用。
 
+* 本仓库为RuoYi-Vue的Spring Boot 3 的版本，保持同步更新。
 * 前端采用Vue、Element（提供 Vue2/Vue3/TS 多版本）。
 * 后端采用Spring Boot、Spring Security、Redis & Jwt。
 * 基于Jwt的Token认证，支持多终端（Web、App、小程序）无缝接入。

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.SupplierExtFieldMapper">
+  <resultMap id="SupplierExtFieldResult" type="com.ruoyi.srm.domain.SupplierExtField">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="supplierId" column="supplier_id" jdbcType="BIGINT" />
+    <result property="fieldCode" column="field_code" jdbcType="VARCHAR" />
+    <result property="fieldValue" column="field_value" jdbcType="VARCHAR" />
+    <result property="createBy" column="create_by" jdbcType="VARCHAR" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+    <result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectSupplierExtFieldVo">SELECT id, supplier_id, field_code, field_value, create_by, create_time, update_time FROM srm_supplier_ext_field</sql>
+  <select id="selectSupplierExtFieldById" parameterType="Long" resultMap="SupplierExtFieldResult"><include refid="selectSupplierExtFieldVo"/> WHERE id = #{id}</select>
+  <select id="selectSupplierExtFieldList" parameterType="com.ruoyi.srm.domain.SupplierExtField" resultMap="SupplierExtFieldResult"><include refid="selectSupplierExtFieldVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="supplierId != null">AND supplier_id = #{supplierId}</if>
+    <if test="fieldCode != null and fieldCode != ''">AND field_code = #{fieldCode}</if>
+    <if test="fieldValue != null and fieldValue != ''">AND field_value = #{fieldValue}</if>
+  </where></select>
+  <insert id="insertSupplierExtField" parameterType="com.ruoyi.srm.domain.SupplierExtField" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_supplier_ext_field (supplier_id, field_code, field_value, create_by, create_time, update_time) VALUES (#{supplierId}, #{fieldCode}, #{fieldValue}, #{createBy}, #{createTime}, #{updateTime})</insert>
+  <update id="updateSupplierExtField" parameterType="com.ruoyi.srm.domain.SupplierExtField">UPDATE srm_supplier_ext_field<set>
+    <if test="supplierId != null">supplier_id = #{supplierId},</if>
+    <if test="fieldCode != null">field_code = #{fieldCode},</if>
+    <if test="fieldValue != null">field_value = #{fieldValue},</if>
+    <if test="createBy != null">create_by = #{createBy},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+    <if test="updateTime != null">update_time = #{updateTime},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteSupplierExtFieldById" parameterType="Long">DELETE FROM srm_supplier_ext_field WHERE id = #{id}</delete>
+  <delete id="deleteSupplierExtFieldByIds" parameterType="array">DELETE FROM srm_supplier_ext_field WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

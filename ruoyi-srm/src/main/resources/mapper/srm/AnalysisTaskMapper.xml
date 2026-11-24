@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.AnalysisTaskMapper">
+  <resultMap id="AnalysisTaskResult" type="com.ruoyi.srm.domain.AnalysisTask">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="taskNo" column="task_no" jdbcType="VARCHAR" />
+    <result property="traceId" column="trace_id" jdbcType="VARCHAR" />
+    <result property="taskType" column="task_type" jdbcType="VARCHAR" />
+    <result property="bizScene" column="biz_scene" jdbcType="VARCHAR" />
+    <result property="projectId" column="project_id" jdbcType="BIGINT" />
+    <result property="reportVersionId" column="report_version_id" jdbcType="BIGINT" />
+    <result property="subjectKey" column="subject_key" jdbcType="VARCHAR" />
+    <result property="sourceSubject" column="source_subject" jdbcType="VARCHAR" />
+    <result property="targetSubject" column="target_subject" jdbcType="VARCHAR" />
+    <result property="relScope" column="rel_scope" jdbcType="VARCHAR" />
+    <result property="direction" column="direction" jdbcType="VARCHAR" />
+    <result property="depth" column="depth" jdbcType="TINYINT" />
+    <result property="ratioMin" column="ratio_min" jdbcType="DECIMAL" />
+    <result property="ratioMax" column="ratio_max" jdbcType="DECIMAL" />
+    <result property="ruleVersionNo" column="rule_version_no" jdbcType="INTEGER" />
+    <result property="minWeight" column="min_weight" jdbcType="TINYINT" />
+    <result property="includeBookkeeping" column="include_bookkeeping" jdbcType="VARCHAR" />
+    <result property="taskStatus" column="task_status" jdbcType="VARCHAR" />
+    <result property="pollCount" column="poll_count" jdbcType="INTEGER" />
+    <result property="firstTriggerAt" column="first_trigger_at" jdbcType="TIMESTAMP" />
+    <result property="billedAt" column="billed_at" jdbcType="TIMESTAMP" />
+    <result property="billFlag" column="bill_flag" jdbcType="VARCHAR" />
+    <result property="unitConsumed" column="unit_consumed" jdbcType="DECIMAL" />
+    <result property="estUnit" column="est_unit" jdbcType="DECIMAL" />
+    <result property="progressStep" column="progress_step" jdbcType="VARCHAR" />
+    <result property="errCode" column="err_code" jdbcType="VARCHAR" />
+    <result property="errMsg" column="err_msg" jdbcType="VARCHAR" />
+    <result property="resultCount" column="result_count" jdbcType="INTEGER" />
+    <result property="startTime" column="start_time" jdbcType="TIMESTAMP" />
+    <result property="finishTime" column="finish_time" jdbcType="TIMESTAMP" />
+    <result property="costMs" column="cost_ms" jdbcType="INTEGER" />
+    <result property="env" column="env" jdbcType="VARCHAR" />
+    <result property="createBy" column="create_by" jdbcType="VARCHAR" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+    <result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectAnalysisTaskVo">SELECT id, task_no, trace_id, task_type, biz_scene, project_id, report_version_id, subject_key, source_subject, target_subject, rel_scope, direction, depth, ratio_min, ratio_max, rule_version_no, min_weight, include_bookkeeping, task_status, poll_count, first_trigger_at, billed_at, bill_flag, unit_consumed, est_unit, progress_step, err_code, err_msg, result_count, start_time, finish_time, cost_ms, env, create_by, create_time, update_time FROM srm_analysis_task</sql>
+  <select id="selectAnalysisTaskById" parameterType="Long" resultMap="AnalysisTaskResult"><include refid="selectAnalysisTaskVo"/> WHERE id = #{id}</select>
+  <select id="selectAnalysisTaskList" parameterType="com.ruoyi.srm.domain.AnalysisTask" resultMap="AnalysisTaskResult"><include refid="selectAnalysisTaskVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="taskNo != null and taskNo != ''">AND task_no = #{taskNo}</if>
+    <if test="traceId != null and traceId != ''">AND trace_id = #{traceId}</if>
+    <if test="taskType != null and taskType != ''">AND task_type = #{taskType}</if>
+    <if test="bizScene != null and bizScene != ''">AND biz_scene = #{bizScene}</if>
+    <if test="projectId != null">AND project_id = #{projectId}</if>
+    <if test="reportVersionId != null">AND report_version_id = #{reportVersionId}</if>
+    <if test="subjectKey != null and subjectKey != ''">AND subject_key = #{subjectKey}</if>
+    <if test="sourceSubject != null and sourceSubject != ''">AND source_subject = #{sourceSubject}</if>
+    <if test="targetSubject != null and targetSubject != ''">AND target_subject = #{targetSubject}</if>
+    <if test="relScope != null and relScope != ''">AND rel_scope = #{relScope}</if>
+    <if test="direction != null and direction != ''">AND direction = #{direction}</if>
+    <if test="depth != null">AND depth = #{depth}</if>
+    <if test="ratioMin != null">AND ratio_min = #{ratioMin}</if>
+    <if test="ratioMax != null">AND ratio_max = #{ratioMax}</if>
+    <if test="ruleVersionNo != null">AND rule_version_no = #{ruleVersionNo}</if>
+    <if test="minWeight != null">AND min_weight = #{minWeight}</if>
+    <if test="includeBookkeeping != null and includeBookkeeping != ''">AND include_bookkeeping = #{includeBookkeeping}</if>
+    <if test="taskStatus != null and taskStatus != ''">AND task_status = #{taskStatus}</if>
+    <if test="pollCount != null">AND poll_count = #{pollCount}</if>
+    <if test="firstTriggerAt != null">AND first_trigger_at = #{firstTriggerAt}</if>
+    <if test="billedAt != null">AND billed_at = #{billedAt}</if>
+    <if test="billFlag != null and billFlag != ''">AND bill_flag = #{billFlag}</if>
+    <if test="unitConsumed != null">AND unit_consumed = #{unitConsumed}</if>
+    <if test="estUnit != null">AND est_unit = #{estUnit}</if>
+    <if test="progressStep != null and progressStep != ''">AND progress_step = #{progressStep}</if>
+    <if test="errCode != null and errCode != ''">AND err_code = #{errCode}</if>
+    <if test="errMsg != null and errMsg != ''">AND err_msg = #{errMsg}</if>
+    <if test="resultCount != null">AND result_count = #{resultCount}</if>
+    <if test="startTime != null">AND start_time = #{startTime}</if>
+    <if test="finishTime != null">AND finish_time = #{finishTime}</if>
+    <if test="costMs != null">AND cost_ms = #{costMs}</if>
+    <if test="env != null and env != ''">AND env = #{env}</if>
+  </where></select>
+  <insert id="insertAnalysisTask" parameterType="com.ruoyi.srm.domain.AnalysisTask" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_analysis_task (task_no, trace_id, task_type, biz_scene, project_id, report_version_id, subject_key, source_subject, target_subject, rel_scope, direction, depth, ratio_min, ratio_max, rule_version_no, min_weight, include_bookkeeping, task_status, poll_count, first_trigger_at, billed_at, bill_flag, unit_consumed, est_unit, progress_step, err_code, err_msg, result_count, start_time, finish_time, cost_ms, env, create_by, create_time, update_time) VALUES (#{taskNo}, #{traceId}, #{taskType}, #{bizScene}, #{projectId}, #{reportVersionId}, #{subjectKey}, #{sourceSubject}, #{targetSubject}, #{relScope}, #{direction}, #{depth}, #{ratioMin}, #{ratioMax}, #{ruleVersionNo}, #{minWeight}, #{includeBookkeeping}, #{taskStatus}, #{pollCount}, #{firstTriggerAt}, #{billedAt}, #{billFlag}, #{unitConsumed}, #{estUnit}, #{progressStep}, #{errCode}, #{errMsg}, #{resultCount}, #{startTime}, #{finishTime}, #{costMs}, #{env}, #{createBy}, #{createTime}, #{updateTime})</insert>
+  <update id="updateAnalysisTask" parameterType="com.ruoyi.srm.domain.AnalysisTask">UPDATE srm_analysis_task<set>
+    <if test="taskNo != null">task_no = #{taskNo},</if>
+    <if test="traceId != null">trace_id = #{traceId},</if>
+    <if test="taskType != null">task_type = #{taskType},</if>
+    <if test="bizScene != null">biz_scene = #{bizScene},</if>
+    <if test="projectId != null">project_id = #{projectId},</if>
+    <if test="reportVersionId != null">report_version_id = #{reportVersionId},</if>
+    <if test="subjectKey != null">subject_key = #{subjectKey},</if>
+    <if test="sourceSubject != null">source_subject = #{sourceSubject},</if>
+    <if test="targetSubject != null">target_subject = #{targetSubject},</if>
+    <if test="relScope != null">rel_scope = #{relScope},</if>
+    <if test="direction != null">direction = #{direction},</if>
+    <if test="depth != null">depth = #{depth},</if>
+    <if test="ratioMin != null">ratio_min = #{ratioMin},</if>
+    <if test="ratioMax != null">ratio_max = #{ratioMax},</if>
+    <if test="ruleVersionNo != null">rule_version_no = #{ruleVersionNo},</if>
+    <if test="minWeight != null">min_weight = #{minWeight},</if>
+    <if test="includeBookkeeping != null">include_bookkeeping = #{includeBookkeeping},</if>
+    <if test="taskStatus != null">task_status = #{taskStatus},</if>
+    <if test="pollCount != null">poll_count = #{pollCount},</if>
+    <if test="firstTriggerAt != null">first_trigger_at = #{firstTriggerAt},</if>
+    <if test="billedAt != null">billed_at = #{billedAt},</if>
+    <if test="billFlag != null">bill_flag = #{billFlag},</if>
+    <if test="unitConsumed != null">unit_consumed = #{unitConsumed},</if>
+    <if test="estUnit != null">est_unit = #{estUnit},</if>
+    <if test="progressStep != null">progress_step = #{progressStep},</if>
+    <if test="errCode != null">err_code = #{errCode},</if>
+    <if test="errMsg != null">err_msg = #{errMsg},</if>
+    <if test="resultCount != null">result_count = #{resultCount},</if>
+    <if test="startTime != null">start_time = #{startTime},</if>
+    <if test="finishTime != null">finish_time = #{finishTime},</if>
+    <if test="costMs != null">cost_ms = #{costMs},</if>
+    <if test="env != null">env = #{env},</if>
+    <if test="createBy != null">create_by = #{createBy},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+    <if test="updateTime != null">update_time = #{updateTime},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteAnalysisTaskById" parameterType="Long">DELETE FROM srm_analysis_task WHERE id = #{id}</delete>
+  <delete id="deleteAnalysisTaskByIds" parameterType="array">DELETE FROM srm_analysis_task WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

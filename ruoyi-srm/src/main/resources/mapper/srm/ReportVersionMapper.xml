@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.ReportVersionMapper">
+  <resultMap id="ReportVersionResult" type="com.ruoyi.srm.domain.ReportVersion">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="projectId" column="project_id" jdbcType="BIGINT" />
+    <result property="versionNo" column="version_no" jdbcType="INTEGER" />
+    <result property="taskId" column="task_id" jdbcType="BIGINT" />
+    <result property="analysisAt" column="analysis_at" jdbcType="TIMESTAMP" />
+    <result property="supplierScope" column="supplier_scope" jdbcType="VARCHAR" />
+    <result property="memberCount" column="member_count" jdbcType="INTEGER" />
+    <result property="clueCount" column="clue_count" jdbcType="INTEGER" />
+    <result property="upDepth" column="up_depth" jdbcType="TINYINT" />
+    <result property="downDepth" column="down_depth" jdbcType="TINYINT" />
+    <result property="minWeight" column="min_weight" jdbcType="TINYINT" />
+    <result property="relScope" column="rel_scope" jdbcType="VARCHAR" />
+    <result property="ruleVersionNo" column="rule_version_no" jdbcType="INTEGER" />
+    <result property="ruleSnapshot" column="rule_snapshot" jdbcType="VARCHAR" />
+    <result property="hitRules" column="hit_rules" jdbcType="VARCHAR" />
+    <result property="dataSource" column="data_source" jdbcType="VARCHAR" />
+    <result property="estUnit" column="est_unit" jdbcType="DECIMAL" />
+    <result property="dataNature" column="data_nature" jdbcType="VARCHAR" />
+    <result property="isLocked" column="is_locked" jdbcType="VARCHAR" />
+    <result property="exportCount" column="export_count" jdbcType="INTEGER" />
+    <result property="createBy" column="create_by" jdbcType="VARCHAR" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectReportVersionVo">SELECT id, project_id, version_no, task_id, analysis_at, supplier_scope, member_count, clue_count, up_depth, down_depth, min_weight, rel_scope, rule_version_no, rule_snapshot, hit_rules, data_source, est_unit, data_nature, is_locked, export_count, create_by, create_time FROM srm_report_version</sql>
+  <select id="selectReportVersionById" parameterType="Long" resultMap="ReportVersionResult"><include refid="selectReportVersionVo"/> WHERE id = #{id}</select>
+  <select id="selectReportVersionList" parameterType="com.ruoyi.srm.domain.ReportVersion" resultMap="ReportVersionResult"><include refid="selectReportVersionVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="projectId != null">AND project_id = #{projectId}</if>
+    <if test="versionNo != null">AND version_no = #{versionNo}</if>
+    <if test="taskId != null">AND task_id = #{taskId}</if>
+    <if test="analysisAt != null">AND analysis_at = #{analysisAt}</if>
+    <if test="supplierScope != null and supplierScope != ''">AND supplier_scope = #{supplierScope}</if>
+    <if test="memberCount != null">AND member_count = #{memberCount}</if>
+    <if test="clueCount != null">AND clue_count = #{clueCount}</if>
+    <if test="upDepth != null">AND up_depth = #{upDepth}</if>
+    <if test="downDepth != null">AND down_depth = #{downDepth}</if>
+    <if test="minWeight != null">AND min_weight = #{minWeight}</if>
+    <if test="relScope != null and relScope != ''">AND rel_scope = #{relScope}</if>
+    <if test="ruleVersionNo != null">AND rule_version_no = #{ruleVersionNo}</if>
+    <if test="ruleSnapshot != null and ruleSnapshot != ''">AND rule_snapshot = #{ruleSnapshot}</if>
+    <if test="hitRules != null and hitRules != ''">AND hit_rules = #{hitRules}</if>
+    <if test="dataSource != null and dataSource != ''">AND data_source = #{dataSource}</if>
+    <if test="estUnit != null">AND est_unit = #{estUnit}</if>
+    <if test="dataNature != null and dataNature != ''">AND data_nature = #{dataNature}</if>
+    <if test="isLocked != null and isLocked != ''">AND is_locked = #{isLocked}</if>
+    <if test="exportCount != null">AND export_count = #{exportCount}</if>
+  </where></select>
+  <insert id="insertReportVersion" parameterType="com.ruoyi.srm.domain.ReportVersion" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_report_version (project_id, version_no, task_id, analysis_at, supplier_scope, member_count, clue_count, up_depth, down_depth, min_weight, rel_scope, rule_version_no, rule_snapshot, hit_rules, data_source, est_unit, data_nature, is_locked, export_count, create_by, create_time) VALUES (#{projectId}, #{versionNo}, #{taskId}, #{analysisAt}, #{supplierScope}, #{memberCount}, #{clueCount}, #{upDepth}, #{downDepth}, #{minWeight}, #{relScope}, #{ruleVersionNo}, #{ruleSnapshot}, #{hitRules}, #{dataSource}, #{estUnit}, #{dataNature}, #{isLocked}, #{exportCount}, #{createBy}, #{createTime})</insert>
+  <update id="updateReportVersion" parameterType="com.ruoyi.srm.domain.ReportVersion">UPDATE srm_report_version<set>
+    <if test="projectId != null">project_id = #{projectId},</if>
+    <if test="versionNo != null">version_no = #{versionNo},</if>
+    <if test="taskId != null">task_id = #{taskId},</if>
+    <if test="analysisAt != null">analysis_at = #{analysisAt},</if>
+    <if test="supplierScope != null">supplier_scope = #{supplierScope},</if>
+    <if test="memberCount != null">member_count = #{memberCount},</if>
+    <if test="clueCount != null">clue_count = #{clueCount},</if>
+    <if test="upDepth != null">up_depth = #{upDepth},</if>
+    <if test="downDepth != null">down_depth = #{downDepth},</if>
+    <if test="minWeight != null">min_weight = #{minWeight},</if>
+    <if test="relScope != null">rel_scope = #{relScope},</if>
+    <if test="ruleVersionNo != null">rule_version_no = #{ruleVersionNo},</if>
+    <if test="ruleSnapshot != null">rule_snapshot = #{ruleSnapshot},</if>
+    <if test="hitRules != null">hit_rules = #{hitRules},</if>
+    <if test="dataSource != null">data_source = #{dataSource},</if>
+    <if test="estUnit != null">est_unit = #{estUnit},</if>
+    <if test="dataNature != null">data_nature = #{dataNature},</if>
+    <if test="isLocked != null">is_locked = #{isLocked},</if>
+    <if test="exportCount != null">export_count = #{exportCount},</if>
+    <if test="createBy != null">create_by = #{createBy},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteReportVersionById" parameterType="Long">DELETE FROM srm_report_version WHERE id = #{id}</delete>
+  <delete id="deleteReportVersionByIds" parameterType="array">DELETE FROM srm_report_version WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

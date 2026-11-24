@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.RiskJudicialSummaryMapper">
+  <resultMap id="RiskJudicialSummaryResult" type="com.ruoyi.srm.domain.RiskJudicialSummary">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="supplierId" column="supplier_id" jdbcType="BIGINT" />
+    <result property="dimension" column="dimension" jdbcType="VARCHAR" />
+    <result property="itemCount" column="item_count" jdbcType="INTEGER" />
+    <result property="detailJson" column="detail_json" jdbcType="VARCHAR" />
+    <result property="rawId" column="raw_id" jdbcType="BIGINT" />
+    <result property="fetchedAt" column="fetched_at" jdbcType="TIMESTAMP" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectRiskJudicialSummaryVo">SELECT id, supplier_id, dimension, item_count, detail_json, raw_id, fetched_at, create_time FROM srm_risk_judicial_summary</sql>
+  <select id="selectRiskJudicialSummaryById" parameterType="Long" resultMap="RiskJudicialSummaryResult"><include refid="selectRiskJudicialSummaryVo"/> WHERE id = #{id}</select>
+  <select id="selectRiskJudicialSummaryList" parameterType="com.ruoyi.srm.domain.RiskJudicialSummary" resultMap="RiskJudicialSummaryResult"><include refid="selectRiskJudicialSummaryVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="supplierId != null">AND supplier_id = #{supplierId}</if>
+    <if test="dimension != null and dimension != ''">AND dimension = #{dimension}</if>
+    <if test="itemCount != null">AND item_count = #{itemCount}</if>
+    <if test="detailJson != null and detailJson != ''">AND detail_json = #{detailJson}</if>
+    <if test="rawId != null">AND raw_id = #{rawId}</if>
+    <if test="fetchedAt != null">AND fetched_at = #{fetchedAt}</if>
+  </where></select>
+  <insert id="insertRiskJudicialSummary" parameterType="com.ruoyi.srm.domain.RiskJudicialSummary" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_risk_judicial_summary (supplier_id, dimension, item_count, detail_json, raw_id, fetched_at, create_time) VALUES (#{supplierId}, #{dimension}, #{itemCount}, #{detailJson}, #{rawId}, #{fetchedAt}, #{createTime})</insert>
+  <update id="updateRiskJudicialSummary" parameterType="com.ruoyi.srm.domain.RiskJudicialSummary">UPDATE srm_risk_judicial_summary<set>
+    <if test="supplierId != null">supplier_id = #{supplierId},</if>
+    <if test="dimension != null">dimension = #{dimension},</if>
+    <if test="itemCount != null">item_count = #{itemCount},</if>
+    <if test="detailJson != null">detail_json = #{detailJson},</if>
+    <if test="rawId != null">raw_id = #{rawId},</if>
+    <if test="fetchedAt != null">fetched_at = #{fetchedAt},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteRiskJudicialSummaryById" parameterType="Long">DELETE FROM srm_risk_judicial_summary WHERE id = #{id}</delete>
+  <delete id="deleteRiskJudicialSummaryByIds" parameterType="array">DELETE FROM srm_risk_judicial_summary WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

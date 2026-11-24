@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.ApiCacheKeyMapper">
+  <resultMap id="ApiCacheKeyResult" type="com.ruoyi.srm.domain.ApiCacheKey">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="cacheKey" column="cache_key" jdbcType="VARCHAR" />
+    <result property="apiId" column="api_id" jdbcType="INTEGER" />
+    <result property="creditCode" column="credit_code" jdbcType="VARCHAR" />
+    <result property="subjectKey" column="subject_key" jdbcType="VARCHAR" />
+    <result property="paramJson" column="param_json" jdbcType="VARCHAR" />
+    <result property="rawId" column="raw_id" jdbcType="BIGINT" />
+    <result property="hitCount" column="hit_count" jdbcType="INTEGER" />
+    <result property="expireAt" column="expire_at" jdbcType="TIMESTAMP" />
+    <result property="fetchedAt" column="fetched_at" jdbcType="TIMESTAMP" />
+    <result property="env" column="env" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="selectApiCacheKeyVo">SELECT id, cache_key, api_id, credit_code, subject_key, param_json, raw_id, hit_count, expire_at, fetched_at, env FROM srm_api_cache_key</sql>
+  <select id="selectApiCacheKeyById" parameterType="Long" resultMap="ApiCacheKeyResult"><include refid="selectApiCacheKeyVo"/> WHERE id = #{id}</select>
+  <select id="selectApiCacheKeyList" parameterType="com.ruoyi.srm.domain.ApiCacheKey" resultMap="ApiCacheKeyResult"><include refid="selectApiCacheKeyVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="cacheKey != null and cacheKey != ''">AND cache_key = #{cacheKey}</if>
+    <if test="apiId != null">AND api_id = #{apiId}</if>
+    <if test="creditCode != null and creditCode != ''">AND credit_code = #{creditCode}</if>
+    <if test="subjectKey != null and subjectKey != ''">AND subject_key = #{subjectKey}</if>
+    <if test="paramJson != null and paramJson != ''">AND param_json = #{paramJson}</if>
+    <if test="rawId != null">AND raw_id = #{rawId}</if>
+    <if test="hitCount != null">AND hit_count = #{hitCount}</if>
+    <if test="expireAt != null">AND expire_at = #{expireAt}</if>
+    <if test="fetchedAt != null">AND fetched_at = #{fetchedAt}</if>
+    <if test="env != null and env != ''">AND env = #{env}</if>
+  </where></select>
+  <insert id="insertApiCacheKey" parameterType="com.ruoyi.srm.domain.ApiCacheKey" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_api_cache_key (cache_key, api_id, credit_code, subject_key, param_json, raw_id, hit_count, expire_at, fetched_at, env) VALUES (#{cacheKey}, #{apiId}, #{creditCode}, #{subjectKey}, #{paramJson}, #{rawId}, #{hitCount}, #{expireAt}, #{fetchedAt}, #{env})</insert>
+  <update id="updateApiCacheKey" parameterType="com.ruoyi.srm.domain.ApiCacheKey">UPDATE srm_api_cache_key<set>
+    <if test="cacheKey != null">cache_key = #{cacheKey},</if>
+    <if test="apiId != null">api_id = #{apiId},</if>
+    <if test="creditCode != null">credit_code = #{creditCode},</if>
+    <if test="subjectKey != null">subject_key = #{subjectKey},</if>
+    <if test="paramJson != null">param_json = #{paramJson},</if>
+    <if test="rawId != null">raw_id = #{rawId},</if>
+    <if test="hitCount != null">hit_count = #{hitCount},</if>
+    <if test="expireAt != null">expire_at = #{expireAt},</if>
+    <if test="fetchedAt != null">fetched_at = #{fetchedAt},</if>
+    <if test="env != null">env = #{env},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteApiCacheKeyById" parameterType="Long">DELETE FROM srm_api_cache_key WHERE id = #{id}</delete>
+  <delete id="deleteApiCacheKeyByIds" parameterType="array">DELETE FROM srm_api_cache_key WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

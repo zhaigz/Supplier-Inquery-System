@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.GraphEdgeMapper">
+  <resultMap id="GraphEdgeResult" type="com.ruoyi.srm.domain.GraphEdge">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="taskId" column="task_id" jdbcType="BIGINT" />
+    <result property="edgeKey" column="edge_key" jdbcType="VARCHAR" />
+    <result property="fromNodeKey" column="from_node_key" jdbcType="VARCHAR" />
+    <result property="toNodeKey" column="to_node_key" jdbcType="VARCHAR" />
+    <result property="fromIdNew" column="from_id_new" jdbcType="VARCHAR" />
+    <result property="toIdNew" column="to_id_new" jdbcType="VARCHAR" />
+    <result property="relType" column="rel_type" jdbcType="VARCHAR" />
+    <result property="ratio" column="ratio" jdbcType="DECIMAL" />
+    <result property="ratioLabel" column="ratio_label" jdbcType="VARCHAR" />
+    <result property="foundFlag" column="found_flag" jdbcType="VARCHAR" />
+    <result property="weight" column="weight" jdbcType="TINYINT" />
+    <result property="ruleId" column="rule_id" jdbcType="BIGINT" />
+    <result property="clueId" column="clue_id" jdbcType="BIGINT" />
+    <result property="sourceApiId" column="source_api_id" jdbcType="INTEGER" />
+    <result property="rawId" column="raw_id" jdbcType="BIGINT" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectGraphEdgeVo">SELECT id, task_id, edge_key, from_node_key, to_node_key, from_id_new, to_id_new, rel_type, ratio, ratio_label, found_flag, weight, rule_id, clue_id, source_api_id, raw_id, create_time FROM srm_graph_edge</sql>
+  <select id="selectGraphEdgeById" parameterType="Long" resultMap="GraphEdgeResult"><include refid="selectGraphEdgeVo"/> WHERE id = #{id}</select>
+  <select id="selectGraphEdgeList" parameterType="com.ruoyi.srm.domain.GraphEdge" resultMap="GraphEdgeResult"><include refid="selectGraphEdgeVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="taskId != null">AND task_id = #{taskId}</if>
+    <if test="edgeKey != null and edgeKey != ''">AND edge_key = #{edgeKey}</if>
+    <if test="fromNodeKey != null and fromNodeKey != ''">AND from_node_key = #{fromNodeKey}</if>
+    <if test="toNodeKey != null and toNodeKey != ''">AND to_node_key = #{toNodeKey}</if>
+    <if test="fromIdNew != null and fromIdNew != ''">AND from_id_new = #{fromIdNew}</if>
+    <if test="toIdNew != null and toIdNew != ''">AND to_id_new = #{toIdNew}</if>
+    <if test="relType != null and relType != ''">AND rel_type = #{relType}</if>
+    <if test="ratio != null">AND ratio = #{ratio}</if>
+    <if test="ratioLabel != null and ratioLabel != ''">AND ratio_label = #{ratioLabel}</if>
+    <if test="foundFlag != null and foundFlag != ''">AND found_flag = #{foundFlag}</if>
+    <if test="weight != null">AND weight = #{weight}</if>
+    <if test="ruleId != null">AND rule_id = #{ruleId}</if>
+    <if test="clueId != null">AND clue_id = #{clueId}</if>
+    <if test="sourceApiId != null">AND source_api_id = #{sourceApiId}</if>
+    <if test="rawId != null">AND raw_id = #{rawId}</if>
+  </where></select>
+  <insert id="insertGraphEdge" parameterType="com.ruoyi.srm.domain.GraphEdge" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_graph_edge (task_id, edge_key, from_node_key, to_node_key, from_id_new, to_id_new, rel_type, ratio, ratio_label, found_flag, weight, rule_id, clue_id, source_api_id, raw_id, create_time) VALUES (#{taskId}, #{edgeKey}, #{fromNodeKey}, #{toNodeKey}, #{fromIdNew}, #{toIdNew}, #{relType}, #{ratio}, #{ratioLabel}, #{foundFlag}, #{weight}, #{ruleId}, #{clueId}, #{sourceApiId}, #{rawId}, #{createTime})</insert>
+  <update id="updateGraphEdge" parameterType="com.ruoyi.srm.domain.GraphEdge">UPDATE srm_graph_edge<set>
+    <if test="taskId != null">task_id = #{taskId},</if>
+    <if test="edgeKey != null">edge_key = #{edgeKey},</if>
+    <if test="fromNodeKey != null">from_node_key = #{fromNodeKey},</if>
+    <if test="toNodeKey != null">to_node_key = #{toNodeKey},</if>
+    <if test="fromIdNew != null">from_id_new = #{fromIdNew},</if>
+    <if test="toIdNew != null">to_id_new = #{toIdNew},</if>
+    <if test="relType != null">rel_type = #{relType},</if>
+    <if test="ratio != null">ratio = #{ratio},</if>
+    <if test="ratioLabel != null">ratio_label = #{ratioLabel},</if>
+    <if test="foundFlag != null">found_flag = #{foundFlag},</if>
+    <if test="weight != null">weight = #{weight},</if>
+    <if test="ruleId != null">rule_id = #{ruleId},</if>
+    <if test="clueId != null">clue_id = #{clueId},</if>
+    <if test="sourceApiId != null">source_api_id = #{sourceApiId},</if>
+    <if test="rawId != null">raw_id = #{rawId},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteGraphEdgeById" parameterType="Long">DELETE FROM srm_graph_edge WHERE id = #{id}</delete>
+  <delete id="deleteGraphEdgeByIds" parameterType="array">DELETE FROM srm_graph_edge WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

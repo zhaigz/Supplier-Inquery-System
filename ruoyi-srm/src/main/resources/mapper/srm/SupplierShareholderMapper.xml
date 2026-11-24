@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.SupplierShareholderMapper">
+  <resultMap id="SupplierShareholderResult" type="com.ruoyi.srm.domain.SupplierShareholder">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="supplierId" column="supplier_id" jdbcType="BIGINT" />
+    <result property="shareholderName" column="shareholder_name" jdbcType="VARCHAR" />
+    <result property="shareholderType" column="shareholder_type" jdbcType="VARCHAR" />
+    <result property="shortName" column="short_name" jdbcType="VARCHAR" />
+    <result property="tycRefId" column="tyc_ref_id" jdbcType="VARCHAR" />
+    <result property="hcgid" column="hcgid" jdbcType="VARCHAR" />
+    <result property="ratio" column="ratio" jdbcType="DECIMAL" />
+    <result property="holdRatio" column="hold_ratio" jdbcType="DECIMAL" />
+    <result property="holdNum" column="hold_num" jdbcType="VARCHAR" />
+    <result property="subAmount" column="sub_amount" jdbcType="VARCHAR" />
+    <result property="subDate" column="sub_date" jdbcType="VARCHAR" />
+    <result property="subWay" column="sub_way" jdbcType="VARCHAR" />
+    <result property="paidAmount" column="paid_amount" jdbcType="VARCHAR" />
+    <result property="paidDate" column="paid_date" jdbcType="VARCHAR" />
+    <result property="paidWay" column="paid_way" jdbcType="VARCHAR" />
+    <result property="firstHoldDate" column="first_hold_date" jdbcType="VARCHAR" />
+    <result property="isHkEnterprise" column="is_hk_enterprise" jdbcType="VARCHAR" />
+    <result property="dataFrom" column="data_from" jdbcType="VARCHAR" />
+    <result property="sourceApiId" column="source_api_id" jdbcType="INTEGER" />
+    <result property="rawId" column="raw_id" jdbcType="BIGINT" />
+    <result property="fetchedAt" column="fetched_at" jdbcType="TIMESTAMP" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+    <result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectSupplierShareholderVo">SELECT id, supplier_id, shareholder_name, shareholder_type, short_name, tyc_ref_id, hcgid, ratio, hold_ratio, hold_num, sub_amount, sub_date, sub_way, paid_amount, paid_date, paid_way, first_hold_date, is_hk_enterprise, data_from, source_api_id, raw_id, fetched_at, create_time, update_time FROM srm_supplier_shareholder</sql>
+  <select id="selectSupplierShareholderById" parameterType="Long" resultMap="SupplierShareholderResult"><include refid="selectSupplierShareholderVo"/> WHERE id = #{id}</select>
+  <select id="selectSupplierShareholderList" parameterType="com.ruoyi.srm.domain.SupplierShareholder" resultMap="SupplierShareholderResult"><include refid="selectSupplierShareholderVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="supplierId != null">AND supplier_id = #{supplierId}</if>
+    <if test="shareholderName != null and shareholderName != ''">AND shareholder_name = #{shareholderName}</if>
+    <if test="shareholderType != null and shareholderType != ''">AND shareholder_type = #{shareholderType}</if>
+    <if test="shortName != null and shortName != ''">AND short_name = #{shortName}</if>
+    <if test="tycRefId != null and tycRefId != ''">AND tyc_ref_id = #{tycRefId}</if>
+    <if test="hcgid != null and hcgid != ''">AND hcgid = #{hcgid}</if>
+    <if test="ratio != null">AND ratio = #{ratio}</if>
+    <if test="holdRatio != null">AND hold_ratio = #{holdRatio}</if>
+    <if test="holdNum != null and holdNum != ''">AND hold_num = #{holdNum}</if>
+    <if test="subAmount != null and subAmount != ''">AND sub_amount = #{subAmount}</if>
+    <if test="subDate != null and subDate != ''">AND sub_date = #{subDate}</if>
+    <if test="subWay != null and subWay != ''">AND sub_way = #{subWay}</if>
+    <if test="paidAmount != null and paidAmount != ''">AND paid_amount = #{paidAmount}</if>
+    <if test="paidDate != null and paidDate != ''">AND paid_date = #{paidDate}</if>
+    <if test="paidWay != null and paidWay != ''">AND paid_way = #{paidWay}</if>
+    <if test="firstHoldDate != null and firstHoldDate != ''">AND first_hold_date = #{firstHoldDate}</if>
+    <if test="isHkEnterprise != null and isHkEnterprise != ''">AND is_hk_enterprise = #{isHkEnterprise}</if>
+    <if test="dataFrom != null and dataFrom != ''">AND data_from = #{dataFrom}</if>
+    <if test="sourceApiId != null">AND source_api_id = #{sourceApiId}</if>
+    <if test="rawId != null">AND raw_id = #{rawId}</if>
+    <if test="fetchedAt != null">AND fetched_at = #{fetchedAt}</if>
+  </where></select>
+  <insert id="insertSupplierShareholder" parameterType="com.ruoyi.srm.domain.SupplierShareholder" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_supplier_shareholder (supplier_id, shareholder_name, shareholder_type, short_name, tyc_ref_id, hcgid, ratio, hold_ratio, hold_num, sub_amount, sub_date, sub_way, paid_amount, paid_date, paid_way, first_hold_date, is_hk_enterprise, data_from, source_api_id, raw_id, fetched_at, create_time, update_time) VALUES (#{supplierId}, #{shareholderName}, #{shareholderType}, #{shortName}, #{tycRefId}, #{hcgid}, #{ratio}, #{holdRatio}, #{holdNum}, #{subAmount}, #{subDate}, #{subWay}, #{paidAmount}, #{paidDate}, #{paidWay}, #{firstHoldDate}, #{isHkEnterprise}, #{dataFrom}, #{sourceApiId}, #{rawId}, #{fetchedAt}, #{createTime}, #{updateTime})</insert>
+  <update id="updateSupplierShareholder" parameterType="com.ruoyi.srm.domain.SupplierShareholder">UPDATE srm_supplier_shareholder<set>
+    <if test="supplierId != null">supplier_id = #{supplierId},</if>
+    <if test="shareholderName != null">shareholder_name = #{shareholderName},</if>
+    <if test="shareholderType != null">shareholder_type = #{shareholderType},</if>
+    <if test="shortName != null">short_name = #{shortName},</if>
+    <if test="tycRefId != null">tyc_ref_id = #{tycRefId},</if>
+    <if test="hcgid != null">hcgid = #{hcgid},</if>
+    <if test="ratio != null">ratio = #{ratio},</if>
+    <if test="holdRatio != null">hold_ratio = #{holdRatio},</if>
+    <if test="holdNum != null">hold_num = #{holdNum},</if>
+    <if test="subAmount != null">sub_amount = #{subAmount},</if>
+    <if test="subDate != null">sub_date = #{subDate},</if>
+    <if test="subWay != null">sub_way = #{subWay},</if>
+    <if test="paidAmount != null">paid_amount = #{paidAmount},</if>
+    <if test="paidDate != null">paid_date = #{paidDate},</if>
+    <if test="paidWay != null">paid_way = #{paidWay},</if>
+    <if test="firstHoldDate != null">first_hold_date = #{firstHoldDate},</if>
+    <if test="isHkEnterprise != null">is_hk_enterprise = #{isHkEnterprise},</if>
+    <if test="dataFrom != null">data_from = #{dataFrom},</if>
+    <if test="sourceApiId != null">source_api_id = #{sourceApiId},</if>
+    <if test="rawId != null">raw_id = #{rawId},</if>
+    <if test="fetchedAt != null">fetched_at = #{fetchedAt},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+    <if test="updateTime != null">update_time = #{updateTime},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteSupplierShareholderById" parameterType="Long">DELETE FROM srm_supplier_shareholder WHERE id = #{id}</delete>
+  <delete id="deleteSupplierShareholderByIds" parameterType="array">DELETE FROM srm_supplier_shareholder WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.RiskAdminPunishMapper">
+  <resultMap id="RiskAdminPunishResult" type="com.ruoyi.srm.domain.RiskAdminPunish">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="supplierId" column="supplier_id" jdbcType="BIGINT" />
+    <result property="riskType" column="risk_type" jdbcType="VARCHAR" />
+    <result property="listReason" column="list_reason" jdbcType="VARCHAR" />
+    <result property="listDept" column="list_dept" jdbcType="VARCHAR" />
+    <result property="listDate" column="list_date" jdbcType="DATE" />
+    <result property="removeReason" column="remove_reason" jdbcType="VARCHAR" />
+    <result property="removeDept" column="remove_dept" jdbcType="VARCHAR" />
+    <result property="removeDate" column="remove_date" jdbcType="DATE" />
+    <result property="totalCount" column="total_count" jdbcType="INTEGER" />
+    <result property="rawId" column="raw_id" jdbcType="BIGINT" />
+    <result property="fetchedAt" column="fetched_at" jdbcType="TIMESTAMP" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectRiskAdminPunishVo">SELECT id, supplier_id, risk_type, list_reason, list_dept, list_date, remove_reason, remove_dept, remove_date, total_count, raw_id, fetched_at, create_time FROM srm_risk_admin_punish</sql>
+  <select id="selectRiskAdminPunishById" parameterType="Long" resultMap="RiskAdminPunishResult"><include refid="selectRiskAdminPunishVo"/> WHERE id = #{id}</select>
+  <select id="selectRiskAdminPunishList" parameterType="com.ruoyi.srm.domain.RiskAdminPunish" resultMap="RiskAdminPunishResult"><include refid="selectRiskAdminPunishVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="supplierId != null">AND supplier_id = #{supplierId}</if>
+    <if test="riskType != null and riskType != ''">AND risk_type = #{riskType}</if>
+    <if test="listReason != null and listReason != ''">AND list_reason = #{listReason}</if>
+    <if test="listDept != null and listDept != ''">AND list_dept = #{listDept}</if>
+    <if test="listDate != null">AND list_date = #{listDate}</if>
+    <if test="removeReason != null and removeReason != ''">AND remove_reason = #{removeReason}</if>
+    <if test="removeDept != null and removeDept != ''">AND remove_dept = #{removeDept}</if>
+    <if test="removeDate != null">AND remove_date = #{removeDate}</if>
+    <if test="totalCount != null">AND total_count = #{totalCount}</if>
+    <if test="rawId != null">AND raw_id = #{rawId}</if>
+    <if test="fetchedAt != null">AND fetched_at = #{fetchedAt}</if>
+  </where></select>
+  <insert id="insertRiskAdminPunish" parameterType="com.ruoyi.srm.domain.RiskAdminPunish" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_risk_admin_punish (supplier_id, risk_type, list_reason, list_dept, list_date, remove_reason, remove_dept, remove_date, total_count, raw_id, fetched_at, create_time) VALUES (#{supplierId}, #{riskType}, #{listReason}, #{listDept}, #{listDate}, #{removeReason}, #{removeDept}, #{removeDate}, #{totalCount}, #{rawId}, #{fetchedAt}, #{createTime})</insert>
+  <update id="updateRiskAdminPunish" parameterType="com.ruoyi.srm.domain.RiskAdminPunish">UPDATE srm_risk_admin_punish<set>
+    <if test="supplierId != null">supplier_id = #{supplierId},</if>
+    <if test="riskType != null">risk_type = #{riskType},</if>
+    <if test="listReason != null">list_reason = #{listReason},</if>
+    <if test="listDept != null">list_dept = #{listDept},</if>
+    <if test="listDate != null">list_date = #{listDate},</if>
+    <if test="removeReason != null">remove_reason = #{removeReason},</if>
+    <if test="removeDept != null">remove_dept = #{removeDept},</if>
+    <if test="removeDate != null">remove_date = #{removeDate},</if>
+    <if test="totalCount != null">total_count = #{totalCount},</if>
+    <if test="rawId != null">raw_id = #{rawId},</if>
+    <if test="fetchedAt != null">fetched_at = #{fetchedAt},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteRiskAdminPunishById" parameterType="Long">DELETE FROM srm_risk_admin_punish WHERE id = #{id}</delete>
+  <delete id="deleteRiskAdminPunishByIds" parameterType="array">DELETE FROM srm_risk_admin_punish WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

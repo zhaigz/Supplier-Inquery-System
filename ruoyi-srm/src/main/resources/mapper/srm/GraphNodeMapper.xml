@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.GraphNodeMapper">
+  <resultMap id="GraphNodeResult" type="com.ruoyi.srm.domain.GraphNode">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="taskId" column="task_id" jdbcType="BIGINT" />
+    <result property="nodeKey" column="node_key" jdbcType="VARCHAR" />
+    <result property="nodeType" column="node_type" jdbcType="VARCHAR" />
+    <result property="nodeName" column="node_name" jdbcType="VARCHAR" />
+    <result property="creditCode" column="credit_code" jdbcType="VARCHAR" />
+    <result property="regStatus" column="reg_status" jdbcType="VARCHAR" />
+    <result property="levelNo" column="level_no" jdbcType="TINYINT" />
+    <result property="parentNodeKey" column="parent_node_key" jdbcType="VARCHAR" />
+    <result property="canExtend" column="can_extend" jdbcType="VARCHAR" />
+    <result property="redFlag" column="red_flag" jdbcType="VARCHAR" />
+    <result property="isMonitor" column="is_monitor" jdbcType="VARCHAR" />
+    <result property="supplierId" column="supplier_id" jdbcType="BIGINT" />
+    <result property="groupKey" column="group_key" jdbcType="VARCHAR" />
+    <result property="attrsJson" column="attrs_json" jdbcType="VARCHAR" />
+    <result property="extJson" column="ext_json" jdbcType="VARCHAR" />
+    <result property="sourceApiId" column="source_api_id" jdbcType="INTEGER" />
+    <result property="rawId" column="raw_id" jdbcType="BIGINT" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectGraphNodeVo">SELECT id, task_id, node_key, node_type, node_name, credit_code, reg_status, level_no, parent_node_key, can_extend, red_flag, is_monitor, supplier_id, group_key, attrs_json, ext_json, source_api_id, raw_id, create_time FROM srm_graph_node</sql>
+  <select id="selectGraphNodeById" parameterType="Long" resultMap="GraphNodeResult"><include refid="selectGraphNodeVo"/> WHERE id = #{id}</select>
+  <select id="selectGraphNodeList" parameterType="com.ruoyi.srm.domain.GraphNode" resultMap="GraphNodeResult"><include refid="selectGraphNodeVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="taskId != null">AND task_id = #{taskId}</if>
+    <if test="nodeKey != null and nodeKey != ''">AND node_key = #{nodeKey}</if>
+    <if test="nodeType != null and nodeType != ''">AND node_type = #{nodeType}</if>
+    <if test="nodeName != null and nodeName != ''">AND node_name = #{nodeName}</if>
+    <if test="creditCode != null and creditCode != ''">AND credit_code = #{creditCode}</if>
+    <if test="regStatus != null and regStatus != ''">AND reg_status = #{regStatus}</if>
+    <if test="levelNo != null">AND level_no = #{levelNo}</if>
+    <if test="parentNodeKey != null and parentNodeKey != ''">AND parent_node_key = #{parentNodeKey}</if>
+    <if test="canExtend != null and canExtend != ''">AND can_extend = #{canExtend}</if>
+    <if test="redFlag != null and redFlag != ''">AND red_flag = #{redFlag}</if>
+    <if test="isMonitor != null and isMonitor != ''">AND is_monitor = #{isMonitor}</if>
+    <if test="supplierId != null">AND supplier_id = #{supplierId}</if>
+    <if test="groupKey != null and groupKey != ''">AND group_key = #{groupKey}</if>
+    <if test="attrsJson != null and attrsJson != ''">AND attrs_json = #{attrsJson}</if>
+    <if test="extJson != null and extJson != ''">AND ext_json = #{extJson}</if>
+    <if test="sourceApiId != null">AND source_api_id = #{sourceApiId}</if>
+    <if test="rawId != null">AND raw_id = #{rawId}</if>
+  </where></select>
+  <insert id="insertGraphNode" parameterType="com.ruoyi.srm.domain.GraphNode" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_graph_node (task_id, node_key, node_type, node_name, credit_code, reg_status, level_no, parent_node_key, can_extend, red_flag, is_monitor, supplier_id, group_key, attrs_json, ext_json, source_api_id, raw_id, create_time) VALUES (#{taskId}, #{nodeKey}, #{nodeType}, #{nodeName}, #{creditCode}, #{regStatus}, #{levelNo}, #{parentNodeKey}, #{canExtend}, #{redFlag}, #{isMonitor}, #{supplierId}, #{groupKey}, #{attrsJson}, #{extJson}, #{sourceApiId}, #{rawId}, #{createTime})</insert>
+  <update id="updateGraphNode" parameterType="com.ruoyi.srm.domain.GraphNode">UPDATE srm_graph_node<set>
+    <if test="taskId != null">task_id = #{taskId},</if>
+    <if test="nodeKey != null">node_key = #{nodeKey},</if>
+    <if test="nodeType != null">node_type = #{nodeType},</if>
+    <if test="nodeName != null">node_name = #{nodeName},</if>
+    <if test="creditCode != null">credit_code = #{creditCode},</if>
+    <if test="regStatus != null">reg_status = #{regStatus},</if>
+    <if test="levelNo != null">level_no = #{levelNo},</if>
+    <if test="parentNodeKey != null">parent_node_key = #{parentNodeKey},</if>
+    <if test="canExtend != null">can_extend = #{canExtend},</if>
+    <if test="redFlag != null">red_flag = #{redFlag},</if>
+    <if test="isMonitor != null">is_monitor = #{isMonitor},</if>
+    <if test="supplierId != null">supplier_id = #{supplierId},</if>
+    <if test="groupKey != null">group_key = #{groupKey},</if>
+    <if test="attrsJson != null">attrs_json = #{attrsJson},</if>
+    <if test="extJson != null">ext_json = #{extJson},</if>
+    <if test="sourceApiId != null">source_api_id = #{sourceApiId},</if>
+    <if test="rawId != null">raw_id = #{rawId},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteGraphNodeById" parameterType="Long">DELETE FROM srm_graph_node WHERE id = #{id}</delete>
+  <delete id="deleteGraphNodeByIds" parameterType="array">DELETE FROM srm_graph_node WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

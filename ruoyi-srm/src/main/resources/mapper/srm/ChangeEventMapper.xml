@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.ChangeEventMapper">
+  <resultMap id="ChangeEventResult" type="com.ruoyi.srm.domain.ChangeEvent">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="supplierId" column="supplier_id" jdbcType="BIGINT" />
+    <result property="supplierName" column="supplier_name" jdbcType="VARCHAR" />
+    <result property="creditCode" column="credit_code" jdbcType="VARCHAR" />
+    <result property="legalPerson" column="legal_person" jdbcType="VARCHAR" />
+    <result property="lastIndustryUpdate" column="last_industry_update" jdbcType="TIMESTAMP" />
+    <result property="monitorStatus" column="monitor_status" jdbcType="VARCHAR" />
+    <result property="changeAt" column="change_at" jdbcType="TIMESTAMP" />
+    <result property="changeItem" column="change_item" jdbcType="VARCHAR" />
+    <result property="dimension" column="dimension" jdbcType="VARCHAR" />
+    <result property="levelTag" column="level_tag" jdbcType="VARCHAR" />
+    <result property="beforeValue" column="before_value" jdbcType="VARCHAR" />
+    <result property="afterValue" column="after_value" jdbcType="VARCHAR" />
+    <result property="handleStatus" column="handle_status" jdbcType="VARCHAR" />
+    <result property="highRiskFlag" column="high_risk_flag" jdbcType="VARCHAR" />
+    <result property="prevSnapshotId" column="prev_snapshot_id" jdbcType="BIGINT" />
+    <result property="currSnapshotId" column="curr_snapshot_id" jdbcType="BIGINT" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+    <result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+    <result property="handleBy" column="handle_by" jdbcType="VARCHAR" />
+    <result property="handleAt" column="handle_at" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectChangeEventVo">SELECT id, supplier_id, supplier_name, credit_code, legal_person, last_industry_update, monitor_status, change_at, change_item, dimension, level_tag, before_value, after_value, handle_status, high_risk_flag, prev_snapshot_id, curr_snapshot_id, create_time, update_time, handle_by, handle_at FROM srm_change_event</sql>
+  <select id="selectChangeEventById" parameterType="Long" resultMap="ChangeEventResult"><include refid="selectChangeEventVo"/> WHERE id = #{id}</select>
+  <select id="selectChangeEventList" parameterType="com.ruoyi.srm.domain.ChangeEvent" resultMap="ChangeEventResult"><include refid="selectChangeEventVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="supplierId != null">AND supplier_id = #{supplierId}</if>
+    <if test="supplierName != null and supplierName != ''">AND supplier_name = #{supplierName}</if>
+    <if test="creditCode != null and creditCode != ''">AND credit_code = #{creditCode}</if>
+    <if test="legalPerson != null and legalPerson != ''">AND legal_person = #{legalPerson}</if>
+    <if test="lastIndustryUpdate != null">AND last_industry_update = #{lastIndustryUpdate}</if>
+    <if test="monitorStatus != null and monitorStatus != ''">AND monitor_status = #{monitorStatus}</if>
+    <if test="changeAt != null">AND change_at = #{changeAt}</if>
+    <if test="changeItem != null and changeItem != ''">AND change_item = #{changeItem}</if>
+    <if test="dimension != null and dimension != ''">AND dimension = #{dimension}</if>
+    <if test="levelTag != null and levelTag != ''">AND level_tag = #{levelTag}</if>
+    <if test="beforeValue != null and beforeValue != ''">AND before_value = #{beforeValue}</if>
+    <if test="afterValue != null and afterValue != ''">AND after_value = #{afterValue}</if>
+    <if test="handleStatus != null and handleStatus != ''">AND handle_status = #{handleStatus}</if>
+    <if test="highRiskFlag != null and highRiskFlag != ''">AND high_risk_flag = #{highRiskFlag}</if>
+    <if test="prevSnapshotId != null">AND prev_snapshot_id = #{prevSnapshotId}</if>
+    <if test="currSnapshotId != null">AND curr_snapshot_id = #{currSnapshotId}</if>
+    <if test="handleBy != null and handleBy != ''">AND handle_by = #{handleBy}</if>
+    <if test="handleAt != null">AND handle_at = #{handleAt}</if>
+  </where></select>
+  <insert id="insertChangeEvent" parameterType="com.ruoyi.srm.domain.ChangeEvent" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_change_event (supplier_id, supplier_name, credit_code, legal_person, last_industry_update, monitor_status, change_at, change_item, dimension, level_tag, before_value, after_value, handle_status, high_risk_flag, prev_snapshot_id, curr_snapshot_id, create_time, update_time, handle_by, handle_at) VALUES (#{supplierId}, #{supplierName}, #{creditCode}, #{legalPerson}, #{lastIndustryUpdate}, #{monitorStatus}, #{changeAt}, #{changeItem}, #{dimension}, #{levelTag}, #{beforeValue}, #{afterValue}, #{handleStatus}, #{highRiskFlag}, #{prevSnapshotId}, #{currSnapshotId}, #{createTime}, #{updateTime}, #{handleBy}, #{handleAt})</insert>
+  <update id="updateChangeEvent" parameterType="com.ruoyi.srm.domain.ChangeEvent">UPDATE srm_change_event<set>
+    <if test="supplierId != null">supplier_id = #{supplierId},</if>
+    <if test="supplierName != null">supplier_name = #{supplierName},</if>
+    <if test="creditCode != null">credit_code = #{creditCode},</if>
+    <if test="legalPerson != null">legal_person = #{legalPerson},</if>
+    <if test="lastIndustryUpdate != null">last_industry_update = #{lastIndustryUpdate},</if>
+    <if test="monitorStatus != null">monitor_status = #{monitorStatus},</if>
+    <if test="changeAt != null">change_at = #{changeAt},</if>
+    <if test="changeItem != null">change_item = #{changeItem},</if>
+    <if test="dimension != null">dimension = #{dimension},</if>
+    <if test="levelTag != null">level_tag = #{levelTag},</if>
+    <if test="beforeValue != null">before_value = #{beforeValue},</if>
+    <if test="afterValue != null">after_value = #{afterValue},</if>
+    <if test="handleStatus != null">handle_status = #{handleStatus},</if>
+    <if test="highRiskFlag != null">high_risk_flag = #{highRiskFlag},</if>
+    <if test="prevSnapshotId != null">prev_snapshot_id = #{prevSnapshotId},</if>
+    <if test="currSnapshotId != null">curr_snapshot_id = #{currSnapshotId},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+    <if test="updateTime != null">update_time = #{updateTime},</if>
+    <if test="handleBy != null">handle_by = #{handleBy},</if>
+    <if test="handleAt != null">handle_at = #{handleAt},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteChangeEventById" parameterType="Long">DELETE FROM srm_change_event WHERE id = #{id}</delete>
+  <delete id="deleteChangeEventByIds" parameterType="array">DELETE FROM srm_change_event WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

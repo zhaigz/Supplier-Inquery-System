@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.ApiRawMapper">
+  <resultMap id="ApiRawResult" type="com.ruoyi.srm.domain.ApiRaw">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="callLogId" column="call_log_id" jdbcType="BIGINT" />
+    <result property="apiId" column="api_id" jdbcType="INTEGER" />
+    <result property="subjectKey" column="subject_key" jdbcType="VARCHAR" />
+    <result property="requestJson" column="request_json" jdbcType="VARCHAR" />
+    <result property="responseJson" column="response_json" jdbcType="VARCHAR" />
+    <result property="respStatus" column="resp_status" jdbcType="VARCHAR" />
+    <result property="httpStatus" column="http_status" jdbcType="INTEGER" />
+    <result property="costMs" column="cost_ms" jdbcType="INTEGER" />
+    <result property="storageType" column="storage_type" jdbcType="VARCHAR" />
+    <result property="storagePath" column="storage_path" jdbcType="VARCHAR" />
+    <result property="byteSize" column="byte_size" jdbcType="INTEGER" />
+    <result property="fetchedAt" column="fetched_at" jdbcType="TIMESTAMP" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectApiRawVo">SELECT id, call_log_id, api_id, subject_key, request_json, response_json, resp_status, http_status, cost_ms, storage_type, storage_path, byte_size, fetched_at, create_time FROM srm_api_raw</sql>
+  <select id="selectApiRawById" parameterType="Long" resultMap="ApiRawResult"><include refid="selectApiRawVo"/> WHERE id = #{id}</select>
+  <select id="selectApiRawList" parameterType="com.ruoyi.srm.domain.ApiRaw" resultMap="ApiRawResult"><include refid="selectApiRawVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="callLogId != null">AND call_log_id = #{callLogId}</if>
+    <if test="apiId != null">AND api_id = #{apiId}</if>
+    <if test="subjectKey != null and subjectKey != ''">AND subject_key = #{subjectKey}</if>
+    <if test="requestJson != null and requestJson != ''">AND request_json = #{requestJson}</if>
+    <if test="responseJson != null and responseJson != ''">AND response_json = #{responseJson}</if>
+    <if test="respStatus != null and respStatus != ''">AND resp_status = #{respStatus}</if>
+    <if test="httpStatus != null">AND http_status = #{httpStatus}</if>
+    <if test="costMs != null">AND cost_ms = #{costMs}</if>
+    <if test="storageType != null and storageType != ''">AND storage_type = #{storageType}</if>
+    <if test="storagePath != null and storagePath != ''">AND storage_path = #{storagePath}</if>
+    <if test="byteSize != null">AND byte_size = #{byteSize}</if>
+    <if test="fetchedAt != null">AND fetched_at = #{fetchedAt}</if>
+  </where></select>
+  <insert id="insertApiRaw" parameterType="com.ruoyi.srm.domain.ApiRaw" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_api_raw (call_log_id, api_id, subject_key, request_json, response_json, resp_status, http_status, cost_ms, storage_type, storage_path, byte_size, fetched_at, create_time) VALUES (#{callLogId}, #{apiId}, #{subjectKey}, #{requestJson}, #{responseJson}, #{respStatus}, #{httpStatus}, #{costMs}, #{storageType}, #{storagePath}, #{byteSize}, #{fetchedAt}, #{createTime})</insert>
+  <update id="updateApiRaw" parameterType="com.ruoyi.srm.domain.ApiRaw">UPDATE srm_api_raw<set>
+    <if test="callLogId != null">call_log_id = #{callLogId},</if>
+    <if test="apiId != null">api_id = #{apiId},</if>
+    <if test="subjectKey != null">subject_key = #{subjectKey},</if>
+    <if test="requestJson != null">request_json = #{requestJson},</if>
+    <if test="responseJson != null">response_json = #{responseJson},</if>
+    <if test="respStatus != null">resp_status = #{respStatus},</if>
+    <if test="httpStatus != null">http_status = #{httpStatus},</if>
+    <if test="costMs != null">cost_ms = #{costMs},</if>
+    <if test="storageType != null">storage_type = #{storageType},</if>
+    <if test="storagePath != null">storage_path = #{storagePath},</if>
+    <if test="byteSize != null">byte_size = #{byteSize},</if>
+    <if test="fetchedAt != null">fetched_at = #{fetchedAt},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteApiRawById" parameterType="Long">DELETE FROM srm_api_raw WHERE id = #{id}</delete>
+  <delete id="deleteApiRawByIds" parameterType="array">DELETE FROM srm_api_raw WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

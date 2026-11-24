@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.RelClueMapper">
+  <resultMap id="RelClueResult" type="com.ruoyi.srm.domain.RelClue">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="taskId" column="task_id" jdbcType="BIGINT" />
+    <result property="projectId" column="project_id" jdbcType="BIGINT" />
+    <result property="reportVersionId" column="report_version_id" jdbcType="BIGINT" />
+    <result property="supplierA" column="supplier_a" jdbcType="BIGINT" />
+    <result property="supplierB" column="supplier_b" jdbcType="BIGINT" />
+    <result property="entAName" column="ent_a_name" jdbcType="VARCHAR" />
+    <result property="entBName" column="ent_b_name" jdbcType="VARCHAR" />
+    <result property="entATycId" column="ent_a_tyc_id" jdbcType="VARCHAR" />
+    <result property="entBTycId" column="ent_b_tyc_id" jdbcType="VARCHAR" />
+    <result property="legalTypeA" column="legal_type_a" jdbcType="VARCHAR" />
+    <result property="legalTypeB" column="legal_type_b" jdbcType="VARCHAR" />
+    <result property="legalPersonA" column="legal_person_a" jdbcType="VARCHAR" />
+    <result property="legalPersonB" column="legal_person_b" jdbcType="VARCHAR" />
+    <result property="regCapitalA" column="reg_capital_a" jdbcType="VARCHAR" />
+    <result property="regCapitalB" column="reg_capital_b" jdbcType="VARCHAR" />
+    <result property="establishA" column="establish_a" jdbcType="VARCHAR" />
+    <result property="establishB" column="establish_b" jdbcType="VARCHAR" />
+    <result property="clueType" column="clue_type" jdbcType="VARCHAR" />
+    <result property="clueDetail" column="clue_detail" jdbcType="VARCHAR" />
+    <result property="bookkeepingPhone" column="bookkeeping_phone" jdbcType="VARCHAR" />
+    <result property="localRelType" column="local_rel_type" jdbcType="VARCHAR" />
+    <result property="ruleId" column="rule_id" jdbcType="BIGINT" />
+    <result property="ruleName" column="rule_name" jdbcType="VARCHAR" />
+    <result property="weight" column="weight" jdbcType="TINYINT" />
+    <result property="relPath" column="rel_path" jdbcType="VARCHAR" />
+    <result property="upDepth" column="up_depth" jdbcType="TINYINT" />
+    <result property="downDepth" column="down_depth" jdbcType="TINYINT" />
+    <result property="dataSource" column="data_source" jdbcType="VARCHAR" />
+    <result property="sourceApiId" column="source_api_id" jdbcType="INTEGER" />
+    <result property="rawId" column="raw_id" jdbcType="BIGINT" />
+    <result property="reviewStatus" column="review_status" jdbcType="VARCHAR" />
+    <result property="pageNo" column="page_no" jdbcType="INTEGER" />
+    <result property="analyzedAt" column="analyzed_at" jdbcType="TIMESTAMP" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectRelClueVo">SELECT id, task_id, project_id, report_version_id, supplier_a, supplier_b, ent_a_name, ent_b_name, ent_a_tyc_id, ent_b_tyc_id, legal_type_a, legal_type_b, legal_person_a, legal_person_b, reg_capital_a, reg_capital_b, establish_a, establish_b, clue_type, clue_detail, bookkeeping_phone, local_rel_type, rule_id, rule_name, weight, rel_path, up_depth, down_depth, data_source, source_api_id, raw_id, review_status, page_no, analyzed_at, create_time FROM srm_rel_clue</sql>
+  <select id="selectRelClueById" parameterType="Long" resultMap="RelClueResult"><include refid="selectRelClueVo"/> WHERE id = #{id}</select>
+  <select id="selectRelClueList" parameterType="com.ruoyi.srm.domain.RelClue" resultMap="RelClueResult"><include refid="selectRelClueVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="taskId != null">AND task_id = #{taskId}</if>
+    <if test="projectId != null">AND project_id = #{projectId}</if>
+    <if test="reportVersionId != null">AND report_version_id = #{reportVersionId}</if>
+    <if test="supplierA != null">AND supplier_a = #{supplierA}</if>
+    <if test="supplierB != null">AND supplier_b = #{supplierB}</if>
+    <if test="entAName != null and entAName != ''">AND ent_a_name = #{entAName}</if>
+    <if test="entBName != null and entBName != ''">AND ent_b_name = #{entBName}</if>
+    <if test="entATycId != null and entATycId != ''">AND ent_a_tyc_id = #{entATycId}</if>
+    <if test="entBTycId != null and entBTycId != ''">AND ent_b_tyc_id = #{entBTycId}</if>
+    <if test="legalTypeA != null and legalTypeA != ''">AND legal_type_a = #{legalTypeA}</if>
+    <if test="legalTypeB != null and legalTypeB != ''">AND legal_type_b = #{legalTypeB}</if>
+    <if test="legalPersonA != null and legalPersonA != ''">AND legal_person_a = #{legalPersonA}</if>
+    <if test="legalPersonB != null and legalPersonB != ''">AND legal_person_b = #{legalPersonB}</if>
+    <if test="regCapitalA != null and regCapitalA != ''">AND reg_capital_a = #{regCapitalA}</if>
+    <if test="regCapitalB != null and regCapitalB != ''">AND reg_capital_b = #{regCapitalB}</if>
+    <if test="establishA != null and establishA != ''">AND establish_a = #{establishA}</if>
+    <if test="establishB != null and establishB != ''">AND establish_b = #{establishB}</if>
+    <if test="clueType != null and clueType != ''">AND clue_type = #{clueType}</if>
+    <if test="clueDetail != null and clueDetail != ''">AND clue_detail = #{clueDetail}</if>
+    <if test="bookkeepingPhone != null and bookkeepingPhone != ''">AND bookkeeping_phone = #{bookkeepingPhone}</if>
+    <if test="localRelType != null and localRelType != ''">AND local_rel_type = #{localRelType}</if>
+    <if test="ruleId != null">AND rule_id = #{ruleId}</if>
+    <if test="ruleName != null and ruleName != ''">AND rule_name = #{ruleName}</if>
+    <if test="weight != null">AND weight = #{weight}</if>
+    <if test="relPath != null and relPath != ''">AND rel_path = #{relPath}</if>
+    <if test="upDepth != null">AND up_depth = #{upDepth}</if>
+    <if test="downDepth != null">AND down_depth = #{downDepth}</if>
+    <if test="dataSource != null and dataSource != ''">AND data_source = #{dataSource}</if>
+    <if test="sourceApiId != null">AND source_api_id = #{sourceApiId}</if>
+    <if test="rawId != null">AND raw_id = #{rawId}</if>
+    <if test="reviewStatus != null and reviewStatus != ''">AND review_status = #{reviewStatus}</if>
+    <if test="pageNo != null">AND page_no = #{pageNo}</if>
+    <if test="analyzedAt != null">AND analyzed_at = #{analyzedAt}</if>
+  </where></select>
+  <insert id="insertRelClue" parameterType="com.ruoyi.srm.domain.RelClue" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_rel_clue (task_id, project_id, report_version_id, supplier_a, supplier_b, ent_a_name, ent_b_name, ent_a_tyc_id, ent_b_tyc_id, legal_type_a, legal_type_b, legal_person_a, legal_person_b, reg_capital_a, reg_capital_b, establish_a, establish_b, clue_type, clue_detail, bookkeeping_phone, local_rel_type, rule_id, rule_name, weight, rel_path, up_depth, down_depth, data_source, source_api_id, raw_id, review_status, page_no, analyzed_at, create_time) VALUES (#{taskId}, #{projectId}, #{reportVersionId}, #{supplierA}, #{supplierB}, #{entAName}, #{entBName}, #{entATycId}, #{entBTycId}, #{legalTypeA}, #{legalTypeB}, #{legalPersonA}, #{legalPersonB}, #{regCapitalA}, #{regCapitalB}, #{establishA}, #{establishB}, #{clueType}, #{clueDetail}, #{bookkeepingPhone}, #{localRelType}, #{ruleId}, #{ruleName}, #{weight}, #{relPath}, #{upDepth}, #{downDepth}, #{dataSource}, #{sourceApiId}, #{rawId}, #{reviewStatus}, #{pageNo}, #{analyzedAt}, #{createTime})</insert>
+  <update id="updateRelClue" parameterType="com.ruoyi.srm.domain.RelClue">UPDATE srm_rel_clue<set>
+    <if test="taskId != null">task_id = #{taskId},</if>
+    <if test="projectId != null">project_id = #{projectId},</if>
+    <if test="reportVersionId != null">report_version_id = #{reportVersionId},</if>
+    <if test="supplierA != null">supplier_a = #{supplierA},</if>
+    <if test="supplierB != null">supplier_b = #{supplierB},</if>
+    <if test="entAName != null">ent_a_name = #{entAName},</if>
+    <if test="entBName != null">ent_b_name = #{entBName},</if>
+    <if test="entATycId != null">ent_a_tyc_id = #{entATycId},</if>
+    <if test="entBTycId != null">ent_b_tyc_id = #{entBTycId},</if>
+    <if test="legalTypeA != null">legal_type_a = #{legalTypeA},</if>
+    <if test="legalTypeB != null">legal_type_b = #{legalTypeB},</if>
+    <if test="legalPersonA != null">legal_person_a = #{legalPersonA},</if>
+    <if test="legalPersonB != null">legal_person_b = #{legalPersonB},</if>
+    <if test="regCapitalA != null">reg_capital_a = #{regCapitalA},</if>
+    <if test="regCapitalB != null">reg_capital_b = #{regCapitalB},</if>
+    <if test="establishA != null">establish_a = #{establishA},</if>
+    <if test="establishB != null">establish_b = #{establishB},</if>
+    <if test="clueType != null">clue_type = #{clueType},</if>
+    <if test="clueDetail != null">clue_detail = #{clueDetail},</if>
+    <if test="bookkeepingPhone != null">bookkeeping_phone = #{bookkeepingPhone},</if>
+    <if test="localRelType != null">local_rel_type = #{localRelType},</if>
+    <if test="ruleId != null">rule_id = #{ruleId},</if>
+    <if test="ruleName != null">rule_name = #{ruleName},</if>
+    <if test="weight != null">weight = #{weight},</if>
+    <if test="relPath != null">rel_path = #{relPath},</if>
+    <if test="upDepth != null">up_depth = #{upDepth},</if>
+    <if test="downDepth != null">down_depth = #{downDepth},</if>
+    <if test="dataSource != null">data_source = #{dataSource},</if>
+    <if test="sourceApiId != null">source_api_id = #{sourceApiId},</if>
+    <if test="rawId != null">raw_id = #{rawId},</if>
+    <if test="reviewStatus != null">review_status = #{reviewStatus},</if>
+    <if test="pageNo != null">page_no = #{pageNo},</if>
+    <if test="analyzedAt != null">analyzed_at = #{analyzedAt},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteRelClueById" parameterType="Long">DELETE FROM srm_rel_clue WHERE id = #{id}</delete>
+  <delete id="deleteRelClueByIds" parameterType="array">DELETE FROM srm_rel_clue WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

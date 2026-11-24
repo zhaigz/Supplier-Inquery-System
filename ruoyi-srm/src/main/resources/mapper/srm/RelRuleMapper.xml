@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.RelRuleMapper">
+  <resultMap id="RelRuleResult" type="com.ruoyi.srm.domain.RelRule">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="ruleName" column="rule_name" jdbcType="VARCHAR" />
+    <result property="relDimension" column="rel_dimension" jdbcType="VARCHAR" />
+    <result property="relDimensionName" column="rel_dimension_name" jdbcType="VARCHAR" />
+    <result property="detectType" column="detect_type" jdbcType="VARCHAR" />
+    <result property="direction" column="direction" jdbcType="VARCHAR" />
+    <result property="weight" column="weight" jdbcType="TINYINT" />
+    <result property="fieldMappingCode" column="field_mapping_code" jdbcType="VARCHAR" />
+    <result property="apiId" column="api_id" jdbcType="INTEGER" />
+    <result property="tycRelType" column="tyc_rel_type" jdbcType="VARCHAR" />
+    <result property="upDepth" column="up_depth" jdbcType="TINYINT" />
+    <result property="downDepth" column="down_depth" jdbcType="TINYINT" />
+    <result property="ratioMin" column="ratio_min" jdbcType="DECIMAL" />
+    <result property="ratioMax" column="ratio_max" jdbcType="DECIMAL" />
+    <result property="remarkText" column="remark_text" jdbcType="VARCHAR" />
+    <result property="recommendFlag" column="recommend_flag" jdbcType="VARCHAR" />
+    <result property="defaultOn" column="default_on" jdbcType="VARCHAR" />
+    <result property="enabled" column="enabled" jdbcType="VARCHAR" />
+    <result property="sortNo" column="sort_no" jdbcType="INTEGER" />
+    <result property="createBy" column="create_by" jdbcType="VARCHAR" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+    <result property="updateBy" column="update_by" jdbcType="VARCHAR" />
+    <result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+    <result property="delFlag" column="del_flag" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="selectRelRuleVo">SELECT id, rule_name, rel_dimension, rel_dimension_name, detect_type, direction, weight, field_mapping_code, api_id, tyc_rel_type, up_depth, down_depth, ratio_min, ratio_max, remark_text, recommend_flag, default_on, enabled, sort_no, create_by, create_time, update_by, update_time, del_flag FROM srm_rel_rule</sql>
+  <select id="selectRelRuleById" parameterType="Long" resultMap="RelRuleResult"><include refid="selectRelRuleVo"/> WHERE id = #{id}</select>
+  <select id="selectRelRuleList" parameterType="com.ruoyi.srm.domain.RelRule" resultMap="RelRuleResult"><include refid="selectRelRuleVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="ruleName != null and ruleName != ''">AND rule_name = #{ruleName}</if>
+    <if test="relDimension != null and relDimension != ''">AND rel_dimension = #{relDimension}</if>
+    <if test="relDimensionName != null and relDimensionName != ''">AND rel_dimension_name = #{relDimensionName}</if>
+    <if test="detectType != null and detectType != ''">AND detect_type = #{detectType}</if>
+    <if test="direction != null and direction != ''">AND direction = #{direction}</if>
+    <if test="weight != null">AND weight = #{weight}</if>
+    <if test="fieldMappingCode != null and fieldMappingCode != ''">AND field_mapping_code = #{fieldMappingCode}</if>
+    <if test="apiId != null">AND api_id = #{apiId}</if>
+    <if test="tycRelType != null and tycRelType != ''">AND tyc_rel_type = #{tycRelType}</if>
+    <if test="upDepth != null">AND up_depth = #{upDepth}</if>
+    <if test="downDepth != null">AND down_depth = #{downDepth}</if>
+    <if test="ratioMin != null">AND ratio_min = #{ratioMin}</if>
+    <if test="ratioMax != null">AND ratio_max = #{ratioMax}</if>
+    <if test="remarkText != null and remarkText != ''">AND remark_text = #{remarkText}</if>
+    <if test="recommendFlag != null and recommendFlag != ''">AND recommend_flag = #{recommendFlag}</if>
+    <if test="defaultOn != null and defaultOn != ''">AND default_on = #{defaultOn}</if>
+    <if test="enabled != null and enabled != ''">AND enabled = #{enabled}</if>
+    <if test="sortNo != null">AND sort_no = #{sortNo}</if>
+    <if test="delFlag != null and delFlag != ''">AND del_flag = #{delFlag}</if>
+  </where></select>
+  <insert id="insertRelRule" parameterType="com.ruoyi.srm.domain.RelRule" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_rel_rule (rule_name, rel_dimension, rel_dimension_name, detect_type, direction, weight, field_mapping_code, api_id, tyc_rel_type, up_depth, down_depth, ratio_min, ratio_max, remark_text, recommend_flag, default_on, enabled, sort_no, create_by, create_time, update_by, update_time, del_flag) VALUES (#{ruleName}, #{relDimension}, #{relDimensionName}, #{detectType}, #{direction}, #{weight}, #{fieldMappingCode}, #{apiId}, #{tycRelType}, #{upDepth}, #{downDepth}, #{ratioMin}, #{ratioMax}, #{remarkText}, #{recommendFlag}, #{defaultOn}, #{enabled}, #{sortNo}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime}, #{delFlag})</insert>
+  <update id="updateRelRule" parameterType="com.ruoyi.srm.domain.RelRule">UPDATE srm_rel_rule<set>
+    <if test="ruleName != null">rule_name = #{ruleName},</if>
+    <if test="relDimension != null">rel_dimension = #{relDimension},</if>
+    <if test="relDimensionName != null">rel_dimension_name = #{relDimensionName},</if>
+    <if test="detectType != null">detect_type = #{detectType},</if>
+    <if test="direction != null">direction = #{direction},</if>
+    <if test="weight != null">weight = #{weight},</if>
+    <if test="fieldMappingCode != null">field_mapping_code = #{fieldMappingCode},</if>
+    <if test="apiId != null">api_id = #{apiId},</if>
+    <if test="tycRelType != null">tyc_rel_type = #{tycRelType},</if>
+    <if test="upDepth != null">up_depth = #{upDepth},</if>
+    <if test="downDepth != null">down_depth = #{downDepth},</if>
+    <if test="ratioMin != null">ratio_min = #{ratioMin},</if>
+    <if test="ratioMax != null">ratio_max = #{ratioMax},</if>
+    <if test="remarkText != null">remark_text = #{remarkText},</if>
+    <if test="recommendFlag != null">recommend_flag = #{recommendFlag},</if>
+    <if test="defaultOn != null">default_on = #{defaultOn},</if>
+    <if test="enabled != null">enabled = #{enabled},</if>
+    <if test="sortNo != null">sort_no = #{sortNo},</if>
+    <if test="createBy != null">create_by = #{createBy},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+    <if test="updateBy != null">update_by = #{updateBy},</if>
+    <if test="updateTime != null">update_time = #{updateTime},</if>
+    <if test="delFlag != null">del_flag = #{delFlag},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteRelRuleById" parameterType="Long">DELETE FROM srm_rel_rule WHERE id = #{id}</delete>
+  <delete id="deleteRelRuleByIds" parameterType="array">DELETE FROM srm_rel_rule WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

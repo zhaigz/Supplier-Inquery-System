@@ -60,9 +60,6 @@ spring:
       max-file-size: 10MB
       # 设置总上传的文件大小
       max-request-size: 20MB
-  jackson:
-    time-zone: GMT+8
-    date-format: yyyy-MM-dd HH:mm:ss
   # 服务模块
   devtools:
     restart:
@@ -78,7 +75,7 @@ spring:
       # 数据库索引
       database: 0
       # 密码
-      password:
+      password: redis
       # 连接超时时间
       timeout: 10s
       lettuce:

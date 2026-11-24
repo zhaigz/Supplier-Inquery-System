@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.BackupRecordMapper">
+  <resultMap id="BackupRecordResult" type="com.ruoyi.srm.domain.BackupRecord">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="backupNo" column="backup_no" jdbcType="VARCHAR" />
+    <result property="backupType" column="backup_type" jdbcType="VARCHAR" />
+    <result property="triggerType" column="trigger_type" jdbcType="VARCHAR" />
+    <result property="coverScope" column="cover_scope" jdbcType="VARCHAR" />
+    <result property="statSupplier" column="stat_supplier" jdbcType="INTEGER" />
+    <result property="statMonitor" column="stat_monitor" jdbcType="INTEGER" />
+    <result property="statVersion" column="stat_version" jdbcType="INTEGER" />
+    <result property="statReview" column="stat_review" jdbcType="INTEGER" />
+    <result property="storagePath" column="storage_path" jdbcType="VARCHAR" />
+    <result property="byteSize" column="byte_size" jdbcType="BIGINT" />
+    <result property="sha256" column="sha256" jdbcType="VARCHAR" />
+    <result property="restoreFlag" column="restore_flag" jdbcType="VARCHAR" />
+    <result property="restoreAt" column="restore_at" jdbcType="TIMESTAMP" />
+    <result property="dangerConfirm" column="danger_confirm" jdbcType="VARCHAR" />
+    <result property="createBy" column="create_by" jdbcType="VARCHAR" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectBackupRecordVo">SELECT id, backup_no, backup_type, trigger_type, cover_scope, stat_supplier, stat_monitor, stat_version, stat_review, storage_path, byte_size, sha256, restore_flag, restore_at, danger_confirm, create_by, create_time FROM srm_backup_record</sql>
+  <select id="selectBackupRecordById" parameterType="Long" resultMap="BackupRecordResult"><include refid="selectBackupRecordVo"/> WHERE id = #{id}</select>
+  <select id="selectBackupRecordList" parameterType="com.ruoyi.srm.domain.BackupRecord" resultMap="BackupRecordResult"><include refid="selectBackupRecordVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="backupNo != null and backupNo != ''">AND backup_no = #{backupNo}</if>
+    <if test="backupType != null and backupType != ''">AND backup_type = #{backupType}</if>
+    <if test="triggerType != null and triggerType != ''">AND trigger_type = #{triggerType}</if>
+    <if test="coverScope != null and coverScope != ''">AND cover_scope = #{coverScope}</if>
+    <if test="statSupplier != null">AND stat_supplier = #{statSupplier}</if>
+    <if test="statMonitor != null">AND stat_monitor = #{statMonitor}</if>
+    <if test="statVersion != null">AND stat_version = #{statVersion}</if>
+    <if test="statReview != null">AND stat_review = #{statReview}</if>
+    <if test="storagePath != null and storagePath != ''">AND storage_path = #{storagePath}</if>
+    <if test="byteSize != null">AND byte_size = #{byteSize}</if>
+    <if test="sha256 != null and sha256 != ''">AND sha256 = #{sha256}</if>
+    <if test="restoreFlag != null and restoreFlag != ''">AND restore_flag = #{restoreFlag}</if>
+    <if test="restoreAt != null">AND restore_at = #{restoreAt}</if>
+    <if test="dangerConfirm != null and dangerConfirm != ''">AND danger_confirm = #{dangerConfirm}</if>
+  </where></select>
+  <insert id="insertBackupRecord" parameterType="com.ruoyi.srm.domain.BackupRecord" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_backup_record (backup_no, backup_type, trigger_type, cover_scope, stat_supplier, stat_monitor, stat_version, stat_review, storage_path, byte_size, sha256, restore_flag, restore_at, danger_confirm, create_by, create_time) VALUES (#{backupNo}, #{backupType}, #{triggerType}, #{coverScope}, #{statSupplier}, #{statMonitor}, #{statVersion}, #{statReview}, #{storagePath}, #{byteSize}, #{sha256}, #{restoreFlag}, #{restoreAt}, #{dangerConfirm}, #{createBy}, #{createTime})</insert>
+  <update id="updateBackupRecord" parameterType="com.ruoyi.srm.domain.BackupRecord">UPDATE srm_backup_record<set>
+    <if test="backupNo != null">backup_no = #{backupNo},</if>
+    <if test="backupType != null">backup_type = #{backupType},</if>
+    <if test="triggerType != null">trigger_type = #{triggerType},</if>
+    <if test="coverScope != null">cover_scope = #{coverScope},</if>
+    <if test="statSupplier != null">stat_supplier = #{statSupplier},</if>
+    <if test="statMonitor != null">stat_monitor = #{statMonitor},</if>
+    <if test="statVersion != null">stat_version = #{statVersion},</if>
+    <if test="statReview != null">stat_review = #{statReview},</if>
+    <if test="storagePath != null">storage_path = #{storagePath},</if>
+    <if test="byteSize != null">byte_size = #{byteSize},</if>
+    <if test="sha256 != null">sha256 = #{sha256},</if>
+    <if test="restoreFlag != null">restore_flag = #{restoreFlag},</if>
+    <if test="restoreAt != null">restore_at = #{restoreAt},</if>
+    <if test="dangerConfirm != null">danger_confirm = #{dangerConfirm},</if>
+    <if test="createBy != null">create_by = #{createBy},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteBackupRecordById" parameterType="Long">DELETE FROM srm_backup_record WHERE id = #{id}</delete>
+  <delete id="deleteBackupRecordByIds" parameterType="array">DELETE FROM srm_backup_record WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

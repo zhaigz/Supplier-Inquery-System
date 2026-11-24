@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.ImportRowMapper">
+  <resultMap id="ImportRowResult" type="com.ruoyi.srm.domain.ImportRow">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="batchId" column="batch_id" jdbcType="BIGINT" />
+    <result property="rowNo" column="row_no" jdbcType="INTEGER" />
+    <result property="supplierName" column="supplier_name" jdbcType="VARCHAR" />
+    <result property="creditCode" column="credit_code" jdbcType="VARCHAR" />
+    <result property="legalPerson" column="legal_person" jdbcType="VARCHAR" />
+    <result property="monitorFlag" column="monitor_flag" jdbcType="VARCHAR" />
+    <result property="checkResult" column="check_result" jdbcType="VARCHAR" />
+    <result property="dupOfSupplierId" column="dup_of_supplier_id" jdbcType="BIGINT" />
+    <result property="supplierId" column="supplier_id" jdbcType="BIGINT" />
+    <result property="errMsg" column="err_msg" jdbcType="VARCHAR" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectImportRowVo">SELECT id, batch_id, row_no, supplier_name, credit_code, legal_person, monitor_flag, check_result, dup_of_supplier_id, supplier_id, err_msg, create_time FROM srm_import_row</sql>
+  <select id="selectImportRowById" parameterType="Long" resultMap="ImportRowResult"><include refid="selectImportRowVo"/> WHERE id = #{id}</select>
+  <select id="selectImportRowList" parameterType="com.ruoyi.srm.domain.ImportRow" resultMap="ImportRowResult"><include refid="selectImportRowVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="batchId != null">AND batch_id = #{batchId}</if>
+    <if test="rowNo != null">AND row_no = #{rowNo}</if>
+    <if test="supplierName != null and supplierName != ''">AND supplier_name = #{supplierName}</if>
+    <if test="creditCode != null and creditCode != ''">AND credit_code = #{creditCode}</if>
+    <if test="legalPerson != null and legalPerson != ''">AND legal_person = #{legalPerson}</if>
+    <if test="monitorFlag != null and monitorFlag != ''">AND monitor_flag = #{monitorFlag}</if>
+    <if test="checkResult != null and checkResult != ''">AND check_result = #{checkResult}</if>
+    <if test="dupOfSupplierId != null">AND dup_of_supplier_id = #{dupOfSupplierId}</if>
+    <if test="supplierId != null">AND supplier_id = #{supplierId}</if>
+    <if test="errMsg != null and errMsg != ''">AND err_msg = #{errMsg}</if>
+  </where></select>
+  <insert id="insertImportRow" parameterType="com.ruoyi.srm.domain.ImportRow" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_import_row (batch_id, row_no, supplier_name, credit_code, legal_person, monitor_flag, check_result, dup_of_supplier_id, supplier_id, err_msg, create_time) VALUES (#{batchId}, #{rowNo}, #{supplierName}, #{creditCode}, #{legalPerson}, #{monitorFlag}, #{checkResult}, #{dupOfSupplierId}, #{supplierId}, #{errMsg}, #{createTime})</insert>
+  <update id="updateImportRow" parameterType="com.ruoyi.srm.domain.ImportRow">UPDATE srm_import_row<set>
+    <if test="batchId != null">batch_id = #{batchId},</if>
+    <if test="rowNo != null">row_no = #{rowNo},</if>
+    <if test="supplierName != null">supplier_name = #{supplierName},</if>
+    <if test="creditCode != null">credit_code = #{creditCode},</if>
+    <if test="legalPerson != null">legal_person = #{legalPerson},</if>
+    <if test="monitorFlag != null">monitor_flag = #{monitorFlag},</if>
+    <if test="checkResult != null">check_result = #{checkResult},</if>
+    <if test="dupOfSupplierId != null">dup_of_supplier_id = #{dupOfSupplierId},</if>
+    <if test="supplierId != null">supplier_id = #{supplierId},</if>
+    <if test="errMsg != null">err_msg = #{errMsg},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteImportRowById" parameterType="Long">DELETE FROM srm_import_row WHERE id = #{id}</delete>
+  <delete id="deleteImportRowByIds" parameterType="array">DELETE FROM srm_import_row WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

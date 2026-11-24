@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.ClueReviewMapper">
+  <resultMap id="ClueReviewResult" type="com.ruoyi.srm.domain.ClueReview">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="clueId" column="clue_id" jdbcType="BIGINT" />
+    <result property="projectId" column="project_id" jdbcType="BIGINT" />
+    <result property="reportVersionId" column="report_version_id" jdbcType="BIGINT" />
+    <result property="reviewStatus" column="review_status" jdbcType="VARCHAR" />
+    <result property="conclusion" column="conclusion" jdbcType="VARCHAR" />
+    <result property="reviewNote" column="review_note" jdbcType="VARCHAR" />
+    <result property="evidenceRef" column="evidence_ref" jdbcType="VARCHAR" />
+    <result property="reviewerId" column="reviewer_id" jdbcType="BIGINT" />
+    <result property="reviewerName" column="reviewer_name" jdbcType="VARCHAR" />
+    <result property="reviewedAt" column="reviewed_at" jdbcType="TIMESTAMP" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectClueReviewVo">SELECT id, clue_id, project_id, report_version_id, review_status, conclusion, review_note, evidence_ref, reviewer_id, reviewer_name, reviewed_at, create_time FROM srm_clue_review</sql>
+  <select id="selectClueReviewById" parameterType="Long" resultMap="ClueReviewResult"><include refid="selectClueReviewVo"/> WHERE id = #{id}</select>
+  <select id="selectClueReviewList" parameterType="com.ruoyi.srm.domain.ClueReview" resultMap="ClueReviewResult"><include refid="selectClueReviewVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="clueId != null">AND clue_id = #{clueId}</if>
+    <if test="projectId != null">AND project_id = #{projectId}</if>
+    <if test="reportVersionId != null">AND report_version_id = #{reportVersionId}</if>
+    <if test="reviewStatus != null and reviewStatus != ''">AND review_status = #{reviewStatus}</if>
+    <if test="conclusion != null and conclusion != ''">AND conclusion = #{conclusion}</if>
+    <if test="reviewNote != null and reviewNote != ''">AND review_note = #{reviewNote}</if>
+    <if test="evidenceRef != null and evidenceRef != ''">AND evidence_ref = #{evidenceRef}</if>
+    <if test="reviewerId != null">AND reviewer_id = #{reviewerId}</if>
+    <if test="reviewerName != null and reviewerName != ''">AND reviewer_name = #{reviewerName}</if>
+    <if test="reviewedAt != null">AND reviewed_at = #{reviewedAt}</if>
+  </where></select>
+  <insert id="insertClueReview" parameterType="com.ruoyi.srm.domain.ClueReview" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_clue_review (clue_id, project_id, report_version_id, review_status, conclusion, review_note, evidence_ref, reviewer_id, reviewer_name, reviewed_at, create_time) VALUES (#{clueId}, #{projectId}, #{reportVersionId}, #{reviewStatus}, #{conclusion}, #{reviewNote}, #{evidenceRef}, #{reviewerId}, #{reviewerName}, #{reviewedAt}, #{createTime})</insert>
+  <update id="updateClueReview" parameterType="com.ruoyi.srm.domain.ClueReview">UPDATE srm_clue_review<set>
+    <if test="clueId != null">clue_id = #{clueId},</if>
+    <if test="projectId != null">project_id = #{projectId},</if>
+    <if test="reportVersionId != null">report_version_id = #{reportVersionId},</if>
+    <if test="reviewStatus != null">review_status = #{reviewStatus},</if>
+    <if test="conclusion != null">conclusion = #{conclusion},</if>
+    <if test="reviewNote != null">review_note = #{reviewNote},</if>
+    <if test="evidenceRef != null">evidence_ref = #{evidenceRef},</if>
+    <if test="reviewerId != null">reviewer_id = #{reviewerId},</if>
+    <if test="reviewerName != null">reviewer_name = #{reviewerName},</if>
+    <if test="reviewedAt != null">reviewed_at = #{reviewedAt},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteClueReviewById" parameterType="Long">DELETE FROM srm_clue_review WHERE id = #{id}</delete>
+  <delete id="deleteClueReviewByIds" parameterType="array">DELETE FROM srm_clue_review WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>
