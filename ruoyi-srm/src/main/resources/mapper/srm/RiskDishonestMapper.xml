@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.RiskDishonestMapper">
+  <resultMap id="RiskDishonestResult" type="com.ruoyi.srm.domain.RiskDishonest">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="supplierId" column="supplier_id" jdbcType="BIGINT" />
+    <result property="personName" column="person_name" jdbcType="VARCHAR" />
+    <result property="legalPerson" column="legal_person" jdbcType="VARCHAR" />
+    <result property="managerName" column="manager_name" jdbcType="VARCHAR" />
+    <result property="basisNo" column="basis_no" jdbcType="VARCHAR" />
+    <result property="provinceArea" column="province_area" jdbcType="VARCHAR" />
+    <result property="idNo" column="id_no" jdbcType="VARCHAR" />
+    <result property="court" column="court" jdbcType="VARCHAR" />
+    <result property="publishTime" column="publish_time" jdbcType="TIMESTAMP" />
+    <result property="dishonestType" column="dishonest_type" jdbcType="VARCHAR" />
+    <result property="basisOrg" column="basis_org" jdbcType="VARCHAR" />
+    <result property="obligation" column="obligation" jdbcType="VARCHAR" />
+    <result property="performStatus" column="perform_status" jdbcType="VARCHAR" />
+    <result property="filingDate" column="filing_date" jdbcType="DATE" />
+    <result property="caseNo" column="case_no" jdbcType="VARCHAR" />
+    <result property="conductType" column="conduct_type" jdbcType="VARCHAR" />
+    <result property="amount" column="amount" jdbcType="VARCHAR" />
+    <result property="totalCount" column="total_count" jdbcType="INTEGER" />
+    <result property="rawId" column="raw_id" jdbcType="BIGINT" />
+    <result property="fetchedAt" column="fetched_at" jdbcType="TIMESTAMP" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectRiskDishonestVo">SELECT id, supplier_id, person_name, legal_person, manager_name, basis_no, province_area, id_no, court, publish_time, dishonest_type, basis_org, obligation, perform_status, filing_date, case_no, conduct_type, amount, total_count, raw_id, fetched_at, create_time FROM srm_risk_dishonest</sql>
+  <select id="selectRiskDishonestById" parameterType="Long" resultMap="RiskDishonestResult"><include refid="selectRiskDishonestVo"/> WHERE id = #{id}</select>
+  <select id="selectRiskDishonestList" parameterType="com.ruoyi.srm.domain.RiskDishonest" resultMap="RiskDishonestResult"><include refid="selectRiskDishonestVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="supplierId != null">AND supplier_id = #{supplierId}</if>
+    <if test="personName != null and personName != ''">AND person_name = #{personName}</if>
+    <if test="legalPerson != null and legalPerson != ''">AND legal_person = #{legalPerson}</if>
+    <if test="managerName != null and managerName != ''">AND manager_name = #{managerName}</if>
+    <if test="basisNo != null and basisNo != ''">AND basis_no = #{basisNo}</if>
+    <if test="provinceArea != null and provinceArea != ''">AND province_area = #{provinceArea}</if>
+    <if test="idNo != null and idNo != ''">AND id_no = #{idNo}</if>
+    <if test="court != null and court != ''">AND court = #{court}</if>
+    <if test="publishTime != null">AND publish_time = #{publishTime}</if>
+    <if test="dishonestType != null and dishonestType != ''">AND dishonest_type = #{dishonestType}</if>
+    <if test="basisOrg != null and basisOrg != ''">AND basis_org = #{basisOrg}</if>
+    <if test="obligation != null and obligation != ''">AND obligation = #{obligation}</if>
+    <if test="performStatus != null and performStatus != ''">AND perform_status = #{performStatus}</if>
+    <if test="filingDate != null">AND filing_date = #{filingDate}</if>
+    <if test="caseNo != null and caseNo != ''">AND case_no = #{caseNo}</if>
+    <if test="conductType != null and conductType != ''">AND conduct_type = #{conductType}</if>
+    <if test="amount != null and amount != ''">AND amount = #{amount}</if>
+    <if test="totalCount != null">AND total_count = #{totalCount}</if>
+    <if test="rawId != null">AND raw_id = #{rawId}</if>
+    <if test="fetchedAt != null">AND fetched_at = #{fetchedAt}</if>
+  </where></select>
+  <insert id="insertRiskDishonest" parameterType="com.ruoyi.srm.domain.RiskDishonest" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_risk_dishonest (supplier_id, person_name, legal_person, manager_name, basis_no, province_area, id_no, court, publish_time, dishonest_type, basis_org, obligation, perform_status, filing_date, case_no, conduct_type, amount, total_count, raw_id, fetched_at, create_time) VALUES (#{supplierId}, #{personName}, #{legalPerson}, #{managerName}, #{basisNo}, #{provinceArea}, #{idNo}, #{court}, #{publishTime}, #{dishonestType}, #{basisOrg}, #{obligation}, #{performStatus}, #{filingDate}, #{caseNo}, #{conductType}, #{amount}, #{totalCount}, #{rawId}, #{fetchedAt}, #{createTime})</insert>
+  <update id="updateRiskDishonest" parameterType="com.ruoyi.srm.domain.RiskDishonest">UPDATE srm_risk_dishonest<set>
+    <if test="supplierId != null">supplier_id = #{supplierId},</if>
+    <if test="personName != null">person_name = #{personName},</if>
+    <if test="legalPerson != null">legal_person = #{legalPerson},</if>
+    <if test="managerName != null">manager_name = #{managerName},</if>
+    <if test="basisNo != null">basis_no = #{basisNo},</if>
+    <if test="provinceArea != null">province_area = #{provinceArea},</if>
+    <if test="idNo != null">id_no = #{idNo},</if>
+    <if test="court != null">court = #{court},</if>
+    <if test="publishTime != null">publish_time = #{publishTime},</if>
+    <if test="dishonestType != null">dishonest_type = #{dishonestType},</if>
+    <if test="basisOrg != null">basis_org = #{basisOrg},</if>
+    <if test="obligation != null">obligation = #{obligation},</if>
+    <if test="performStatus != null">perform_status = #{performStatus},</if>
+    <if test="filingDate != null">filing_date = #{filingDate},</if>
+    <if test="caseNo != null">case_no = #{caseNo},</if>
+    <if test="conductType != null">conduct_type = #{conductType},</if>
+    <if test="amount != null">amount = #{amount},</if>
+    <if test="totalCount != null">total_count = #{totalCount},</if>
+    <if test="rawId != null">raw_id = #{rawId},</if>
+    <if test="fetchedAt != null">fetched_at = #{fetchedAt},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteRiskDishonestById" parameterType="Long">DELETE FROM srm_risk_dishonest WHERE id = #{id}</delete>
+  <delete id="deleteRiskDishonestByIds" parameterType="array">DELETE FROM srm_risk_dishonest WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

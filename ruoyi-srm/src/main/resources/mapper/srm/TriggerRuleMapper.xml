@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.TriggerRuleMapper">
+  <resultMap id="TriggerRuleResult" type="com.ruoyi.srm.domain.TriggerRule">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="ruleCode" column="rule_code" jdbcType="VARCHAR" />
+    <result property="ruleName" column="rule_name" jdbcType="VARCHAR" />
+    <result property="triggerMode" column="trigger_mode" jdbcType="VARCHAR" />
+    <result property="apiIds" column="api_ids" jdbcType="VARCHAR" />
+    <result property="allowAuto" column="allow_auto" jdbcType="VARCHAR" />
+    <result property="enabled" column="enabled" jdbcType="VARCHAR" />
+    <result property="sortNo" column="sort_no" jdbcType="INTEGER" />
+    <result property="createBy" column="create_by" jdbcType="VARCHAR" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+    <result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+    <result property="remark" column="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="selectTriggerRuleVo">SELECT id, rule_code, rule_name, trigger_mode, api_ids, allow_auto, enabled, sort_no, create_by, create_time, update_time, remark FROM srm_trigger_rule</sql>
+  <select id="selectTriggerRuleById" parameterType="Long" resultMap="TriggerRuleResult"><include refid="selectTriggerRuleVo"/> WHERE id = #{id}</select>
+  <select id="selectTriggerRuleList" parameterType="com.ruoyi.srm.domain.TriggerRule" resultMap="TriggerRuleResult"><include refid="selectTriggerRuleVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="ruleCode != null and ruleCode != ''">AND rule_code = #{ruleCode}</if>
+    <if test="ruleName != null and ruleName != ''">AND rule_name = #{ruleName}</if>
+    <if test="triggerMode != null and triggerMode != ''">AND trigger_mode = #{triggerMode}</if>
+    <if test="apiIds != null and apiIds != ''">AND api_ids = #{apiIds}</if>
+    <if test="allowAuto != null and allowAuto != ''">AND allow_auto = #{allowAuto}</if>
+    <if test="enabled != null and enabled != ''">AND enabled = #{enabled}</if>
+    <if test="sortNo != null">AND sort_no = #{sortNo}</if>
+  </where></select>
+  <insert id="insertTriggerRule" parameterType="com.ruoyi.srm.domain.TriggerRule" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_trigger_rule (rule_code, rule_name, trigger_mode, api_ids, allow_auto, enabled, sort_no, create_by, create_time, update_time, remark) VALUES (#{ruleCode}, #{ruleName}, #{triggerMode}, #{apiIds}, #{allowAuto}, #{enabled}, #{sortNo}, #{createBy}, #{createTime}, #{updateTime}, #{remark})</insert>
+  <update id="updateTriggerRule" parameterType="com.ruoyi.srm.domain.TriggerRule">UPDATE srm_trigger_rule<set>
+    <if test="ruleCode != null">rule_code = #{ruleCode},</if>
+    <if test="ruleName != null">rule_name = #{ruleName},</if>
+    <if test="triggerMode != null">trigger_mode = #{triggerMode},</if>
+    <if test="apiIds != null">api_ids = #{apiIds},</if>
+    <if test="allowAuto != null">allow_auto = #{allowAuto},</if>
+    <if test="enabled != null">enabled = #{enabled},</if>
+    <if test="sortNo != null">sort_no = #{sortNo},</if>
+    <if test="createBy != null">create_by = #{createBy},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+    <if test="updateTime != null">update_time = #{updateTime},</if>
+    <if test="remark != null">remark = #{remark},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteTriggerRuleById" parameterType="Long">DELETE FROM srm_trigger_rule WHERE id = #{id}</delete>
+  <delete id="deleteTriggerRuleByIds" parameterType="array">DELETE FROM srm_trigger_rule WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

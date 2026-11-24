@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.ImportBatchMapper">
+  <resultMap id="ImportBatchResult" type="com.ruoyi.srm.domain.ImportBatch">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="batchNo" column="batch_no" jdbcType="VARCHAR" />
+    <result property="sourceType" column="source_type" jdbcType="VARCHAR" />
+    <result property="separator" column="separator" jdbcType="VARCHAR" />
+    <result property="hasHeader" column="has_header" jdbcType="VARCHAR" />
+    <result property="totalRows" column="total_rows" jdbcType="INTEGER" />
+    <result property="okRows" column="ok_rows" jdbcType="INTEGER" />
+    <result property="dupRows" column="dup_rows" jdbcType="INTEGER" />
+    <result property="invalidRows" column="invalid_rows" jdbcType="INTEGER" />
+    <result property="importStatus" column="import_status" jdbcType="VARCHAR" />
+    <result property="dupRule" column="dup_rule" jdbcType="VARCHAR" />
+    <result property="filePath" column="file_path" jdbcType="VARCHAR" />
+    <result property="createBy" column="create_by" jdbcType="VARCHAR" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+    <result property="confirmTime" column="confirm_time" jdbcType="TIMESTAMP" />
+    <result property="remark" column="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="selectImportBatchVo">SELECT id, batch_no, source_type, `separator`, has_header, total_rows, ok_rows, dup_rows, invalid_rows, import_status, dup_rule, file_path, create_by, create_time, confirm_time, remark FROM srm_import_batch</sql>
+  <select id="selectImportBatchById" parameterType="Long" resultMap="ImportBatchResult"><include refid="selectImportBatchVo"/> WHERE id = #{id}</select>
+  <select id="selectImportBatchList" parameterType="com.ruoyi.srm.domain.ImportBatch" resultMap="ImportBatchResult"><include refid="selectImportBatchVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="batchNo != null and batchNo != ''">AND batch_no = #{batchNo}</if>
+    <if test="sourceType != null and sourceType != ''">AND source_type = #{sourceType}</if>
+    <if test="separator != null and separator != ''">AND `separator` = #{separator}</if>
+    <if test="hasHeader != null and hasHeader != ''">AND has_header = #{hasHeader}</if>
+    <if test="totalRows != null">AND total_rows = #{totalRows}</if>
+    <if test="okRows != null">AND ok_rows = #{okRows}</if>
+    <if test="dupRows != null">AND dup_rows = #{dupRows}</if>
+    <if test="invalidRows != null">AND invalid_rows = #{invalidRows}</if>
+    <if test="importStatus != null and importStatus != ''">AND import_status = #{importStatus}</if>
+    <if test="dupRule != null and dupRule != ''">AND dup_rule = #{dupRule}</if>
+    <if test="filePath != null and filePath != ''">AND file_path = #{filePath}</if>
+    <if test="confirmTime != null">AND confirm_time = #{confirmTime}</if>
+  </where></select>
+  <insert id="insertImportBatch" parameterType="com.ruoyi.srm.domain.ImportBatch" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_import_batch (batch_no, source_type, `separator`, has_header, total_rows, ok_rows, dup_rows, invalid_rows, import_status, dup_rule, file_path, create_by, create_time, confirm_time, remark) VALUES (#{batchNo}, #{sourceType}, #{separator}, #{hasHeader}, #{totalRows}, #{okRows}, #{dupRows}, #{invalidRows}, #{importStatus}, #{dupRule}, #{filePath}, #{createBy}, #{createTime}, #{confirmTime}, #{remark})</insert>
+  <update id="updateImportBatch" parameterType="com.ruoyi.srm.domain.ImportBatch">UPDATE srm_import_batch<set>
+    <if test="batchNo != null">batch_no = #{batchNo},</if>
+    <if test="sourceType != null">source_type = #{sourceType},</if>
+    <if test="separator != null">`separator` = #{separator},</if>
+    <if test="hasHeader != null">has_header = #{hasHeader},</if>
+    <if test="totalRows != null">total_rows = #{totalRows},</if>
+    <if test="okRows != null">ok_rows = #{okRows},</if>
+    <if test="dupRows != null">dup_rows = #{dupRows},</if>
+    <if test="invalidRows != null">invalid_rows = #{invalidRows},</if>
+    <if test="importStatus != null">import_status = #{importStatus},</if>
+    <if test="dupRule != null">dup_rule = #{dupRule},</if>
+    <if test="filePath != null">file_path = #{filePath},</if>
+    <if test="createBy != null">create_by = #{createBy},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+    <if test="confirmTime != null">confirm_time = #{confirmTime},</if>
+    <if test="remark != null">remark = #{remark},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteImportBatchById" parameterType="Long">DELETE FROM srm_import_batch WHERE id = #{id}</delete>
+  <delete id="deleteImportBatchByIds" parameterType="array">DELETE FROM srm_import_batch WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

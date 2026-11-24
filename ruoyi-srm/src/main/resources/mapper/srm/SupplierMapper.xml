@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.SupplierMapper">
+  <resultMap id="SupplierResult" type="com.ruoyi.srm.domain.Supplier">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="supplierCode" column="supplier_code" jdbcType="VARCHAR" />
+    <result property="supplierName" column="supplier_name" jdbcType="VARCHAR" />
+    <result property="creditCode" column="credit_code" jdbcType="VARCHAR" />
+    <result property="regNo" column="reg_no" jdbcType="VARCHAR" />
+    <result property="tycCompanyId" column="tyc_company_id" jdbcType="VARCHAR" />
+    <result property="legalPerson" column="legal_person" jdbcType="VARCHAR" />
+    <result property="regCapital" column="reg_capital" jdbcType="VARCHAR" />
+    <result property="regCapitalNum" column="reg_capital_num" jdbcType="DECIMAL" />
+    <result property="establishDate" column="establish_date" jdbcType="DATE" />
+    <result property="bizStatus" column="biz_status" jdbcType="VARCHAR" />
+    <result property="industry" column="industry" jdbcType="VARCHAR" />
+    <result property="regAddress" column="reg_address" jdbcType="VARCHAR" />
+    <result property="phone" column="phone" jdbcType="VARCHAR" />
+    <result property="email" column="email" jdbcType="VARCHAR" />
+    <result property="province" column="province" jdbcType="VARCHAR" />
+    <result property="city" column="city" jdbcType="VARCHAR" />
+    <result property="district" column="district" jdbcType="VARCHAR" />
+    <result property="areaCode" column="area_code" jdbcType="VARCHAR" />
+    <result property="monitorFlag" column="monitor_flag" jdbcType="VARCHAR" />
+    <result property="dataSource" column="data_source" jdbcType="VARCHAR" />
+    <result property="dataVersion" column="data_version" jdbcType="INTEGER" />
+    <result property="lastEnrichAt" column="last_enrich_at" jdbcType="TIMESTAMP" />
+    <result property="lastUpdateAt" column="last_update_at" jdbcType="TIMESTAMP" />
+    <result property="firstImportBatch" column="first_import_batch" jdbcType="VARCHAR" />
+    <result property="status" column="status" jdbcType="VARCHAR" />
+    <result property="delFlag" column="del_flag" jdbcType="VARCHAR" />
+    <result property="createBy" column="create_by" jdbcType="VARCHAR" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+    <result property="updateBy" column="update_by" jdbcType="VARCHAR" />
+    <result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+    <result property="remark" column="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="selectSupplierVo">SELECT id, supplier_code, supplier_name, credit_code, reg_no, tyc_company_id, legal_person, reg_capital, reg_capital_num, establish_date, biz_status, industry, reg_address, phone, email, province, city, district, area_code, monitor_flag, data_source, data_version, last_enrich_at, last_update_at, first_import_batch, status, del_flag, create_by, create_time, update_by, update_time, remark FROM srm_supplier</sql>
+  <select id="selectSupplierById" parameterType="Long" resultMap="SupplierResult"><include refid="selectSupplierVo"/> WHERE id = #{id}</select>
+  <select id="selectSupplierList" parameterType="com.ruoyi.srm.domain.Supplier" resultMap="SupplierResult"><include refid="selectSupplierVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="supplierCode != null and supplierCode != ''">AND supplier_code = #{supplierCode}</if>
+    <if test="supplierName != null and supplierName != ''">AND supplier_name = #{supplierName}</if>
+    <if test="creditCode != null and creditCode != ''">AND credit_code = #{creditCode}</if>
+    <if test="regNo != null and regNo != ''">AND reg_no = #{regNo}</if>
+    <if test="tycCompanyId != null and tycCompanyId != ''">AND tyc_company_id = #{tycCompanyId}</if>
+    <if test="legalPerson != null and legalPerson != ''">AND legal_person = #{legalPerson}</if>
+    <if test="regCapital != null and regCapital != ''">AND reg_capital = #{regCapital}</if>
+    <if test="regCapitalNum != null">AND reg_capital_num = #{regCapitalNum}</if>
+    <if test="establishDate != null">AND establish_date = #{establishDate}</if>
+    <if test="bizStatus != null and bizStatus != ''">AND biz_status = #{bizStatus}</if>
+    <if test="industry != null and industry != ''">AND industry = #{industry}</if>
+    <if test="regAddress != null and regAddress != ''">AND reg_address = #{regAddress}</if>
+    <if test="phone != null and phone != ''">AND phone = #{phone}</if>
+    <if test="email != null and email != ''">AND email = #{email}</if>
+    <if test="province != null and province != ''">AND province = #{province}</if>
+    <if test="city != null and city != ''">AND city = #{city}</if>
+    <if test="district != null and district != ''">AND district = #{district}</if>
+    <if test="areaCode != null and areaCode != ''">AND area_code = #{areaCode}</if>
+    <if test="monitorFlag != null and monitorFlag != ''">AND monitor_flag = #{monitorFlag}</if>
+    <if test="dataSource != null and dataSource != ''">AND data_source = #{dataSource}</if>
+    <if test="dataVersion != null">AND data_version = #{dataVersion}</if>
+    <if test="lastEnrichAt != null">AND last_enrich_at = #{lastEnrichAt}</if>
+    <if test="lastUpdateAt != null">AND last_update_at = #{lastUpdateAt}</if>
+    <if test="firstImportBatch != null and firstImportBatch != ''">AND first_import_batch = #{firstImportBatch}</if>
+    <if test="status != null and status != ''">AND status = #{status}</if>
+    <if test="delFlag != null and delFlag != ''">AND del_flag = #{delFlag}</if>
+  </where></select>
+  <insert id="insertSupplier" parameterType="com.ruoyi.srm.domain.Supplier" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_supplier (supplier_code, supplier_name, credit_code, reg_no, tyc_company_id, legal_person, reg_capital, reg_capital_num, establish_date, biz_status, industry, reg_address, phone, email, province, city, district, area_code, monitor_flag, data_source, data_version, last_enrich_at, last_update_at, first_import_batch, status, del_flag, create_by, create_time, update_by, update_time, remark) VALUES (#{supplierCode}, #{supplierName}, #{creditCode}, #{regNo}, #{tycCompanyId}, #{legalPerson}, #{regCapital}, #{regCapitalNum}, #{establishDate}, #{bizStatus}, #{industry}, #{regAddress}, #{phone}, #{email}, #{province}, #{city}, #{district}, #{areaCode}, #{monitorFlag}, #{dataSource}, #{dataVersion}, #{lastEnrichAt}, #{lastUpdateAt}, #{firstImportBatch}, #{status}, #{delFlag}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime}, #{remark})</insert>
+  <update id="updateSupplier" parameterType="com.ruoyi.srm.domain.Supplier">UPDATE srm_supplier<set>
+    <if test="supplierCode != null">supplier_code = #{supplierCode},</if>
+    <if test="supplierName != null">supplier_name = #{supplierName},</if>
+    <if test="creditCode != null">credit_code = #{creditCode},</if>
+    <if test="regNo != null">reg_no = #{regNo},</if>
+    <if test="tycCompanyId != null">tyc_company_id = #{tycCompanyId},</if>
+    <if test="legalPerson != null">legal_person = #{legalPerson},</if>
+    <if test="regCapital != null">reg_capital = #{regCapital},</if>
+    <if test="regCapitalNum != null">reg_capital_num = #{regCapitalNum},</if>
+    <if test="establishDate != null">establish_date = #{establishDate},</if>
+    <if test="bizStatus != null">biz_status = #{bizStatus},</if>
+    <if test="industry != null">industry = #{industry},</if>
+    <if test="regAddress != null">reg_address = #{regAddress},</if>
+    <if test="phone != null">phone = #{phone},</if>
+    <if test="email != null">email = #{email},</if>
+    <if test="province != null">province = #{province},</if>
+    <if test="city != null">city = #{city},</if>
+    <if test="district != null">district = #{district},</if>
+    <if test="areaCode != null">area_code = #{areaCode},</if>
+    <if test="monitorFlag != null">monitor_flag = #{monitorFlag},</if>
+    <if test="dataSource != null">data_source = #{dataSource},</if>
+    <if test="dataVersion != null">data_version = #{dataVersion},</if>
+    <if test="lastEnrichAt != null">last_enrich_at = #{lastEnrichAt},</if>
+    <if test="lastUpdateAt != null">last_update_at = #{lastUpdateAt},</if>
+    <if test="firstImportBatch != null">first_import_batch = #{firstImportBatch},</if>
+    <if test="status != null">status = #{status},</if>
+    <if test="delFlag != null">del_flag = #{delFlag},</if>
+    <if test="createBy != null">create_by = #{createBy},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+    <if test="updateBy != null">update_by = #{updateBy},</if>
+    <if test="updateTime != null">update_time = #{updateTime},</if>
+    <if test="remark != null">remark = #{remark},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteSupplierById" parameterType="Long">DELETE FROM srm_supplier WHERE id = #{id}</delete>
+  <delete id="deleteSupplierByIds" parameterType="array">DELETE FROM srm_supplier WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

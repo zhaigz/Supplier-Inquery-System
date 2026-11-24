@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.RiskTaxOwedMapper">
+  <resultMap id="RiskTaxOwedResult" type="com.ruoyi.srm.domain.RiskTaxOwed">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="supplierId" column="supplier_id" jdbcType="BIGINT" />
+    <result property="taxpayerNo" column="taxpayer_no" jdbcType="VARCHAR" />
+    <result property="taxpayerName" column="taxpayer_name" jdbcType="VARCHAR" />
+    <result property="idNo" column="id_no" jdbcType="VARCHAR" />
+    <result property="taxpayerType" column="taxpayer_type" jdbcType="VARCHAR" />
+    <result property="regType" column="reg_type" jdbcType="VARCHAR" />
+    <result property="taxType" column="tax_type" jdbcType="VARCHAR" />
+    <result property="taxCategory" column="tax_category" jdbcType="VARCHAR" />
+    <result property="owedAmount" column="owed_amount" jdbcType="VARCHAR" />
+    <result property="owedBalance" column="owed_balance" jdbcType="VARCHAR" />
+    <result property="newOwedBalance" column="new_owed_balance" jdbcType="VARCHAR" />
+    <result property="publishTime" column="publish_time" jdbcType="TIMESTAMP" />
+    <result property="bizAddress" column="biz_address" jdbcType="VARCHAR" />
+    <result property="taxAuthority" column="tax_authority" jdbcType="VARCHAR" />
+    <result property="legalName" column="legal_name" jdbcType="VARCHAR" />
+    <result property="legalIdType" column="legal_id_type" jdbcType="VARCHAR" />
+    <result property="totalCount" column="total_count" jdbcType="INTEGER" />
+    <result property="rawId" column="raw_id" jdbcType="BIGINT" />
+    <result property="fetchedAt" column="fetched_at" jdbcType="TIMESTAMP" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectRiskTaxOwedVo">SELECT id, supplier_id, taxpayer_no, taxpayer_name, id_no, taxpayer_type, reg_type, tax_type, tax_category, owed_amount, owed_balance, new_owed_balance, publish_time, biz_address, tax_authority, legal_name, legal_id_type, total_count, raw_id, fetched_at, create_time FROM srm_risk_tax_owed</sql>
+  <select id="selectRiskTaxOwedById" parameterType="Long" resultMap="RiskTaxOwedResult"><include refid="selectRiskTaxOwedVo"/> WHERE id = #{id}</select>
+  <select id="selectRiskTaxOwedList" parameterType="com.ruoyi.srm.domain.RiskTaxOwed" resultMap="RiskTaxOwedResult"><include refid="selectRiskTaxOwedVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="supplierId != null">AND supplier_id = #{supplierId}</if>
+    <if test="taxpayerNo != null and taxpayerNo != ''">AND taxpayer_no = #{taxpayerNo}</if>
+    <if test="taxpayerName != null and taxpayerName != ''">AND taxpayer_name = #{taxpayerName}</if>
+    <if test="idNo != null and idNo != ''">AND id_no = #{idNo}</if>
+    <if test="taxpayerType != null and taxpayerType != ''">AND taxpayer_type = #{taxpayerType}</if>
+    <if test="regType != null and regType != ''">AND reg_type = #{regType}</if>
+    <if test="taxType != null and taxType != ''">AND tax_type = #{taxType}</if>
+    <if test="taxCategory != null and taxCategory != ''">AND tax_category = #{taxCategory}</if>
+    <if test="owedAmount != null and owedAmount != ''">AND owed_amount = #{owedAmount}</if>
+    <if test="owedBalance != null and owedBalance != ''">AND owed_balance = #{owedBalance}</if>
+    <if test="newOwedBalance != null and newOwedBalance != ''">AND new_owed_balance = #{newOwedBalance}</if>
+    <if test="publishTime != null">AND publish_time = #{publishTime}</if>
+    <if test="bizAddress != null and bizAddress != ''">AND biz_address = #{bizAddress}</if>
+    <if test="taxAuthority != null and taxAuthority != ''">AND tax_authority = #{taxAuthority}</if>
+    <if test="legalName != null and legalName != ''">AND legal_name = #{legalName}</if>
+    <if test="legalIdType != null and legalIdType != ''">AND legal_id_type = #{legalIdType}</if>
+    <if test="totalCount != null">AND total_count = #{totalCount}</if>
+    <if test="rawId != null">AND raw_id = #{rawId}</if>
+    <if test="fetchedAt != null">AND fetched_at = #{fetchedAt}</if>
+  </where></select>
+  <insert id="insertRiskTaxOwed" parameterType="com.ruoyi.srm.domain.RiskTaxOwed" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_risk_tax_owed (supplier_id, taxpayer_no, taxpayer_name, id_no, taxpayer_type, reg_type, tax_type, tax_category, owed_amount, owed_balance, new_owed_balance, publish_time, biz_address, tax_authority, legal_name, legal_id_type, total_count, raw_id, fetched_at, create_time) VALUES (#{supplierId}, #{taxpayerNo}, #{taxpayerName}, #{idNo}, #{taxpayerType}, #{regType}, #{taxType}, #{taxCategory}, #{owedAmount}, #{owedBalance}, #{newOwedBalance}, #{publishTime}, #{bizAddress}, #{taxAuthority}, #{legalName}, #{legalIdType}, #{totalCount}, #{rawId}, #{fetchedAt}, #{createTime})</insert>
+  <update id="updateRiskTaxOwed" parameterType="com.ruoyi.srm.domain.RiskTaxOwed">UPDATE srm_risk_tax_owed<set>
+    <if test="supplierId != null">supplier_id = #{supplierId},</if>
+    <if test="taxpayerNo != null">taxpayer_no = #{taxpayerNo},</if>
+    <if test="taxpayerName != null">taxpayer_name = #{taxpayerName},</if>
+    <if test="idNo != null">id_no = #{idNo},</if>
+    <if test="taxpayerType != null">taxpayer_type = #{taxpayerType},</if>
+    <if test="regType != null">reg_type = #{regType},</if>
+    <if test="taxType != null">tax_type = #{taxType},</if>
+    <if test="taxCategory != null">tax_category = #{taxCategory},</if>
+    <if test="owedAmount != null">owed_amount = #{owedAmount},</if>
+    <if test="owedBalance != null">owed_balance = #{owedBalance},</if>
+    <if test="newOwedBalance != null">new_owed_balance = #{newOwedBalance},</if>
+    <if test="publishTime != null">publish_time = #{publishTime},</if>
+    <if test="bizAddress != null">biz_address = #{bizAddress},</if>
+    <if test="taxAuthority != null">tax_authority = #{taxAuthority},</if>
+    <if test="legalName != null">legal_name = #{legalName},</if>
+    <if test="legalIdType != null">legal_id_type = #{legalIdType},</if>
+    <if test="totalCount != null">total_count = #{totalCount},</if>
+    <if test="rawId != null">raw_id = #{rawId},</if>
+    <if test="fetchedAt != null">fetched_at = #{fetchedAt},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteRiskTaxOwedById" parameterType="Long">DELETE FROM srm_risk_tax_owed WHERE id = #{id}</delete>
+  <delete id="deleteRiskTaxOwedByIds" parameterType="array">DELETE FROM srm_risk_tax_owed WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

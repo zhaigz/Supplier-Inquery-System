@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.UsageStatMapper">
+  <resultMap id="UsageStatResult" type="com.ruoyi.srm.domain.UsageStat">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="statDate" column="stat_date" jdbcType="DATE" />
+    <result property="periodType" column="period_type" jdbcType="VARCHAR" />
+    <result property="apiId" column="api_id" jdbcType="INTEGER" />
+    <result property="callCount" column="call_count" jdbcType="INTEGER" />
+    <result property="cacheHitCount" column="cache_hit_count" jdbcType="INTEGER" />
+    <result property="blockCount" column="block_count" jdbcType="INTEGER" />
+    <result property="failCount" column="fail_count" jdbcType="INTEGER" />
+    <result property="unitConsumed" column="unit_consumed" jdbcType="DECIMAL" />
+    <result property="costAmount" column="cost_amount" jdbcType="DECIMAL" />
+    <result property="avgCostMs" column="avg_cost_ms" jdbcType="INTEGER" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+    <result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectUsageStatVo">SELECT id, stat_date, period_type, api_id, call_count, cache_hit_count, block_count, fail_count, unit_consumed, cost_amount, avg_cost_ms, create_time, update_time FROM srm_usage_stat</sql>
+  <select id="selectUsageStatById" parameterType="Long" resultMap="UsageStatResult"><include refid="selectUsageStatVo"/> WHERE id = #{id}</select>
+  <select id="selectUsageStatList" parameterType="com.ruoyi.srm.domain.UsageStat" resultMap="UsageStatResult"><include refid="selectUsageStatVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="statDate != null">AND stat_date = #{statDate}</if>
+    <if test="periodType != null and periodType != ''">AND period_type = #{periodType}</if>
+    <if test="apiId != null">AND api_id = #{apiId}</if>
+    <if test="callCount != null">AND call_count = #{callCount}</if>
+    <if test="cacheHitCount != null">AND cache_hit_count = #{cacheHitCount}</if>
+    <if test="blockCount != null">AND block_count = #{blockCount}</if>
+    <if test="failCount != null">AND fail_count = #{failCount}</if>
+    <if test="unitConsumed != null">AND unit_consumed = #{unitConsumed}</if>
+    <if test="costAmount != null">AND cost_amount = #{costAmount}</if>
+    <if test="avgCostMs != null">AND avg_cost_ms = #{avgCostMs}</if>
+  </where></select>
+  <insert id="insertUsageStat" parameterType="com.ruoyi.srm.domain.UsageStat" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_usage_stat (stat_date, period_type, api_id, call_count, cache_hit_count, block_count, fail_count, unit_consumed, cost_amount, avg_cost_ms, create_time, update_time) VALUES (#{statDate}, #{periodType}, #{apiId}, #{callCount}, #{cacheHitCount}, #{blockCount}, #{failCount}, #{unitConsumed}, #{costAmount}, #{avgCostMs}, #{createTime}, #{updateTime})</insert>
+  <update id="updateUsageStat" parameterType="com.ruoyi.srm.domain.UsageStat">UPDATE srm_usage_stat<set>
+    <if test="statDate != null">stat_date = #{statDate},</if>
+    <if test="periodType != null">period_type = #{periodType},</if>
+    <if test="apiId != null">api_id = #{apiId},</if>
+    <if test="callCount != null">call_count = #{callCount},</if>
+    <if test="cacheHitCount != null">cache_hit_count = #{cacheHitCount},</if>
+    <if test="blockCount != null">block_count = #{blockCount},</if>
+    <if test="failCount != null">fail_count = #{failCount},</if>
+    <if test="unitConsumed != null">unit_consumed = #{unitConsumed},</if>
+    <if test="costAmount != null">cost_amount = #{costAmount},</if>
+    <if test="avgCostMs != null">avg_cost_ms = #{avgCostMs},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+    <if test="updateTime != null">update_time = #{updateTime},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteUsageStatById" parameterType="Long">DELETE FROM srm_usage_stat WHERE id = #{id}</delete>
+  <delete id="deleteUsageStatByIds" parameterType="array">DELETE FROM srm_usage_stat WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>

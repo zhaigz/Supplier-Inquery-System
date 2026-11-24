@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.srm.mapper.SupplierFormerNameMapper">
+  <resultMap id="SupplierFormerNameResult" type="com.ruoyi.srm.domain.SupplierFormerName">
+    <id property="id" column="id" jdbcType="BIGINT" />
+    <result property="supplierId" column="supplier_id" jdbcType="BIGINT" />
+    <result property="formerName" column="former_name" jdbcType="VARCHAR" />
+    <result property="startTime" column="start_time" jdbcType="VARCHAR" />
+    <result property="endTime" column="end_time" jdbcType="VARCHAR" />
+    <result property="rawId" column="raw_id" jdbcType="BIGINT" />
+    <result property="fetchedAt" column="fetched_at" jdbcType="TIMESTAMP" />
+    <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="selectSupplierFormerNameVo">SELECT id, supplier_id, former_name, start_time, end_time, raw_id, fetched_at, create_time FROM srm_supplier_former_name</sql>
+  <select id="selectSupplierFormerNameById" parameterType="Long" resultMap="SupplierFormerNameResult"><include refid="selectSupplierFormerNameVo"/> WHERE id = #{id}</select>
+  <select id="selectSupplierFormerNameList" parameterType="com.ruoyi.srm.domain.SupplierFormerName" resultMap="SupplierFormerNameResult"><include refid="selectSupplierFormerNameVo"/><where>
+    <if test="id != null">AND id = #{id}</if>
+    <if test="supplierId != null">AND supplier_id = #{supplierId}</if>
+    <if test="formerName != null and formerName != ''">AND former_name = #{formerName}</if>
+    <if test="startTime != null and startTime != ''">AND start_time = #{startTime}</if>
+    <if test="endTime != null and endTime != ''">AND end_time = #{endTime}</if>
+    <if test="rawId != null">AND raw_id = #{rawId}</if>
+    <if test="fetchedAt != null">AND fetched_at = #{fetchedAt}</if>
+  </where></select>
+  <insert id="insertSupplierFormerName" parameterType="com.ruoyi.srm.domain.SupplierFormerName" useGeneratedKeys="true" keyProperty="id">INSERT INTO srm_supplier_former_name (supplier_id, former_name, start_time, end_time, raw_id, fetched_at, create_time) VALUES (#{supplierId}, #{formerName}, #{startTime}, #{endTime}, #{rawId}, #{fetchedAt}, #{createTime})</insert>
+  <update id="updateSupplierFormerName" parameterType="com.ruoyi.srm.domain.SupplierFormerName">UPDATE srm_supplier_former_name<set>
+    <if test="supplierId != null">supplier_id = #{supplierId},</if>
+    <if test="formerName != null">former_name = #{formerName},</if>
+    <if test="startTime != null">start_time = #{startTime},</if>
+    <if test="endTime != null">end_time = #{endTime},</if>
+    <if test="rawId != null">raw_id = #{rawId},</if>
+    <if test="fetchedAt != null">fetched_at = #{fetchedAt},</if>
+    <if test="createTime != null">create_time = #{createTime},</if>
+  </set> WHERE id = #{id}</update>
+  <delete id="deleteSupplierFormerNameById" parameterType="Long">DELETE FROM srm_supplier_former_name WHERE id = #{id}</delete>
+  <delete id="deleteSupplierFormerNameByIds" parameterType="array">DELETE FROM srm_supplier_former_name WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+</mapper>
