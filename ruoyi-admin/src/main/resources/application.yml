@@ -13,10 +13,136 @@ ruoyi:
   # 验证码类型 math 数字计算 char 字符验证
   captchaType: math
 
+# ============================================================================
+# 供应商查询系统（SRM）天眼查网关配置
+# ----------------------------------------------------------------------------
+# 开发阶段：enabled=false（或 token 为空）时，六段流水线（套餐→缓存→触发规则→预算→
+#   限流→留痕）照常执行，第⑥段不发真实 HTTP，只写"外调开关未开启，未发起真实请求"。
+#   页面接口全部已按 SrmApiId 预埋，接真实接口时只改本段配置，页面代码零改动。
+# 测试/生产：把 token 与 apis 中对应编号的 path、method 填好后置 enabled=true 即可直连。
+# 密钥：token 禁止提交明文，建议用环境变量覆盖，例如 ${TYC_TOKEN:}
+# ============================================================================
+srm:
+  tyc:
+    # 真实外调总开关；测试接真实接口时置 true
+    enabled: true
+    # 天眼查开放平台地址（不含具体编号路径），编号路径在下方 apis 里逐个编号配
+    base-url: https://open.api.tianyancha.com/services/open
+    # 访问令牌：建议用环境变量注入，不要把真实 token 提交到仓库
+    token: ${TYC_TOKEN:}
+    # 令牌请求头名称，天眼查开放平台默认 Authorization
+    token-header: Authorization
+    # 单次请求超时 / 建连超时（毫秒）
+    timeout-ms: 10000
+    connect-timeout-ms: 5000
+    # 网络异常与 5xx 重试次数与退避基数（4xx 与业务失败不重试）
+    retry-times: 2
+    retry-backoff-ms: 500
+    # 缓存分桶环境：prod / test
+    default-env: prod
+    # 未在 apis 中显式配置路径时的兜底：GET/POST 与 /{apiId}
+    default-method: GET
+    default-path-template: /{apiId}
+    # 原始响应超过该字节数落文件（storage_type=file）
+    raw-inline-max-bytes: 262144
+    raw-file-dir: ./srm-raw
+    # ------------------------------------------------------------------------
+    # 逐编号接入明细（本轮 134 条接口引用到的 16 个编号，不增不减）
+    # path 取值以《天眼查API接口.xlsx》"详细URL"与开放平台在线文档为准；
+    # 开发阶段 path 留空（回落到 default-path-template），测试接入时逐条补齐。
+    # method 未填则用 default-method；enabled=false 时仅拦截该编号，不影响其它编号。
+    # ------------------------------------------------------------------------
+    apis:
+      # —— 页面1 供应商列表 / 页面3 供应商基本信息：工商信息 ——
+      "818":
+        # 企业基本信息（含企业联系方式）0.20 元/次
+        path: 'http://open.api.tianyancha.com/services/open/ic/baseinfoV2/2.0'
+        method: GET
+        enabled: true
+      "819":
+        # 企业基本信息（含主要人员）0.25 元/次
+        path: 'http://open.api.tianyancha.com/services/open/ic/baseinfoV3/2.0'
+        method: GET
+        enabled: true
+      "821":
+        # 企业股东（分页，每页 20 条）0.15 元/次
+        path: 'http://open.api.tianyancha.com/services/open/ic/holder/2.0'
+        method: GET
+        enabled: true
+      "1046":
+        # 企业联系方式 0.10 元/次
+        path: 'http://open.api.tianyancha.com/services/open/ic/contact'
+        method: GET
+        enabled: true
+      "458":
+        # 企业曾用名 0.10 元/次
+        path: 'http://open.api.tianyancha.com/services/v4/open/historyNames'
+        method: GET
+        enabled: true
+      # —— 页面4 司法风险 / 经营风险 ——
+      "1002":
+        # 司法风险（组合）1.50 元/次
+        path: 'http://open.api.tianyancha.com/services/open/cb/judicial/2.0'
+        method: GET
+        enabled: true
+      "839":
+        # 被执行人（分页，每页 20 条）0.15 元/次
+        path: 'http://open.api.tianyancha.com/services/open/jr/zhixinginfo/2.0'
+        method: GET
+        enabled: true
+      "871":
+        # 历史被执行人（分页，每页 20 条）0.10 元/次
+        path: 'http://open.api.tianyancha.com/services/open/hi/zhixing/2.0'
+        method: GET
+        enabled: true
+      "872":
+        # 历史失信人（分页，每页 20 条）0.10 元/次
+        path: 'http://open.api.tianyancha.com/services/open/hi/dishonest/2.0'
+        method: GET
+        enabled: true
+      "846":
+        # 严重违法（分页，每页 20 条）0.15 元/次
+        path: 'http://open.api.tianyancha.com/services/open/mr/illegalinfo/2.0'
+        method: GET
+        enabled: true
+      "848":
+        # 经营异常（分页，每页 20 条）0.15 元/次
+        path: 'http://open.api.tianyancha.com/services/open/mr/abnormal/2.0'
+        method: GET
+        enabled: true
+      "851":
+        # 欠税公告（分页，每页 20 条）0.15 元/次
+        path: 'http://open.api.tianyancha.com/services/open/mr/ownTax/2.0'
+        method: GET
+        enabled: true
+      # —— 页面5 股权穿透图谱 / 页面6 幕后关系图谱 / 页面7 项目供应商关系网 ——
+      "1160":
+        # 股权穿透（10层）4.00 元/次；入参 depth 最大 10
+        path: 'http://open.api.tianyancha.com/services/v3/open/investtree/ten'
+        method: GET
+        enabled: true
+      "1161":
+        # 幕后关系（10层）4.00 元/次；异步接口
+        path: 'http://open.api.tianyancha.com/services/open/ic/baseinfo/normal'
+        method: GET
+        enabled: true
+      "1123":
+        # 疑似实际控制人 1.00 元/次
+        path: 'http://open.api.tianyancha.com/services/open/ic/actualControl/3.0'
+        method: GET
+        enabled: true
+      "1156":
+        # 疑似关系发现（分页，每页 20 条）1.00 元/次
+        path: 'http://open.api.tianyancha.com/services/open/rela/suspected'
+        method: GET
+        enabled: true
+  data-center:
+    dir: ./srm-backup
+
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为8080
-  port: 8080
+  port: 8090
   servlet:
     # 应用的访问路径
     context-path: /
@@ -51,6 +177,11 @@ spring:
   messages:
     # 国际化资源文件路径
     basename: i18n/messages
+  # JSON 日期时间统一序列化：未加注解的 Date 字段默认输出 yyyy-MM-dd HH:mm:ss，
+  # 纯日期字段（成立日期/核准日期等）在实体上用 @JsonFormat(pattern="yyyy-MM-dd") 单独覆盖
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
   profiles:
     active: druid
   # 文件上传

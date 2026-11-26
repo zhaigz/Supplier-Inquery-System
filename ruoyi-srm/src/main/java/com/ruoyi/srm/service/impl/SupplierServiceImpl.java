@@ -19,4 +19,5 @@ public class SupplierServiceImpl implements ISupplierService
     public int updateSupplier(Supplier entity) { return SupplierMapper.updateSupplier(entity); }
     public int deleteSupplierById(Long id) { return SupplierMapper.deleteSupplierById(id); }
     public int deleteSupplierByIds(Long[] ids) { return SupplierMapper.deleteSupplierByIds(ids); }
+    public int updateSupplierMonitorFlag(Long[] ids, String monitorFlag) { return SupplierMapper.updateSupplierMonitorFlag(ids, monitorFlag); }
 }

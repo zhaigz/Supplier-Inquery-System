@@ -1,0 +1,1 @@
+package com.ruoyi.srm.domain.dto; import java.util.List; public class MonitorDto { private List<Long> ids; private String monitorFlag; public List<Long> getIds(){return ids;} public void setIds(List<Long> v){ids=v;} public String getMonitorFlag(){return monitorFlag;} public void setMonitorFlag(String v){monitorFlag=v;} }

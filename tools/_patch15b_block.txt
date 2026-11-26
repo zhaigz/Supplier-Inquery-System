@@ -1,0 +1,203 @@
+# ==========================================================================
+# 4.1 15 家供应商图谱任务（页面5 股权穿透 / 页面6 幕后关系）
+#     语义：以下数据均为历史调用天眼查付费接口（821/1123/1156/1158/1160/1161）
+#     后回写并沉淀在本地的结果；本地命中即可直接回放，不再重复付费外调。
+# ==========================================================================
+_GEN_SUP = {r[0]: {'name': r[2], 'credit': r[3], 'tyc': r[5], 'legal': r[6],
+                   'cap': r[7], 'est': r[9], 'monitor': r[19]} for r in SUPPLIERS}
+_GEN_BY_NAME = {v['name']: k for k, v in _GEN_SUP.items()}
+_SH_BY = {}
+for _r in SHAREHOLDERS:
+    _SH_BY.setdefault(_r[1], []).append(_r)
+_PE_BY = {}
+for _r in PERSONS:
+    _PE_BY.setdefault(_r[1], []).append(_r)
+_TEL_OWNER, _MAIL_OWNER = {}, {}
+for _s, _v in sorted(_tel.items()):
+    _TEL_OWNER.setdefault(_v, []).append(_s)
+for _s, _v in sorted(_mail.items()):
+    _MAIL_OWNER.setdefault(_v, []).append(_s)
+
+_GEN_TASKS, _GEN_NODES, _GEN_EDGES = [], [], []
+_TS = '2026-11-18 15:00:00'
+_seq = {'n': 2301, 'e': 3301}
+
+
+def _gn(task_id, key, ntype, name, credit, level, parent, can_extend, red, monitor,
+        supplier_id, group, api_id, attrs=None):
+    row = (_seq['n'], task_id, key, ntype, name, credit,
+           '存续' if ntype == 'Company' else None, level, parent, can_extend, red,
+           monitor, supplier_id, group, attrs or {}, {}, api_id, None, _TS)
+    _seq['n'] += 1
+    return row
+
+
+def _ge(task_id, frm, to, rel, ratio, label, weight, rule_id, api_id):
+    row = (_seq['e'], task_id, 'E%d-%s-%s' % (task_id, frm, to), frm, to, frm, to, rel,
+           ratio, label, 'Y', weight, rule_id, None, api_id, None, _TS)
+    _seq['e'] += 1
+    return row
+
+
+def _gtask(tid, tno, ttype, scene, sid, count, units):
+    sup = _GEN_SUP[sid]
+    return (tid, tno, 'MOCKTRACE-%d' % tid, ttype, scene, None, None, sup['credit'],
+            sup['name'], sup['name'], 'ALL', 'both', 4, 0.0000, 100.0000, 1, 1, '1',
+            'SUCCESS', 2, _TS, _TS, '1', units, 10.00, 'DONE', None, None, count,
+            _TS, _TS, 18600, 'prod', 'admin', _TS, _TS)
+
+
+# ---------- 页面5：股权穿透（向上股东 + 向下投资 + 主要人员） ----------
+for _sid in sorted(_GEN_SUP):
+    _sup = _GEN_SUP[_sid]
+    _grp = 'GRP-%d' % _sid
+    _tid = 1300 + (_sid - 1000)
+    _nodes, _edges = [], []
+    _center = 'C%d' % _sid
+    _nodes.append(_gn(_tid, _center, 'Company', _sup['name'], _sup['credit'], 0, None,
+                      '1', '0', _sup['monitor'], _sid, _grp, 1160,
+                      {'position': '中心企业', 'ratioLabel': '起点'}))
+    _parent_companies = []
+    for _j, _sh in enumerate(_SH_BY.get(_sid, []), start=1):
+        _sname, _stype, _hcgid, _ratio = _sh[2], _sh[3], _sh[6], _sh[7]
+        _rtxt = '%g%%' % round(_ratio * 100, 4)
+        if _stype == '1' and _sname in _GEN_BY_NAME:
+            _other = _GEN_BY_NAME[_sname]
+            _key = 'C%d' % _other
+            if _key not in [n[2] for n in _nodes]:
+                _nodes.append(_gn(_tid, _key, 'Company', _sname, _GEN_SUP[_other]['credit'],
+                                  1, _center, '1', '0', _GEN_SUP[_other]['monitor'], _other,
+                                  _grp, 821, {'position': '股东企业', 'ratioLabel': _rtxt}))
+            _parent_companies.append((_other, _key))
+        else:
+            _key = 'H%d_%d' % (_sid, _j)
+            _nodes.append(_gn(_tid, _key, 'Human', _sname, None, 1, _center, '0',
+                              '1' if _hcgid else '0', '0', None, _grp, 1123,
+                              {'position': '自然人股东', 'ratioLabel': _rtxt}))
+        _edges.append(_ge(_tid, _key, _center, 'INVEST', _ratio, _rtxt, 5, 1, 821))
+    for _other, _pkey in _parent_companies:
+        for _sh in _SH_BY.get(_other, []):
+            _sname, _stype, _hcgid, _ratio = _sh[2], _sh[3], _sh[6], _sh[7]
+            _rtxt = '%g%%' % round(_ratio * 100, 4)
+            if _stype == '1' and _sname in _GEN_BY_NAME:
+                _o2 = _GEN_BY_NAME[_sname]
+                _k2 = 'C%d' % _o2
+                if _k2 in [n[2] for n in _nodes]:
+                    continue
+                _nodes.append(_gn(_tid, _k2, 'Company', _sname, _GEN_SUP[_o2]['credit'], 2,
+                                  _pkey, '1', '0', _GEN_SUP[_o2]['monitor'], _o2, _grp,
+                                  821, {'position': '间接股东企业', 'ratioLabel': _rtxt}))
+                _edges.append(_ge(_tid, _k2, _pkey, 'INVEST', _ratio, _rtxt, 5, 1, 821))
+            else:
+                _k2 = 'H%d_1' % _other
+                if _k2 in [n[2] for n in _nodes]:
+                    continue
+                _nodes.append(_gn(_tid, _k2, 'Human', _sname, None, 2, _pkey, '0',
+                                  '1' if _hcgid else '0', '0', None, _grp, 1123,
+                                  {'position': '间接自然人股东', 'ratioLabel': _rtxt}))
+                _edges.append(_ge(_tid, _k2, _pkey, 'INVEST', _ratio, _rtxt, 5, 1, 821))
+    for _p in _PE_BY.get(_sid, []):
+        _key = 'HPE%d_%d' % (_sid, _p[0])
+        _nodes.append(_gn(_tid, _key, 'Human', _p[2], None, 1, _center, '0', '0', '0',
+                          None, _grp, 1158, {'position': _p[6], 'ratioLabel': '任职'}))
+        _edges.append(_ge(_tid, _center, _key, 'SERVE_ALL', None, _p[6], 5, 3, 1158))
+    for _other, _rows in _SH_BY.items():
+        for _sh in _rows:
+            if _sh[2] == _sup['name']:
+                _key = 'C%d' % _other
+                if _key not in [n[2] for n in _nodes]:
+                    _nodes.append(_gn(_tid, _key, 'Company', _GEN_SUP[_other]['name'],
+                                      _GEN_SUP[_other]['credit'], 1, _center, '1', '0',
+                                      _GEN_SUP[_other]['monitor'], _other, _grp, 1160,
+                                      {'position': '被投资企业',
+                                       'ratioLabel': '%g%%' % round(_sh[7] * 100, 4)}))
+                _edges.append(_ge(_tid, _center, _key, 'INVEST', _sh[7],
+                                  '%g%%' % round(_sh[7] * 100, 4), 5, 1, 1160))
+    _GEN_TASKS.append(_gtask(_tid, 'MOCK-EQ-20261118-%03d' % (_tid - 1300), 'equity',
+                             'page5', _sid, len(_nodes), 12.00 + _sid % 10))
+    _GEN_NODES.extend(_nodes)
+    _GEN_EDGES.extend(_edges)
+
+# ---------- 页面6：幕后关系（同电话/同邮箱/共同董监高/参股/实际控制人） ----------
+for _sid in sorted(_GEN_SUP):
+    _sup = _GEN_SUP[_sid]
+    _grp = 'GRP-%d' % _sid
+    _tid = 1400 + (_sid - 1000)
+    _nodes, _edges, _keys = [], [], set()
+    _center = 'C%d' % _sid
+
+    def _ensure_company(_node_sid, _level, _parent):
+        _k = 'C%d' % _node_sid
+        if _k in _keys:
+            return _k
+        _keys.add(_k)
+        _s2 = _GEN_SUP[_node_sid]
+        _nodes.append(_gn(_tid, _k, 'Company', _s2['name'], _s2['credit'], _level, _parent,
+                          '1', '0', _s2['monitor'], _node_sid, _grp, 1161,
+                          {'position': '中心企业' if _level == 0 else '关联方'}))
+        return _k
+
+    _keys.add(_center)
+    _nodes.append(_gn(_tid, _center, 'Company', _sup['name'], _sup['credit'], 0, None,
+                      '1', '0', _sup['monitor'], _sid, _grp, 1161, {'position': '中心企业'}))
+    for _v, _owners in _TEL_OWNER.items():
+        if _sid not in _owners or len(_owners) < 2:
+            continue
+        for _o in _owners:
+            if _o == _sid:
+                continue
+            _k = _ensure_company(_o, 1, _center)
+            _edges.append(_ge(_tid, _center, _k, 'ALL', None, '同电话 %s' % _v, 3, 4, 1156))
+    for _v, _owners in _MAIL_OWNER.items():
+        if _sid not in _owners or len(_owners) < 2:
+            continue
+        for _o in _owners:
+            if _o == _sid:
+                continue
+            _k = _ensure_company(_o, 1, _center)
+            _edges.append(_ge(_tid, _center, _k, 'ALL', None, '同邮箱', 3, 5, 1156))
+    _hcg = set(p[5] for p in _PE_BY.get(_sid, []) if p[5])
+    for _other, _rows in _PE_BY.items():
+        if _other == _sid:
+            continue
+        _share = [p for p in _rows if p[5] in _hcg]
+        if not _share:
+            continue
+        _k = _ensure_company(_other, 1, _center)
+        _edges.append(_ge(_tid, _center, _k, 'ALL', None,
+                          '共同董监高：%s' % '、'.join(p[2] for p in _share), 4, 7, 1156))
+    for _sh in _SH_BY.get(_sid, []):
+        if _sh[3] == '1' and _sh[2] in _GEN_BY_NAME:
+            _o = _GEN_BY_NAME[_sh[2]]
+            _k = _ensure_company(_o, 1, _center)
+            _edges.append(_ge(_tid, _k, _center, 'INVEST', _sh[7],
+                              '%g%%' % round(_sh[7] * 100, 4), 5, 1, 1160))
+    for _other, _rows in _SH_BY.items():
+        for _sh in _rows:
+            if _sh[2] == _sup['name']:
+                _k = _ensure_company(_other, 1, _center)
+                _edges.append(_ge(_tid, _center, _k, 'INVEST', _sh[7],
+                                  '%g%%' % round(_sh[7] * 100, 4), 5, 1, 1160))
+    _ctrl = None
+    for _j, _sh in enumerate(_SH_BY.get(_sid, []), start=1):
+        if _sh[3] != '2':
+            continue
+        _key = 'HBS%d_%d' % (_sid, _j)
+        if _ctrl is None or _sh[7] > _ctrl[1]:
+            _ctrl = (_key, _sh[7], _sh[2], _sh[6])
+        _nodes.append(_gn(_tid, _key, 'Human', _sh[2], None, 1, _center, '0', '0', '0',
+                          None, _grp, 1123, {'position': '自然人股东/疑似实际控制人',
+                                             'ratioLabel': '%g%%' % round(_sh[7] * 100, 4)}))
+        _edges.append(_ge(_tid, _key, _center, 'INVEST', _sh[7],
+                          '%g%%' % round(_sh[7] * 100, 4), 5, 1, 1123))
+    for _p in _PE_BY.get(_sid, []):
+        _key = 'HBS-PE%d_%d' % (_sid, _p[0])
+        _nodes.append(_gn(_tid, _key, 'Human', _p[2], None, 1, _center, '0',
+                          '1' if (_ctrl and _p[2] == _ctrl[2]) else '0', '0', None, _grp,
+                          1158, {'position': _p[6]}))
+        _edges.append(_ge(_tid, _center, _key, 'SERVE_ALL', None, _p[6], 4, 3, 1158))
+    _GEN_TASKS.append(_gtask(_tid, 'MOCK-BS-20261118-%03d' % (_tid - 1400), 'backstage',
+                             'page6', _sid, len(_nodes), 10.00 + _sid % 7))
+    _GEN_NODES.extend(_nodes)
+    _GEN_EDGES.extend(_edges)
+

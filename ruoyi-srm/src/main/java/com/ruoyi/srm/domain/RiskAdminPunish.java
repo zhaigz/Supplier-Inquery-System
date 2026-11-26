@@ -1,6 +1,7 @@
 package com.ruoyi.srm.domain;
 
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /** srm_risk_admin_punish */
@@ -24,6 +25,7 @@ public class RiskAdminPunish extends BaseEntity
     private String listDept;
 
     /** 列入日期 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date listDate;
 
     /** 移除原因 / 移除异常名录原因 */
@@ -33,6 +35,7 @@ public class RiskAdminPunish extends BaseEntity
     private String removeDept;
 
     /** 移除日期 / 移出日期 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date removeDate;
 
     /** 接口返回总数 */

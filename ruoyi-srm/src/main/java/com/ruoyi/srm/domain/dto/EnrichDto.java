@@ -1,0 +1,1 @@
+package com.ruoyi.srm.domain.dto; public class EnrichDto { private Long supplierId; private boolean force; public Long getSupplierId(){return supplierId;} public void setSupplierId(Long v){supplierId=v;} public boolean isForce(){return force;} public void setForce(boolean v){force=v;} }

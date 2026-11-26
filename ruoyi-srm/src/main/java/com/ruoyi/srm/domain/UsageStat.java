@@ -2,6 +2,7 @@ package com.ruoyi.srm.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /** srm_usage_stat */
@@ -13,6 +14,7 @@ public class UsageStat extends BaseEntity
     private Long id;
 
     /** 统计日期（按月统计时 stat_date 取当月 1 日，period_type=month） */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date statDate;
 
     /** day / month */

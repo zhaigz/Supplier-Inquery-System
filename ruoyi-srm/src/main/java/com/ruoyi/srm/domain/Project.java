@@ -1,6 +1,7 @@
 package com.ruoyi.srm.domain;
 
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /** srm_project */
@@ -18,6 +19,7 @@ public class Project extends BaseEntity
     private String projectName;
 
     /** 项目日期 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date projectDate;
 
     /** 发起部门（数据权限按部门隔离的落点） */

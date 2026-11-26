@@ -11,4 +11,5 @@ public interface ISupplierService
     int updateSupplier(Supplier entity);
     int deleteSupplierById(Long id);
     int deleteSupplierByIds(Long[] ids);
+    int updateSupplierMonitorFlag(Long[] ids, String monitorFlag);
 }

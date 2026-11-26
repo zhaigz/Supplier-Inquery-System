@@ -2,6 +2,7 @@ package com.ruoyi.srm.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /** srm_supplier */
@@ -37,6 +38,7 @@ public class Supplier extends BaseEntity
     private BigDecimal regCapitalNum;
 
     /** 成立日期（818 成立日期 / 819 注册日期） */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date establishDate;
 
     /** 经营状态（818 企业状态；注销/吊销用于图谱角标） */

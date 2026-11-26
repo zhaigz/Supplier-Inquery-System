@@ -114,5 +114,5 @@
     <if test="createTime != null">create_time = #{createTime},</if>
   </set> WHERE id = #{id}</update>
   <delete id="deleteRelClueById" parameterType="Long">DELETE FROM srm_rel_clue WHERE id = #{id}</delete>
-  <delete id="deleteRelClueByIds" parameterType="array">DELETE FROM srm_rel_clue WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+  <delete id="deleteRelClueByIds">DELETE FROM srm_rel_clue WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
 </mapper>

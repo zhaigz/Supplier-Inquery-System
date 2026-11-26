@@ -1,6 +1,7 @@
 package com.ruoyi.srm.domain;
 
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /** srm_supplier_industry_info */
@@ -33,6 +34,7 @@ public class SupplierIndustryInfo extends BaseEntity
     private String regOrg;
 
     /** 核准时间（818） */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date approveDate;
 
     /** 统一社会信用代码（接口返回值，与主档不一致时以主档为准并记差异） */
@@ -51,18 +53,22 @@ public class SupplierIndustryInfo extends BaseEntity
     private String shortName;
 
     /** 经营开始时间（818） */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date fromTime;
 
     /** 经营结束时间（818） */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date toTime;
 
     /** 注销日期（818） */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date cancelDate;
 
     /** 注销原因（818） */
     private String cancelReason;
 
     /** 吊销日期（818） */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date revokeDate;
 
     /** 吊销原因（818） */

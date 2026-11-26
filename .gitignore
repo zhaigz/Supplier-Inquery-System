@@ -42,6 +42,9 @@ nbdist/
 *.xml.versionsBackup
 *.swp
 
+# 工程探测/分析临时产物（根目录下划线开头文件）
+/_*
+
 !*/build/*.java
 !*/build/*.html
 !*/build/*.xml

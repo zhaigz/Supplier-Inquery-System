@@ -1,6 +1,7 @@
 package com.ruoyi.srm.domain;
 
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /** srm_risk_dishonest */
@@ -51,6 +52,7 @@ public class RiskDishonest extends BaseEntity
     private String performStatus;
 
     /** 立案时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date filingDate;
 
     /** 案号 */

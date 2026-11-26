@@ -74,5 +74,5 @@
     <if test="createTime != null">create_time = #{createTime},</if>
   </set> WHERE id = #{id}</update>
   <delete id="deleteReportVersionById" parameterType="Long">DELETE FROM srm_report_version WHERE id = #{id}</delete>
-  <delete id="deleteReportVersionByIds" parameterType="array">DELETE FROM srm_report_version WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
+  <delete id="deleteReportVersionByIds">DELETE FROM srm_report_version WHERE id IN <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach></delete>
 </mapper>

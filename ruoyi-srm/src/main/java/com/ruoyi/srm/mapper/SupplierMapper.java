@@ -11,4 +11,5 @@ public interface SupplierMapper
     int updateSupplier(Supplier entity);
     int deleteSupplierById(Long id);
     int deleteSupplierByIds(Long[] ids);
+    int updateSupplierMonitorFlag(@org.apache.ibatis.annotations.Param("ids") Long[] ids, @org.apache.ibatis.annotations.Param("monitorFlag") String monitorFlag);
 }
